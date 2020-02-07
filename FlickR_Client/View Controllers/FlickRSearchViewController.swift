@@ -10,7 +10,7 @@ import UIKit
 
 class FlickRSearchViewController: UIViewController {
     let api = FlickR_API()
-    
+
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -18,6 +18,8 @@ class FlickRSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         searchTextField.delegate = self
+        collectionView.delegate = self
+        collectionView.dataSource = self
     }
     
     @IBAction func searchButtonPressed(_ sender: Any) {
@@ -39,6 +41,9 @@ class FlickRSearchViewController: UIViewController {
             }
 
             guard let tagSearch = tagSearch else { return }
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
             print("page 1 has a total of \(tagSearch.count) images")
         }
     }
@@ -51,5 +56,24 @@ extension FlickRSearchViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         return false
     }
+
+}
+
+extension FlickRSearchViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return api.tagSearch.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath)
+        cell.backgroundColor = .blue
+
+        return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.width - 16, height: view.frame.height / 3)
+    }
+
 
 }
