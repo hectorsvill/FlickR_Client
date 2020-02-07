@@ -43,4 +43,5 @@ class TagSearch {
         let isfamily = data["isfamily"] as! Int
         self.init(id: id, owner: owner, secret: secret, server: server, farm: farm, title: title, ispublic: ispublic, isfriend: isfriend, isfamily: isfamily)
     }
+    
 }
