@@ -16,6 +16,7 @@
 		12835EE123EDDA2100CB6813 /* TagSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EE023EDDA2100CB6813 /* TagSearch.swift */; };
 		12835EE423EDDEBA00CB6813 /* FlickR_API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EE323EDDEBA00CB6813 /* FlickR_API.swift */; };
 		12835EE623EDFAD500CB6813 /* PhotoDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EE523EDFAD500CB6813 /* PhotoDetail.swift */; };
+		12835EE923EDFFE600CB6813 /* FlickRSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EE823EDFFE600CB6813 /* FlickRSearchViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		12835EE023EDDA2100CB6813 /* TagSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSearch.swift; sourceTree = "<group>"; };
 		12835EE323EDDEBA00CB6813 /* FlickR_API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickR_API.swift; sourceTree = "<group>"; };
 		12835EE523EDFAD500CB6813 /* PhotoDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetail.swift; sourceTree = "<group>"; };
+		12835EE823EDFFE600CB6813 /* FlickRSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickRSearchViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				12835ECF23EDD84000CB6813 /* ViewController.swift */,
+				12835EE823EDFFE600CB6813 /* FlickRSearchViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -177,6 +180,7 @@
 				12835EE623EDFAD500CB6813 /* PhotoDetail.swift in Sources */,
 				12835ECC23EDD84000CB6813 /* AppDelegate.swift in Sources */,
 				12835ECE23EDD84000CB6813 /* SceneDelegate.swift in Sources */,
+				12835EE923EDFFE600CB6813 /* FlickRSearchViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
