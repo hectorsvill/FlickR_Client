@@ -11,7 +11,7 @@ import Foundation
 class FlickR_API {
     let myKey = "729eb28a3ffeca7a9bf3bad4ad35a9af"
     let mySecret = "e91719dfdbda192a"
-    let count = 5
+    let count = 100
     var tagSearch: [TagSearch] = []
 
     func fetchTagSearch(with tag: String, page: Int = 1, completion: @escaping ([TagSearch]?, Error?) -> ()) {

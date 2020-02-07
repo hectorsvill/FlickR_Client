@@ -17,24 +17,20 @@ class FlickRSearchViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        navigationController?.navigationBar.tintColor = .systemGray2
-//        view.backgroundColor = .systemGray2
-
         searchTextField.delegate = self
     }
     
     @IBAction func searchButtonPressed(_ sender: Any) {
         if let text = searchTextField.text {
             searchTag(with: text)
-
-        } else {
-
         }
+
         searchTextField.resignFirstResponder()
     }
 
     func searchTag(with text: String) {
         guard !text.isEmpty else { return }
+
         let newText = text.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: " ", with: "+")
 
         api.fetchTagSearch(with: newText) { tagSearch, error in
@@ -43,7 +39,7 @@ class FlickRSearchViewController: UIViewController {
             }
 
             guard let tagSearch = tagSearch else { return }
-            print(tagSearch.count)
+            print("page 1 has a total of \(tagSearch.count) images")
         }
     }
 
