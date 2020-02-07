@@ -46,7 +46,6 @@ class FlickR_API {
         let urlString = "https://farm\(tagSearch.farm).staticflickr.com/\(tagSearch.server)/\(tagSearch.id)_\(tagSearch.secret)_m.jpg"
         let url = URL(string: urlString)!
         let request = URLRequest(url: url)
-        
 
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error, let response = response as? HTTPURLResponse {
@@ -60,4 +59,27 @@ class FlickR_API {
         }.resume()
     }
 
+    func fetchImageDetail(with tagSearch: TagSearch, completion: @escaping (PhotoDetail? , Error?) -> ()) {
+        let urlString = "https://www.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=\(myKey)&photo_id=\(tagSearch.id)&secret=\(tagSearch.secret)&format=json&nojsoncallback=1"
+        let url = URL(string: urlString)!
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error, let response = response as? HTTPURLResponse {
+                completion(nil, error)
+                NSLog("\(response)")
+            }
+
+            guard let data = data else {
+                completion(nil, NSError())
+                return
+            }
+
+            do {
+                let resultDict = try JSONSerialization.jsonObject(with: data, options: []) as! [String: AnyObject]
+                let photoDetail = PhotoDetail(data: resultDict)
+                completion(photoDetail, nil)
+            } catch {
+                completion(nil, error)
+            }
+        }.resume()
+    }
 }

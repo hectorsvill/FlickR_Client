@@ -24,6 +24,7 @@ class ViewController: UIViewController {
             print(t.count)
 
             self.fetchImage()
+            self.fetchImageDetail()
 
         }
     }
@@ -35,9 +36,23 @@ class ViewController: UIViewController {
                 NSLog("\(error)")
             }
             guard let data = data else { return }
-            print(data)
+
         }
 
+    }
+
+    private func fetchImageDetail() {
+        let tagsearch = api.tagSearch[0]
+        api.fetchImageDetail(with: tagsearch) { pd, error in
+            if let error = error {
+                NSLog("\(error)")
+
+            }
+
+            guard let pd = pd else { return }
+            print("\(pd.description_content)")
+
+        }
     }
 
 }
