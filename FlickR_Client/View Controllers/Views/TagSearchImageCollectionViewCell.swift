@@ -15,12 +15,15 @@ class TagSearchImageCollectionViewCell: UICollectionViewCell {
     var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode =  .scaleAspectFit
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
         return imageView
     } ()
 
 
     func setupViews() {
+        imageView.frame = frame
+
         backgroundColor = .systemGray3
         addSubview(imageView)
 

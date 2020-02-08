@@ -10,7 +10,7 @@ import UIKit
 
 class FlickRSearchViewController: UIViewController {
     let api = FlickR_API()
-
+    var cache = [Int: Data]()
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -42,6 +42,7 @@ class FlickRSearchViewController: UIViewController {
 
             guard let tagSearch = tagSearch else { return }
             DispatchQueue.main.async {
+                self.cache = [:]
                 self.title = "#" + text.trimmingCharacters(in: .whitespaces)
                 self.searchTextField.text = nil
                 self.collectionView.reloadData()
@@ -51,19 +52,24 @@ class FlickRSearchViewController: UIViewController {
     }
 
     func setupImage(cell: TagSearchImageCollectionViewCell, index: Int) {
-        FlickR_API().fetchImage(with: cell.tagSearch!) { data, error in
-            if let error = error {
-                NSLog("\(error)")
-            }
+        if let data = cache[index] {
+            cell.imageView.image = UIImage(data: data)
+        }else {
+            FlickR_API().fetchImage(with: cell.tagSearch!) { data, error in
+                if let error = error {
+                    NSLog("\(error)")
+                }
 
-            guard let data = data else { return }
-            let image = UIImage(data: data)
-            // load image with cell
-            DispatchQueue.main.async {
-                cell.imageView.image = image
-//                self.collectionView.reloadData()
+                guard let data = data else { return }
+                self.cache[index] = data
+                DispatchQueue.main.async {
+                    let image = UIImage(data: data)
+                    cell.imageView.image = image
+                    //                self.collectionView.reloadData()
+                }
             }
         }
+
     }
 
 

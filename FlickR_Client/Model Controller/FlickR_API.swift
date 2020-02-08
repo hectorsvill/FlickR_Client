@@ -62,6 +62,7 @@ class FlickR_API {
     func fetchImageDetail(with tagSearch: TagSearch, completion: @escaping (PhotoDetail? , Error?) -> ()) {
         let urlString = "https://www.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=\(myKey)&photo_id=\(tagSearch.id)&secret=\(tagSearch.secret)&format=json&nojsoncallback=1"
         let url = URL(string: urlString)!
+        print(urlString)
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error, let response = response as? HTTPURLResponse {
                 completion(nil, error)
