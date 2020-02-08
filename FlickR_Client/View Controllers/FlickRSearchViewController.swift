@@ -42,11 +42,27 @@ class FlickRSearchViewController: UIViewController {
 
             guard let tagSearch = tagSearch else { return }
             DispatchQueue.main.async {
+                self.title = "#" + text.trimmingCharacters(in: .whitespaces)
+                self.searchTextField.text = nil
                 self.collectionView.reloadData()
             }
             print("page 1 has a total of \(tagSearch.count) images")
         }
     }
+
+    func setupImage(_ tagSearch: TagSearch) {
+        FlickR_API().fetchImage(with: tagSearch) { data, error in
+            if let error = error {
+                NSLog("\(error)")
+            }
+
+            guard let data = data else { return }
+            let image = UIImage(data: data)
+            // load image with cell 
+
+        }
+    }
+
 
 }
 
@@ -65,8 +81,10 @@ extension FlickRSearchViewController: UICollectionViewDelegate, UICollectionView
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath)
-        cell.backgroundColor = .blue
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchImageCollectionViewCell else { return UICollectionViewCell() }
+
+        let tagSearch = api.tagSearch[indexPath.item]
+        cell.tagSearch = tagSearch
 
         return cell
     }
@@ -75,5 +93,10 @@ extension FlickRSearchViewController: UICollectionViewDelegate, UICollectionView
         return CGSize(width: view.frame.width - 16, height: view.frame.height / 3)
     }
 
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        searchTextField.resignFirstResponder()
+    }
 
 }
+
+
