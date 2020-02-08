@@ -45,11 +45,11 @@ class ConcurrentOperation: Operation {
         super.isReady && state == .isReady
     }
 
-    override var isExecuting: Bool {
+    override dynamic var isExecuting: Bool {
         state == .isExecuting
     }
 
-    override var isFinished: Bool {
+    override dynamic var isFinished: Bool {
         state == .isFinished
     }
 

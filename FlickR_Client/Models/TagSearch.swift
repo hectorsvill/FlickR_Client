@@ -8,7 +8,11 @@
 
 import Foundation
 
-class TagSearch {
+struct TagSearch: Hashable {
+    static func == (lhs: TagSearch, rhs: TagSearch) -> Bool {
+        lhs.id == rhs.id
+    }
+
     let id: String
     let owner: String
     let secret: String
@@ -31,7 +35,7 @@ class TagSearch {
         self.isfamily = isfamily
     }
 
-    convenience init (data: NSDictionary) {
+    init (data: NSDictionary) {
         let id = data["id"] as! String
         let owner = data["owner"] as! String
         let secret = data["secret"] as! String
