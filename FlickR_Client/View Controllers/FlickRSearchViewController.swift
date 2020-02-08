@@ -50,16 +50,19 @@ class FlickRSearchViewController: UIViewController {
         }
     }
 
-    func setupImage(_ tagSearch: TagSearch) {
-        FlickR_API().fetchImage(with: tagSearch) { data, error in
+    func setupImage(cell: TagSearchImageCollectionViewCell, index: Int) {
+        FlickR_API().fetchImage(with: cell.tagSearch!) { data, error in
             if let error = error {
                 NSLog("\(error)")
             }
 
             guard let data = data else { return }
             let image = UIImage(data: data)
-            // load image with cell 
-
+            // load image with cell
+            DispatchQueue.main.async {
+                cell.imageView.image = image
+//                self.collectionView.reloadData()
+            }
         }
     }
 
@@ -85,7 +88,7 @@ extension FlickRSearchViewController: UICollectionViewDelegate, UICollectionView
 
         let tagSearch = api.tagSearch[indexPath.item]
         cell.tagSearch = tagSearch
-
+        setupImage(cell: cell, index: indexPath.item)
         return cell
     }
 

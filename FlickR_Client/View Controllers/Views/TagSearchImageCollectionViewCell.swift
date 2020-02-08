@@ -21,9 +21,9 @@ class TagSearchImageCollectionViewCell: UICollectionViewCell {
 
 
     func setupViews() {
-
-
+        backgroundColor = .systemGray3
         addSubview(imageView)
+
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             imageView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
