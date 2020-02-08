@@ -10,14 +10,18 @@ import UIKit
 
 class FlickRSearchViewController: UIViewController {
     let api = FlickR_API()
-    var cache = [Int: Data]()
+    var cache = Cache<Int, Data>()
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
+    typealias collectionDataSource = UICollectionViewDiffableDataSource
 
     override func viewDidLoad() {
         super.viewDidLoad()
         searchTextField.delegate = self
+
+
+//        collectionView.collectionViewLayout =
         collectionView.delegate = self
         collectionView.dataSource = self
     }
@@ -42,7 +46,7 @@ class FlickRSearchViewController: UIViewController {
 
             guard let tagSearch = tagSearch else { return }
             DispatchQueue.main.async {
-                self.cache = [:]
+                self.cache = Cache<Int, Data>()
                 self.title = "#" + text.trimmingCharacters(in: .whitespaces)
                 self.searchTextField.text = nil
                 self.collectionView.reloadData()
@@ -52,8 +56,9 @@ class FlickRSearchViewController: UIViewController {
     }
 
     func setupImage(cell: TagSearchImageCollectionViewCell, index: Int) {
-        if let data = cache[index] {
-            cell.imageView.image = UIImage(data: data)!
+        if let data = cache.value(for: index), let image = UIImage(data: data) {
+            cell.imageView.image = image
+            print("found  cache")
         }else {
             FlickR_API().fetchImage(with: cell.tagSearch!) { data, error in
                 if let error = error {
@@ -61,17 +66,17 @@ class FlickRSearchViewController: UIViewController {
                 }
 
                 guard let data = data else { return }
-                self.cache[index] = data
+                self.cache.cache(value: data, for: index)
                 DispatchQueue.main.async {
-                    let image = UIImage(data: data)!
-                    cell.imageView.image = image
-                    //                self.collectionView.reloadData()
+                    if let image = UIImage(data: data) {
+                        print(data)
+                        cell.imageView.image = image
+                    }
                 }
             }
         }
 
     }
-
 
 }
 
@@ -114,7 +119,7 @@ extension FlickRSearchViewController: UICollectionViewDelegate, UICollectionView
 
 
 extension FlickRSearchViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-         return CGSize(width: view.frame.width - 16, height: view.frame.height / 3)
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//         return CGSize(width: view.frame.width / 4, height: view.frame.height / 4)
+//    }
 }

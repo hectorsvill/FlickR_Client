@@ -9,9 +9,9 @@
 import Foundation
 
 class FlickR_API {
-    let myKey = "729eb28a3ffeca7a9bf3bad4ad35a9af"
-    let mySecret = "e91719dfdbda192a"
-    let count = 10
+    let myKey = "170edde37b27d9e8f912f3b5183484f2"
+    let mySecret = "8c513ef223b12070"
+    let count = 100
     var tagSearch: [TagSearch] = []
 
     func fetchTagSearch(with tag: String, page: Int = 1, completion: @escaping ([TagSearch]?, Error?) -> ()) {
@@ -43,7 +43,7 @@ class FlickR_API {
     }
 
     func fetchImage(with tagSearch: TagSearch, completion: @escaping (Data?, Error?) -> ()) {
-        let urlString = "https://farm\(tagSearch.farm).staticflickr.com/\(tagSearch.server)/\(tagSearch.id)_\(tagSearch.secret)_m.jpg"
+        let urlString = "https://farm\(tagSearch.farm).staticflickr.com/\(tagSearch.server)/\(tagSearch.id)_\(tagSearch.secret)_c.jpg"
         let url = URL(string: urlString)!
         let request = URLRequest(url: url)
 
@@ -62,7 +62,9 @@ class FlickR_API {
     func fetchImageDetail(with tagSearch: TagSearch, completion: @escaping (PhotoDetail? , Error?) -> ()) {
         let urlString = "https://www.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=\(myKey)&photo_id=\(tagSearch.id)&secret=\(tagSearch.secret)&format=json&nojsoncallback=1"
         let url = URL(string: urlString)!
-        print(urlString)
+    
+
+
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error, let response = response as? HTTPURLResponse {
                 completion(nil, error)

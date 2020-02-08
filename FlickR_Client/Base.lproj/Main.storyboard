@@ -36,20 +36,20 @@
                                 <rect key="frame" x="8" y="144" width="398" height="732"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mm2-qr-eaz">
-                                    <size key="itemSize" width="398" height="320"/>
+                                    <size key="itemSize" width="189" height="213"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ImageCell" id="Ylz-qK-FOb" customClass="TagSearchImageCollectionViewCell" customModule="FlickR_Client" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="398" height="320"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="189" height="213"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="45w-6l-762">
-                                            <rect key="frame" x="0.0" y="0.0" width="398" height="320"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="189" height="213"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </collectionViewCellContentView>
-                                        <size key="customSize" width="398" height="320"/>
+                                        <size key="customSize" width="189" height="213"/>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>

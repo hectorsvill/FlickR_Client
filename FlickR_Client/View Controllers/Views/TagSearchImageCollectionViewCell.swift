@@ -15,8 +15,7 @@ class TagSearchImageCollectionViewCell: UICollectionViewCell {
     var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-
+        imageView.contentMode = .scaleToFill
         return imageView
     } ()
 
@@ -33,18 +32,18 @@ class TagSearchImageCollectionViewCell: UICollectionViewCell {
         guard let tagSearch = tagSearch else { return }
         backgroundColor = .systemGray3
         self.contentView.addSubview(imageView)
-        self.contentView.addSubview(titleLabel)
+        addSubview(titleLabel)
         titleLabel.text = tagSearch.title
         imageView.frame = frame
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            imageView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            imageView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor),
-            imageView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor),
+
+            imageView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
+            imageView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
+
             titleLabel.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -8),
             titleLabel.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: 8),
             titleLabel.heightAnchor.constraint(equalToConstant: 12),
-            titleLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -8)
         ])
 
     }
