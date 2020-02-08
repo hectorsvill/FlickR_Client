@@ -11,7 +11,7 @@ import Foundation
 class FlickR_API {
     let myKey = "170edde37b27d9e8f912f3b5183484f2"
     let mySecret = "8c513ef223b12070"
-    let count = 100
+    let count = 10
     var tagSearch: [TagSearch] = []
 
     func fetchTagSearch(with tag: String, page: Int = 1, completion: @escaping ([TagSearch]?, Error?) -> ()) {
@@ -60,11 +60,8 @@ class FlickR_API {
     }
 
     func fetchImageDetail(with tagSearch: TagSearch, completion: @escaping (PhotoDetail? , Error?) -> ()) {
-        let urlString = "https://www.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=\(myKey)&photo_id=\(tagSearch.id)&secret=\(tagSearch.secret)&format=json&nojsoncallback=1"
+        let urlString = createPhotUrlString(with: tagSearch)
         let url = URL(string: urlString)!
-    
-
-
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error, let response = response as? HTTPURLResponse {
                 completion(nil, error)
@@ -85,4 +82,9 @@ class FlickR_API {
             }
         }.resume()
     }
+
+    func createPhotUrlString(with tagSearch: TagSearch) -> String {
+        "https://www.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=\(myKey)&photo_id=\(tagSearch.id)&secret=\(tagSearch.secret)&format=json&nojsoncallback=1"
+    }
+
 }

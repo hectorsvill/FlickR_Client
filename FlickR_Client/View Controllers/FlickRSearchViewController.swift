@@ -61,22 +61,11 @@ class FlickRSearchViewController: UIViewController {
     func loadImage(cell: TagSearchImageCollectionViewCell, index: Int) {
         if let data = cache.value(for: index), let image = UIImage(data: data) {
             cell.imageView.image = image
-        }else {
-            FlickR_API().fetchImage(with: cell.tagSearch!) { data, error in
-                if let error = error {
-                    NSLog("\(error)")
-                }
-
-                guard let data = data else { return }
-                self.cache.cache(value: data, for: index)
-                DispatchQueue.main.async {
-                    if let image = UIImage(data: data) {
-                        print(data)
-                        cell.imageView.image = image
-                    }
-                }
-            }
         }
+        let tagSearch = api.tagSearch[index]
+        let urlString = api.createPhotUrlString(with: tagSearch)
+        let photfetchOp = FetchPhotoOperation(urlString: urlString)
+
 
     }
 
