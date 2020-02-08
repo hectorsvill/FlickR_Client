@@ -10,7 +10,7 @@ import UIKit
 
 class FlickRSearchViewController: UIViewController {
     typealias collectionDataSource = UICollectionViewDiffableDataSource<Int, TagSearch>
-
+    let activityIndicator = UIActivityIndicatorView()
     let api = FlickR_API()
     var cache = Cache<Int, Data>()
     private let photoFetchQueue = OperationQueue()
@@ -22,7 +22,10 @@ class FlickRSearchViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        activityIndicator.center = view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.style = .medium
+        view.addSubview(activityIndicator)
         photoFetchQueue.name = "com.hectorstevenvillasano.andIQuote.FlickR-Client"
         searchTextField.delegate = self
         setupCollectionView()
@@ -86,9 +89,10 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
 extension FlickRSearchViewController {
     func searchTag(with text: String) {
         guard !text.isEmpty else { return }
-        
-        let newText = text.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: " ", with: "+")
 
+        activityIndicator.startAnimating()
+
+        let newText = text.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: " ", with: "+")
         api.fetchTagSearch(with: newText) { tagSearch, error in
             if let error = error {
                 NSLog("\(error)")
@@ -100,6 +104,7 @@ extension FlickRSearchViewController {
                 self.fetchPhotoOperations = [:]
                 self.title = "#" + text.trimmingCharacters(in: .whitespaces)
                 self.searchTextField.text = nil
+                self.activityIndicator.stopAnimating()
                 self.configureDataSource(with: tagSearch)
             }
         }

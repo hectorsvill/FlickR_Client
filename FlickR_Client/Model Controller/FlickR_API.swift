@@ -11,7 +11,7 @@ import Foundation
 class FlickR_API {
     var myKey = UserDefaults().string(forKey: "myKey_flickr") ?? ""
     var mySecret = UserDefaults().string(forKey: "mySecret_flickr") ?? ""
-    let count = 500
+    let count = 5
     var tagSearch: [TagSearch] = []
 
     func fetchTagSearch(with tag: String, page: Int = 1, completion: @escaping ([TagSearch]?, Error?) -> ()) {

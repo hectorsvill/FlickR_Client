@@ -15,7 +15,7 @@ class TagSearchImageCollectionViewCell: UICollectionViewCell {
     var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         return imageView
     } ()
 
