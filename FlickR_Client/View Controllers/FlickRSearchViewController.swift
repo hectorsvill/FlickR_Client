@@ -13,6 +13,7 @@ class FlickRSearchViewController: UIViewController {
 
     var cache = Cache<Int, Data>()
     private let photoFetchQueue = OperationQueue()
+    var fetchPhotoOperations: [Int: FetchPhotoOperation] = [:]
 
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var searchButton: UIButton!
@@ -50,6 +51,7 @@ class FlickRSearchViewController: UIViewController {
             guard let tagSearch = tagSearch else { return }
             DispatchQueue.main.async {
                 self.cache = Cache<Int, Data>()
+                self.fetchPhotoOperations = [:]
                 self.title = "#" + text.trimmingCharacters(in: .whitespaces)
                 self.searchTextField.text = nil
                 self.collectionView.reloadData()
@@ -58,17 +60,38 @@ class FlickRSearchViewController: UIViewController {
         }
     }
 
-    func loadImage(cell: TagSearchImageCollectionViewCell, index: Int) {
-        if let data = cache.value(for: index), let image = UIImage(data: data) {
+    func loadImage(cell: TagSearchImageCollectionViewCell, indexPath: IndexPath) {
+        if let data = cache.value(for: indexPath.item), let image = UIImage(data: data) {
             cell.imageView.image = image
         }
-        let tagSearch = api.tagSearch[index]
-        let urlString = api.createPhotUrlString(with: tagSearch)
-        let photfetchOp = FetchPhotoOperation(urlString: urlString)
+        let tagSearch = api.tagSearch[indexPath.item]
+        let urlString = api.createPhotoUrlString(with: tagSearch)
+        let fetchPhotoOperation = FetchPhotoOperation(urlString: urlString)
 
+        let storePhotoInCacheOperation = BlockOperation {
+            if let imageData = fetchPhotoOperation.imageData {
+                self.cache.cache(value: imageData, for: indexPath.item)
+            }
+        }
 
+        let checkingForReUsedCell = BlockOperation {
+            if self.collectionView.indexPath(for: cell) == indexPath {
+                guard let imageData = fetchPhotoOperation.imageData else { return }
+                cell.imageView.image = UIImage(data: imageData)
+            }
+        }
+
+        storePhotoInCacheOperation.addDependency(fetchPhotoOperation)
+        checkingForReUsedCell.addDependency(fetchPhotoOperation)
+
+        photoFetchQueue.addOperations([fetchPhotoOperation,storePhotoInCacheOperation], waitUntilFinished: false)
+        OperationQueue.main.addOperation(checkingForReUsedCell)
+        fetchPhotoOperations[indexPath.item] = fetchPhotoOperation
     }
 
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        fetchPhotoOperations[indexPath.row]?.cancel()
+    }
 }
 
 extension FlickRSearchViewController: UITextFieldDelegate {
@@ -90,7 +113,7 @@ extension FlickRSearchViewController: UICollectionViewDelegate, UICollectionView
 
         let tagSearch = api.tagSearch[indexPath.item]
         cell.tagSearch = tagSearch
-        loadImage(cell: cell, index: indexPath.item)
+        loadImage(cell: cell, indexPath: indexPath)
 
         return cell
     }
