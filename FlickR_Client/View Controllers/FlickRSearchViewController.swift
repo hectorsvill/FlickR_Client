@@ -9,7 +9,7 @@
 import UIKit
 
 class FlickRSearchViewController: UIViewController {
-    typealias collectionDataSource = UICollectionViewDiffableDataSource<Int, Int>
+    typealias collectionDataSource = UICollectionViewDiffableDataSource<Int, TagSearch>
 
     let api = FlickR_API()
     var cache = Cache<Int, Data>()
@@ -34,29 +34,21 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         //collectionView.collectionViewLayout =
         collectionView.delegate = self
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-
+        configureDataSource()
     }
 
     func configureDataSource() {
-        dataSource = UICollectionViewDiffableDataSource<Int, Int>(collectionView: collectionView, cellProvider: { collectionView, indexPath, i -> UICollectionViewCell? in
+        dataSource = UICollectionViewDiffableDataSource<Int, TagSearch>(collectionView: collectionView) { collectionView, indexPath, tagSearch -> UICollectionViewCell? in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchImageCollectionViewCell else { return UICollectionViewCell() }
-
-            cell.tagSearch = self.api.tagSearch[indexPath.item]
-
+            cell.tagSearch = tagSearch
+            self.loadImage(cell: cell, indexPath: indexPath)
             return cell
-        })
+        }
+
+
+
+
     }
-
-
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchImageCollectionViewCell else { return UICollectionViewCell() }
-//
-//        let tagSearch = api.tagSearch[indexPath.item]
-//        cell.tagSearch = tagSearch
-//        loadImage(cell: cell, indexPath: indexPath)
-//
-//        return cell
-//    }
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         searchTextField.resignFirstResponder()
