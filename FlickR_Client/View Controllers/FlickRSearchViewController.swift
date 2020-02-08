@@ -10,7 +10,10 @@ import UIKit
 
 class FlickRSearchViewController: UIViewController {
     let api = FlickR_API()
+
     var cache = Cache<Int, Data>()
+    private let photoFetchQueue = OperationQueue()
+
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -18,9 +21,9 @@ class FlickRSearchViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        photoFetchQueue.name = "com.hectorstevenvillasano.andIQuote.FlickR-Client"
         searchTextField.delegate = self
-
-
 //        collectionView.collectionViewLayout =
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -55,10 +58,9 @@ class FlickRSearchViewController: UIViewController {
         }
     }
 
-    func setupImage(cell: TagSearchImageCollectionViewCell, index: Int) {
+    func loadImage(cell: TagSearchImageCollectionViewCell, index: Int) {
         if let data = cache.value(for: index), let image = UIImage(data: data) {
             cell.imageView.image = image
-            print("found  cache")
         }else {
             FlickR_API().fetchImage(with: cell.tagSearch!) { data, error in
                 if let error = error {
@@ -99,7 +101,7 @@ extension FlickRSearchViewController: UICollectionViewDelegate, UICollectionView
 
         let tagSearch = api.tagSearch[indexPath.item]
         cell.tagSearch = tagSearch
-        setupImage(cell: cell, index: indexPath.item)
+        loadImage(cell: cell, index: indexPath.item)
 
         return cell
     }
