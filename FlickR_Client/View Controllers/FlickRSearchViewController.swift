@@ -31,23 +31,24 @@ class FlickRSearchViewController: UIViewController {
 
 extension FlickRSearchViewController: UICollectionViewDelegate {
     func setupCollectionView() {
+
         //collectionView.collectionViewLayout =
         collectionView.delegate = self
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        configureDataSource()
-    }
 
-    func configureDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Int, TagSearch>(collectionView: collectionView) { collectionView, indexPath, tagSearch -> UICollectionViewCell? in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchImageCollectionViewCell else { return UICollectionViewCell() }
             cell.tagSearch = tagSearch
             self.loadImage(cell: cell, indexPath: indexPath)
             return cell
         }
+    }
 
-
-
-
+    func configureDataSource(with results: [TagSearch]) {
+        var snapShot = NSDiffableDataSourceSnapshot<Int, TagSearch>()
+        snapShot.appendSections([0])
+        snapShot.appendItems(results)
+        dataSource.apply(snapShot, animatingDifferences: true)
     }
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -72,17 +73,9 @@ extension FlickRSearchViewController: UICollectionViewDelegateFlowLayout {
 
 
 extension FlickRSearchViewController {
-    @IBAction func searchButtonPressed(_ sender: Any) {
-        if let text = searchTextField.text {
-            searchTag(with: text)
-        }
-
-        searchTextField.resignFirstResponder()
-    }
-
     func searchTag(with text: String) {
         guard !text.isEmpty else { return }
-
+        
         let newText = text.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: " ", with: "+")
 
         api.fetchTagSearch(with: newText) { tagSearch, error in
@@ -90,16 +83,23 @@ extension FlickRSearchViewController {
                 NSLog("\(error)")
             }
 
-            guard let tagSearch = tagSearch else { return }
             DispatchQueue.main.async {
+                guard let tagSearch = tagSearch else { return }
                 self.cache = Cache<Int, Data>()
                 self.fetchPhotoOperations = [:]
                 self.title = "#" + text.trimmingCharacters(in: .whitespaces)
                 self.searchTextField.text = nil
-                self.collectionView.reloadData()
+                self.configureDataSource(with: tagSearch)
             }
-            print("page 1 has a total of \(tagSearch.count) images")
         }
+    }
+
+    @IBAction func searchButtonPressed(_ sender: Any) {
+        if let text = searchTextField.text {
+            searchTag(with: text)
+        }
+
+        searchTextField.resignFirstResponder()
     }
 
     func loadImage(cell: TagSearchImageCollectionViewCell, indexPath: IndexPath) {
