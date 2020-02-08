@@ -31,8 +31,7 @@ class FlickRSearchViewController: UIViewController {
 
 extension FlickRSearchViewController: UICollectionViewDelegate {
     func setupCollectionView() {
-
-        //collectionView.collectionViewLayout =
+        collectionView.collectionViewLayout = createLayout()
         collectionView.delegate = self
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
@@ -42,6 +41,25 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
             self.loadImage(cell: cell, indexPath: indexPath)
             return cell
         }
+    }
+
+    private func createLayout() -> UICollectionViewLayout {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.3))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
+
+        let spacing = CGFloat(8)
+
+        group.interItemSpacing = .fixed(spacing)
+
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = spacing
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8)
+
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return  layout
     }
 
     func configureDataSource(with results: [TagSearch]) {
@@ -62,13 +80,6 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         photoDetailView.tagSearch = tagSearch
         navigationController?.pushViewController(photoDetailView, animated: true)
     }
-}
-
-
-extension FlickRSearchViewController: UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//         return CGSize(width: view.frame.width / 4, height: view.frame.height / 4)
-//    }
 }
 
 

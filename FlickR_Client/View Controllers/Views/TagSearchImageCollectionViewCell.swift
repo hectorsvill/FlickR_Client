@@ -15,7 +15,7 @@ class TagSearchImageCollectionViewCell: UICollectionViewCell {
     var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleToFill
+        imageView.contentMode = .scaleAspectFill
         return imageView
     } ()
 
@@ -35,6 +35,7 @@ class TagSearchImageCollectionViewCell: UICollectionViewCell {
         addSubview(titleLabel)
         titleLabel.text = tagSearch.title
         imageView.frame = frame
+        imageView.image = #imageLiteral(resourceName: "flickR_logo")
         NSLayoutConstraint.activate([
 
             imageView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),

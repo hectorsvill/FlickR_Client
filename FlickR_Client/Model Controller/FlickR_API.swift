@@ -11,7 +11,7 @@ import Foundation
 class FlickR_API {
     var myKey = UserDefaults().string(forKey: "myKey_flickr") ?? ""
     var mySecret = UserDefaults().string(forKey: "mySecret_flickr") ?? ""
-    let count = 200
+    let count = 500
     var tagSearch: [TagSearch] = []
 
     func fetchTagSearch(with tag: String, page: Int = 1, completion: @escaping ([TagSearch]?, Error?) -> ()) {
@@ -84,7 +84,7 @@ class FlickR_API {
     }
 
     func createPhotoUrlString(with tagSearch: TagSearch) -> String {
-        "https://farm\(tagSearch.farm).staticflickr.com/\(tagSearch.server)/\(tagSearch.id)_\(tagSearch.secret)_c.jpg"
+        "https://farm\(tagSearch.farm).staticflickr.com/\(tagSearch.server)/\(tagSearch.id)_\(tagSearch.secret)_m.jpg"
     }
 
     func createPhotoDetailUrlString(with tagSearch: TagSearch) -> String {
