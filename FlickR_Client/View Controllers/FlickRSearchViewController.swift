@@ -53,7 +53,7 @@ class FlickRSearchViewController: UIViewController {
 
     func setupImage(cell: TagSearchImageCollectionViewCell, index: Int) {
         if let data = cache[index] {
-            cell.imageView.image = UIImage(data: data)
+            cell.imageView.image = UIImage(data: data)!
         }else {
             FlickR_API().fetchImage(with: cell.tagSearch!) { data, error in
                 if let error = error {
@@ -63,7 +63,7 @@ class FlickRSearchViewController: UIViewController {
                 guard let data = data else { return }
                 self.cache[index] = data
                 DispatchQueue.main.async {
-                    let image = UIImage(data: data)
+                    let image = UIImage(data: data)!
                     cell.imageView.image = image
                     //                self.collectionView.reloadData()
                 }
@@ -84,7 +84,7 @@ extension FlickRSearchViewController: UITextFieldDelegate {
 
 }
 
-extension FlickRSearchViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension FlickRSearchViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return api.tagSearch.count
     }
@@ -95,17 +95,26 @@ extension FlickRSearchViewController: UICollectionViewDelegate, UICollectionView
         let tagSearch = api.tagSearch[indexPath.item]
         cell.tagSearch = tagSearch
         setupImage(cell: cell, index: indexPath.item)
-        return cell
-    }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width - 16, height: view.frame.height / 3)
+        return cell
     }
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         searchTextField.resignFirstResponder()
     }
 
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let index = indexPath.item
+        let tagSearch = api.tagSearch[index]
+        let photoDetailView = PhotoDetailViewController()
+        photoDetailView.tagSearch = tagSearch
+        navigationController?.pushViewController(photoDetailView, animated: true)
+    }
 }
 
 
+extension FlickRSearchViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+         return CGSize(width: view.frame.width - 16, height: view.frame.height / 3)
+    }
+}

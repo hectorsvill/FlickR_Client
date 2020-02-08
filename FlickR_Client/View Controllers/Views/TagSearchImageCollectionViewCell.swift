@@ -16,17 +16,14 @@ class TagSearchImageCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
-        imageView.clipsToBounds = true
+
         return imageView
     } ()
 
-
     func setupViews() {
-        imageView.frame = frame
-
         backgroundColor = .systemGray3
         addSubview(imageView)
-
+        imageView.frame = frame
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             imageView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),

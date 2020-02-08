@@ -17,6 +17,7 @@
 		12835EE623EDFAD500CB6813 /* PhotoDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EE523EDFAD500CB6813 /* PhotoDetail.swift */; };
 		12835EE923EDFFE600CB6813 /* FlickRSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EE823EDFFE600CB6813 /* FlickRSearchViewController.swift */; };
 		12835EEB23EE2E9000CB6813 /* TagSearchImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EEA23EE2E9000CB6813 /* TagSearchImageCollectionViewCell.swift */; };
+		12835EEE23EE3FF700CB6813 /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EED23EE3FF700CB6813 /* PhotoDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		12835EE523EDFAD500CB6813 /* PhotoDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetail.swift; sourceTree = "<group>"; };
 		12835EE823EDFFE600CB6813 /* FlickRSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickRSearchViewController.swift; sourceTree = "<group>"; };
 		12835EEA23EE2E9000CB6813 /* TagSearchImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSearchImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		12835EED23EE3FF700CB6813 /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				12835EE823EDFFE600CB6813 /* FlickRSearchViewController.swift */,
+				12835EED23EE3FF700CB6813 /* PhotoDetailViewController.swift */,
 				12835EEC23EE2EA300CB6813 /* Views */,
 			);
 			path = "View Controllers";
@@ -188,6 +191,7 @@
 				12835ECC23EDD84000CB6813 /* AppDelegate.swift in Sources */,
 				12835EEB23EE2E9000CB6813 /* TagSearchImageCollectionViewCell.swift in Sources */,
 				12835ECE23EDD84000CB6813 /* SceneDelegate.swift in Sources */,
+				12835EEE23EE3FF700CB6813 /* PhotoDetailViewController.swift in Sources */,
 				12835EE923EDFFE600CB6813 /* FlickRSearchViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
