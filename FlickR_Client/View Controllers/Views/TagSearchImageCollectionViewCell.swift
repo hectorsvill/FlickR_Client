@@ -25,14 +25,15 @@ class TagSearchImageCollectionViewCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .label
         label.textAlignment = .right
+        label.font = UIFont.systemFont(ofSize: 14)
         return label
     } ()
 
     func setupViews() {
         guard let tagSearch = tagSearch else { return }
         backgroundColor = .systemGray3
-        addSubview(imageView)
-        addSubview(titleLabel)
+        self.contentView.addSubview(imageView)
+        self.contentView.addSubview(titleLabel)
         titleLabel.text = tagSearch.title
         imageView.frame = frame
         NSLayoutConstraint.activate([
@@ -42,7 +43,7 @@ class TagSearchImageCollectionViewCell: UICollectionViewCell {
             imageView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor),
             titleLabel.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -8),
             titleLabel.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: 8),
-            titleLabel.heightAnchor.constraint(equalToConstant: 25),
+            titleLabel.heightAnchor.constraint(equalToConstant: 12),
             titleLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
         ])
 
