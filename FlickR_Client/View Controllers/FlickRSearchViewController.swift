@@ -25,6 +25,10 @@ final class FlickRSearchViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
+    }
+
+    private func setupView() {
         activityIndicator.center = view.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.style = .medium
@@ -34,23 +38,19 @@ final class FlickRSearchViewController: UIViewController {
         setupCollectionView()
         view.backgroundColor = UIColor().flickr_logoColor()
         flickR_logo.backgroundColor = UIColor().flickr_logoColor()
-        navigationController?.navigationBar.tintColor = UIColor().flickr_logoColor()
+//        navigationController?.navigationBar.tintColor = UIColor().flickr_logoColor()
+
+    }
+
+    @IBAction func trashButtonPressed(_ sender: Any) {
+        title = "#"
+        setupCollectionView()
+        setupCollectionView()
+        configureDataSource(with: [])
     }
 }
 
 extension FlickRSearchViewController: UICollectionViewDelegate {
-    func setupCollectionView() {
-        collectionView.collectionViewLayout = createLayout()
-        collectionView.delegate = self
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        
-        dataSource = UICollectionViewDiffableDataSource<Int, TagSearch>(collectionView: collectionView) { collectionView, indexPath, tagSearch -> UICollectionViewCell? in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchImageCollectionViewCell else { return UICollectionViewCell() }
-            self.loadImage(cell: cell, indexPath: indexPath)
-            return cell
-        }
-    }
-
     private func createLayout() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -70,6 +70,18 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         return  layout
     }
 
+    func setupCollectionView() {
+        collectionView.collectionViewLayout = createLayout()
+        collectionView.delegate = self
+        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
+        dataSource = UICollectionViewDiffableDataSource<Int, TagSearch>(collectionView: collectionView) { collectionView, indexPath, tagSearch -> UICollectionViewCell? in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchImageCollectionViewCell else { return UICollectionViewCell() }
+            self.loadImage(cell: cell, indexPath: indexPath)
+            return cell
+        }
+    }
+
     func configureDataSource(with results: [TagSearch]) {
         var snapShot = NSDiffableDataSourceSnapshot<Int, TagSearch>()
         snapShot.appendSections([0])
@@ -87,8 +99,8 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         let photoDetailView = PhotoDetailViewController()
         photoDetailView.tagSearch = tagSearch
         photoDetailView.api = api
-        present(photoDetailView, animated: true)
-//        navigationController?.pushViewController(photoDetailView, animated: true)
+//        present(photoDetailView, animated: true)
+        navigationController?.pushViewController(photoDetailView, animated: true)
     }
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

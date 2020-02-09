@@ -75,7 +75,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="#" id="Re4-jd-Q71"/>
+                    <navigationItem key="navigationItem" title="#" id="Re4-jd-Q71">
+                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="6NT-xB-wIe">
+                            <connections>
+                                <action selector="trashButtonPressed:" destination="BYZ-38-t0r" id="xtk-Ja-s58"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="kUH-3I-8Bm" id="LAL-Bk-lre"/>
                         <outlet property="flickR_logo" destination="YpK-qk-En3" id="3Ik-Vv-Ymm"/>
@@ -92,7 +98,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="f8f-eP-Pxr" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="Xph-33-37E">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" largeTitles="YES" id="Xph-33-37E">
                         <rect key="frame" x="0.0" y="44" width="414" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

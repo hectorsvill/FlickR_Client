@@ -35,6 +35,7 @@ final class PhotoDetailViewController: UIViewController {
 
 
     func setupViews() {
+
         view.backgroundColor = UIColor().flickr_logoColor()
         view.addSubview(photoImageView)
 
@@ -51,6 +52,8 @@ final class PhotoDetailViewController: UIViewController {
 
     private func fetchImage() {
         guard let tagSearch = tagSearch else { return }
+
+        title = tagSearch.title
         api.fetchImage(with: tagSearch) { data, error in
             if let error = error {
                 NSLog("\(error)")
