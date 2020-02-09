@@ -40,7 +40,6 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
 
         dataSource = UICollectionViewDiffableDataSource<Int, TagSearch>(collectionView: collectionView) { collectionView, indexPath, tagSearch -> UICollectionViewCell? in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchImageCollectionViewCell else { return UICollectionViewCell() }
-            cell.tagSearch = tagSearch
             self.loadImage(cell: cell, indexPath: indexPath)
             return cell
         }
@@ -106,6 +105,8 @@ extension FlickRSearchViewController {
                 self.searchTextField.text = nil
                 self.activityIndicator.stopAnimating()
                 self.configureDataSource(with: tagSearch)
+//                let indexPath = IndexPath(item: 0, section: 0)
+//                self.collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
             }
         }
     }
@@ -151,7 +152,7 @@ extension FlickRSearchViewController {
     }
 
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        fetchPhotoOperations[indexPath.row]?.cancel()
+//        fetchPhotoOperations[indexPath.row]?.cancel()
     }
 }
 
