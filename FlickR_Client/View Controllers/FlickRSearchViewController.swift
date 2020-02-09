@@ -125,6 +125,7 @@ extension FlickRSearchViewController {
                 self.title = "#" + text.trimmingCharacters(in: .whitespaces)
                 self.searchTextField.text = nil
                 self.activityIndicator.stopAnimating()
+                self.setupCollectionView()
                 self.configureDataSource(with: tagSearch)
             }
         }
