@@ -85,7 +85,17 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         navigationController?.pushViewController(photoDetailView, animated: true)
     }
 
-    @objc func getmoreData() {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.item == dataSource.snapshot().itemIdentifiers.count - 1 {
+            currentPage += 1
+            self.perform(#selector(fetchNextData), with: nil)
+        }
+    }
+}
+
+
+extension FlickRSearchViewController {
+    @objc func fetchNextData() {
         api.fetchTagSearch(with: currentTagSearch, page: currentPage) { tagSearch, error in
             if let error = error {
                 NSLog("\(error)")
@@ -96,17 +106,6 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         }
     }
 
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.item == dataSource.snapshot().itemIdentifiers.count - 1 {
-            currentPage += 1
-            self.perform(#selector(getmoreData), with: nil, afterDelay: 1.0)
-        }
-    }
-
-}
-
-
-extension FlickRSearchViewController {
     func searchTag(with text: String) {
         guard !text.isEmpty else { return }
 
@@ -157,9 +156,7 @@ extension FlickRSearchViewController {
         let checkingForReUsedCell = BlockOperation {
             if self.collectionView.indexPath(for: cell) == indexPath {
                 guard let imageData = fetchPhotoOperation.imageData else { return }
-                DispatchQueue.main.async {
-                    cell.imageView.image = UIImage(data: imageData)
-                }
+                cell.imageView.image = UIImage(data: imageData)
             }
         }
 
@@ -182,6 +179,5 @@ extension FlickRSearchViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         return false
     }
-
 }
 
