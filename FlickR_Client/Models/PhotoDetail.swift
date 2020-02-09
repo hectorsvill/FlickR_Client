@@ -83,8 +83,7 @@ class PhotoDetail {
         let photo_tags = photo["tags"] as! NSDictionary
         let tag_list = photo_tags["tag"] as! [NSDictionary]
         let tags: [String] = tag_list.map {
-            let tag = $0["raw"] as! String
-            return tag
+            return $0["raw"] as! String
         }
 
         self.init(isFavorite: isFavorite, owner_userName: owner_userName, realname: realname, title_content: title_content, description_content: description_content, ispublic: ispublic, isfriend: isfriend, isfamily: isfamily, posted: posted, taken: taken, lastupdate: lastupdate, views: views, candownload: candownload, canblog: canblog, canprint: canprint, canshare: canshare, tags: tags)

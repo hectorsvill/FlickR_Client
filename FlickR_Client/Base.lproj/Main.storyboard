@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Flickr_client-->
+        <!--#-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="FlickRSearchViewController" customModule="FlickR_Client" customModuleProvider="target" sceneMemberID="viewController">
@@ -75,7 +75,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Flickr_client" id="Re4-jd-Q71"/>
+                    <navigationItem key="navigationItem" title="#" id="Re4-jd-Q71"/>
                     <connections>
                         <outlet property="collectionView" destination="kUH-3I-8Bm" id="LAL-Bk-lre"/>
                         <outlet property="flickR_logo" destination="YpK-qk-En3" id="3Ik-Vv-Ymm"/>

@@ -86,7 +86,9 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         let tagSearch = dataSource.snapshot().itemIdentifiers[indexPath.item]
         let photoDetailView = PhotoDetailViewController()
         photoDetailView.tagSearch = tagSearch
-        navigationController?.pushViewController(photoDetailView, animated: true)
+        photoDetailView.api = api
+        present(photoDetailView, animated: true)
+//        navigationController?.pushViewController(photoDetailView, animated: true)
     }
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -106,7 +108,9 @@ extension FlickRSearchViewController {
             }
 
             guard let tagSearch = tagSearch else { return }
-            self.configureDataSource(with: tagSearch)
+            DispatchQueue.main.async {
+                self.configureDataSource(with: tagSearch)
+            }
         }
     }
 
@@ -150,6 +154,7 @@ extension FlickRSearchViewController {
         
         let tagSearch = dataSource.snapshot().itemIdentifiers[indexPath.item]
         let urlString = api.createPhotoUrlString(with: tagSearch)
+
         let fetchPhotoOperation = FetchPhotoOperation(urlString: urlString)
 
         let storePhotoInCacheOperation = BlockOperation {

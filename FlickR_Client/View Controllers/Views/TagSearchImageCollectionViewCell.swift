@@ -24,7 +24,7 @@ class TagSearchImageCollectionViewCell: UICollectionViewCell {
     func setupViews() {
         layer.cornerRadius = 7
         layer.borderWidth = 4
-        layer.borderColor = UIColor.blue.cgColor
+        layer.borderColor = UIColor.systemBlue.cgColor
         contentView.addSubview(imageView)
 
         imageView.frame = frame
