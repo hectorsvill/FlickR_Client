@@ -71,7 +71,7 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         snapShot.appendSections([0])
         snapShot.appendItems(dataSource.snapshot().itemIdentifiers)
         snapShot.appendItems(results)
-        dataSource.apply(snapShot, animatingDifferences: true)
+        dataSource.apply(snapShot, animatingDifferences: false)
     }
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
