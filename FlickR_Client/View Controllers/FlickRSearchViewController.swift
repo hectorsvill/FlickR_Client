@@ -50,8 +50,8 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.3))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.25))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
 
         let spacing = CGFloat(8)
 
@@ -136,7 +136,9 @@ extension FlickRSearchViewController {
         let checkingForReUsedCell = BlockOperation {
             if self.collectionView.indexPath(for: cell) == indexPath {
                 guard let imageData = fetchPhotoOperation.imageData else { return }
-                cell.imageView.image = UIImage(data: imageData)
+                DispatchQueue.main.async {
+                    cell.imageView.image = UIImage(data: imageData)
+                }
             }
         }
 
