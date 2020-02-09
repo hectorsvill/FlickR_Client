@@ -22,7 +22,7 @@ class TagSearchImageCollectionViewCell: UICollectionViewCell {
     } ()
 
     func setupViews() {
-        layer.cornerRadius = 6
+        layer.cornerRadius = 7
         layer.borderWidth = 1
         contentView.addSubview(imageView)
 

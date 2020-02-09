@@ -11,11 +11,10 @@ import Foundation
 class FlickR_API {
     var myKey = UserDefaults().string(forKey: "myKey_flickr") ?? ""
     var mySecret = UserDefaults().string(forKey: "mySecret_flickr") ?? ""
-    let count = 10
-    var tagSearch: [TagSearch] = []
+    let count = 15
 
     func fetchTagSearch(with tag: String, page: Int = 1, completion: @escaping ([TagSearch]?, Error?) -> ()) {
-        let urlString = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=\(myKey)&tags=\(tag)&per_page=\(count)&format=json&nojsoncallback=1"
+        let urlString = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=\(myKey)&tags=\(tag)&per_page=\(count)&format=json&nojsoncallback=1&page=\(page)"
         let url = URL(string: urlString)
 
         URLSession.shared.dataTask(with: url!) { data, _, error in
@@ -23,17 +22,15 @@ class FlickR_API {
                 completion(nil, error)
             }
 
-            guard let data = data else { return }
-
             do {
-
+                guard let data = data else { return }
                 let resultDict = try JSONSerialization.jsonObject(with: data, options: []) as! [String: AnyObject]
                 let photos = resultDict["photos"] as! NSDictionary
                 let photosList = photos["photo"] as! [NSDictionary]
                 let tagSearch = photosList.map {
                     return TagSearch(data: $0)
                 }
-                self.tagSearch = tagSearch
+                
                 completion(tagSearch, nil)
             } catch {
                 NSLog("\(error)")

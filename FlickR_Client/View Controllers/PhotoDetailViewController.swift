@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PhotoDetailViewController: UIViewController {
+final class PhotoDetailViewController: UIViewController {
     var tagSearch: TagSearch? {
         didSet { setupViews () }
     }
@@ -22,5 +22,4 @@ class PhotoDetailViewController: UIViewController {
         guard let tagsearch = tagSearch else { return }
         title = tagsearch.title
     }
-
 }

@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 class PhotoDetail {
     let isFavorite: Int
     let owner_userName: String
@@ -90,6 +89,4 @@ class PhotoDetail {
 
         self.init(isFavorite: isFavorite, owner_userName: owner_userName, realname: realname, title_content: title_content, description_content: description_content, ispublic: ispublic, isfriend: isfriend, isfamily: isfamily, posted: posted, taken: taken, lastupdate: lastupdate, views: views, candownload: candownload, canblog: canblog, canprint: canprint, canshare: canshare, tags: tags)
     }
-
-
 }

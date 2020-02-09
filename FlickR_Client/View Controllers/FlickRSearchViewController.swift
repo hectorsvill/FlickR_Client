@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FlickRSearchViewController: UIViewController {
+final class FlickRSearchViewController: UIViewController {
     typealias collectionDataSource = UICollectionViewDiffableDataSource<Int, TagSearch>
     let activityIndicator = UIActivityIndicatorView()
     let api = FlickR_API()
@@ -19,6 +19,8 @@ class FlickRSearchViewController: UIViewController {
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     var dataSource: collectionDataSource! = nil
+    var currentPage = 1
+    var currentTagSearch = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,6 +69,7 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
     func configureDataSource(with results: [TagSearch]) {
         var snapShot = NSDiffableDataSourceSnapshot<Int, TagSearch>()
         snapShot.appendSections([0])
+        snapShot.appendItems(dataSource.snapshot().itemIdentifiers)
         snapShot.appendItems(results)
         dataSource.apply(snapShot, animatingDifferences: true)
     }
@@ -76,12 +79,30 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let index = indexPath.item
-        let tagSearch = api.tagSearch[index]
+        let tagSearch = dataSource.snapshot().itemIdentifiers[indexPath.item]
         let photoDetailView = PhotoDetailViewController()
         photoDetailView.tagSearch = tagSearch
         navigationController?.pushViewController(photoDetailView, animated: true)
     }
+
+    @objc func getmoreData() {
+        api.fetchTagSearch(with: currentTagSearch, page: currentPage) { tagSearch, error in
+            if let error = error {
+                NSLog("\(error)")
+            }
+
+            guard let tagSearch = tagSearch else { return }
+            self.configureDataSource(with: tagSearch)
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.item == dataSource.snapshot().itemIdentifiers.count - 1 {
+            currentPage += 1
+            self.perform(#selector(getmoreData), with: nil, afterDelay: 1.0)
+        }
+    }
+
 }
 
 
@@ -101,12 +122,11 @@ extension FlickRSearchViewController {
                 guard let tagSearch = tagSearch else { return }
                 self.cache = Cache<Int, Data>()
                 self.fetchPhotoOperations = [:]
+                self.currentTagSearch = newText
                 self.title = "#" + text.trimmingCharacters(in: .whitespaces)
                 self.searchTextField.text = nil
                 self.activityIndicator.stopAnimating()
                 self.configureDataSource(with: tagSearch)
-//                let indexPath = IndexPath(item: 0, section: 0)
-//                self.collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
             }
         }
     }
@@ -124,7 +144,7 @@ extension FlickRSearchViewController {
             cell.imageView.image = image
         }
         
-        let tagSearch = api.tagSearch[indexPath.item]
+        let tagSearch = dataSource.snapshot().itemIdentifiers[indexPath.item]
         let urlString = api.createPhotoUrlString(with: tagSearch)
         let fetchPhotoOperation = FetchPhotoOperation(urlString: urlString)
 
