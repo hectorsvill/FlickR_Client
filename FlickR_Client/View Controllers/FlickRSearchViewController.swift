@@ -21,6 +21,7 @@ final class FlickRSearchViewController: UIViewController {
     var dataSource: collectionDataSource! = nil
     var currentPage = 1
     var currentTagSearch = ""
+    @IBOutlet weak var flickR_logo: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +32,9 @@ final class FlickRSearchViewController: UIViewController {
         photoFetchQueue.name = "com.hectorstevenvillasano.andIQuote.FlickR-Client"
         searchTextField.delegate = self
         setupCollectionView()
+        view.backgroundColor = UIColor().flickr_logoColor()
+        flickR_logo.backgroundColor = UIColor().flickr_logoColor()
+        navigationController?.navigationBar.tintColor = UIColor().flickr_logoColor()
     }
 }
 
@@ -39,7 +43,7 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         collectionView.collectionViewLayout = createLayout()
         collectionView.delegate = self
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-
+        
         dataSource = UICollectionViewDiffableDataSource<Int, TagSearch>(collectionView: collectionView) { collectionView, indexPath, tagSearch -> UICollectionViewCell? in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchImageCollectionViewCell else { return UICollectionViewCell() }
             self.loadImage(cell: cell, indexPath: indexPath)
