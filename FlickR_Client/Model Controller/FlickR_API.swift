@@ -27,9 +27,7 @@ class FlickR_API {
                 let resultDict = try JSONSerialization.jsonObject(with: data, options: []) as! [String: AnyObject]
                 let photos = resultDict["photos"] as! NSDictionary
                 let photosList = photos["photo"] as! [NSDictionary]
-                let tagSearch = photosList.map {
-                    return TagSearch(data: $0)
-                }
+                let tagSearch = photosList.map { return TagSearch(data: $0) }
                 
                 completion(tagSearch, nil)
             } catch {

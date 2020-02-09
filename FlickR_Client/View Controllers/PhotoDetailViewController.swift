@@ -22,15 +22,48 @@ final class PhotoDetailViewController: UIViewController {
         return image
     }()
 
-    var titleLabel: UILabel = {
+    var viewsCountLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .right
+        label.textAlignment = .left
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.backgroundColor = .clear
+        label.textColor = .black
         return label
+    }()
+
+    var userNameLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.backgroundColor = UIColor().flickr_logoColor()
+        return label
+    }()
+
+    var descriptionTextView: UITextView = {
+        let textView = UITextView()
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.textAlignment = .left
+
+        textView.isEditable = false
+        textView.isSelectable = false
+        return textView
+    }()
+
+    var commentsButton: UIButton = {
+        let button = UIButton()
+
+
+        return button
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupViewDidLoad()
+    }
+
+    private func setupViewDidLoad() {
         activityIndicator.center = view.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.style = .medium
@@ -42,33 +75,52 @@ final class PhotoDetailViewController: UIViewController {
         setupTagTableView()
     }
 
-
     func setupViews() {
         view.backgroundColor = UIColor().flickr_logoColor()
         tagTableView.translatesAutoresizingMaskIntoConstraints = false
-
+        title = tagSearch?.title
         view.addSubview(photoImageView)
-        view.addSubview(titleLabel)
+//        view.addSubview(userNameLabel)
+//        view.addSubview(descriptionTextView)
+        //        view.addSubview(viewsCountLabel)
         view.addSubview(tagTableView)
+
+        let stackView = UIStackView(arrangedSubviews: [userNameLabel, viewsCountLabel, descriptionTextView])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.spacing = 8
+        stackView.axis = .vertical
+        view.addSubview(stackView)
+
         NSLayoutConstraint.activate([
             photoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             photoImageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
             photoImageView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-            photoImageView.heightAnchor.constraint(equalToConstant: 300),
+            photoImageView.heightAnchor.constraint(equalToConstant: 200),
 
-//            tagsLabel.bottomAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant: -8),
-//            tagsLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8),
-//            tagsLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
+            stackView.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant:  -8),
+            stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+            stackView.bottomAnchor.constraint(equalTo: tagTableView.topAnchor),
 
-            titleLabel.heightAnchor.constraint(equalToConstant: 20),
-            titleLabel.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant: 8),
-            titleLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8),
-            titleLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
-
-            tagTableView.heightAnchor.constraint(equalToConstant: 120),
-            tagTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+//            viewsCountLabel.bottomAnchor.constraint(equalTo: photoImageView.bottomAnchor),
+//            viewsCountLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+//
+//            userNameLabel.heightAnchor.constraint(equalToConstant: 24),
+//            userNameLabel.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant: 8),
+//            userNameLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8),
+//            userNameLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
+//            userNameLabel.heightAnchor.constraint(equalToConstant: 24),
+//
+            descriptionTextView.heightAnchor.constraint(equalToConstant: 60),
+//            descriptionTextView.topAnchor.constraint(equalTo: userNameLabel.bottomAnchor, constant: 8),
+//            descriptionTextView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8),
+//            descriptionTextView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
+//
+//            tagTableView.heightAnchor.constraint(equalToConstant: 120),
+            tagTableView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 8),
             tagTableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
             tagTableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+            tagTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
         ])
 
@@ -112,18 +164,22 @@ final class PhotoDetailViewController: UIViewController {
     }
 
     private func setupViewsWithDetailData(photoDetail: PhotoDetail) {
-        self.titleLabel.text = photoDetail.owner_userName.isEmpty ? "Anonymous" : photoDetail.realname
+        userNameLabel.text = "by: " + (photoDetail.owner_userName.isEmpty ? "Anonymous" : photoDetail.realname)
+        descriptionTextView.text = "\(photoDetail.title_content)\n\n" + (photoDetail.description_content.isEmpty ? "No Description" : photoDetail.description_content)
+        viewsCountLabel.text = "\(photoDetail.views) views\t"
         tagTableView.reloadData()
+
+        print("isFavorite: ", photoDetail.isFavorite)
     }
 }
 
 
 extension PhotoDetailViewController: UITableViewDataSource {
-
     func setupTagTableView() {
         tagTableView.dataSource = self
         tagTableView.register(UITableViewCell.self, forCellReuseIdentifier: "TagCell")
         tagTableView.backgroundColor = UIColor().flickr_logoColor()
+        tagTableView.allowsSelection = false
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -134,6 +190,7 @@ extension PhotoDetailViewController: UITableViewDataSource {
         let cell = tagTableView.dequeueReusableCell(withIdentifier: "TagCell", for: indexPath)
         cell.textLabel?.text = photoDetail?.tags[indexPath.row]
         cell.backgroundColor = UIColor().flickr_logoColor()
+        cell.layer.cornerRadius = 8
         return cell
     }
 
