@@ -78,7 +78,7 @@ class FlickR_API {
         }.resume()
     }
 
-    func fetchPhotoComments(with id: String, completion: @escaping (Data? , Error?) -> ()) {
+    func fetchPhotoComments(with id: String, completion: @escaping (PhotoComment? , Error?) -> ()) {
         let urlString = createFetchCommentsUrlString(with: id)
         let url = URL(string: urlString)!
         URLSession.shared.dataTask(with: url) { data, response, error in
@@ -94,8 +94,10 @@ class FlickR_API {
 
             do {
                 let resultDict = try JSONSerialization.jsonObject(with: data, options: []) as! [String: AnyObject]
+
 //                let photoDetail = PhotoDetail(data: resultDict)
 //                completion(photoDetail, nil)
+//                completion(data, nil)
 
             } catch {
                 completion(nil, error)

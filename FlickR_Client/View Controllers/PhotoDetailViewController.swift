@@ -80,28 +80,17 @@ final class PhotoDetailViewController: UIViewController {
         return button
     }()
 
-    @objc func commentsButtonPressed() {
-        let photoCommentsViewController = PhotoCommentsViewController()
-        photoCommentsViewController.api = api
-        photoCommentsViewController.tagSearch = tagSearch
-        navigationController?.pushViewController(photoCommentsViewController, animated: true)
-    }
-
-
-    @objc func likeButtonPressed() {
-        print("like this image")
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewDidLoad()
-
     }
 
     private func setupViewDidLoad() {
         activityIndicator.center = view.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.style = .medium
+        activityIndicator.color = .systemBlue
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         fetchImage()
@@ -109,7 +98,8 @@ final class PhotoDetailViewController: UIViewController {
         fetchImageDetail()
         setupTagTableView()
     }
-
+}
+extension PhotoDetailViewController {
     func setupViews() {
         view.backgroundColor = UIColor().flickr_logoColor()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -137,25 +127,28 @@ final class PhotoDetailViewController: UIViewController {
             photoImageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
             photoImageView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
             photoImageView.heightAnchor.constraint(equalToConstant: 200),
-
             stackView.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant:  8),
             stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor,constant: 8),
             stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
             stackView.bottomAnchor.constraint(equalTo: tableView.topAnchor),
-
-//            likeButton.widthAnchor.constraint(equalToConstant: 100),
-//            commentsButton.widthAnchor.constraint(equalToConstant: 100),
-
             descriptionTextView.heightAnchor.constraint(equalToConstant: 60),
-
             tableView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 8),
             tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
             tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-
         ])
-
     }
+
+    @objc func commentsButtonPressed() {
+         let photoCommentsViewController = PhotoCommentsViewController()
+         photoCommentsViewController.api = api
+         photoCommentsViewController.tagSearch = tagSearch
+         navigationController?.pushViewController(photoCommentsViewController, animated: true)
+     }
+
+     @objc func likeButtonPressed() {
+         print("like this image")
+     }
 
     private func fetchImage() {
         guard let tagSearch = tagSearch else { return }
@@ -192,15 +185,18 @@ final class PhotoDetailViewController: UIViewController {
     }
 
     private func setupViewsWithDetailData(photoDetail: PhotoDetail) {
-        userNameLabel.text = "by: " + (photoDetail.owner_userName.isEmpty ? "Anonymous" : photoDetail.realname)
-        descriptionTextView.text = "\(photoDetail.title_content)\n\n" + (photoDetail.description_content.isEmpty ? "No Description" : photoDetail.description_content)
+        let owner_name = photoDetail.owner_userName.isEmpty ? "Anonymous" : photoDetail.realname
+        let descriptionText = "\(photoDetail.title_content)\n\n" + (photoDetail.description_content.isEmpty ? "No Description" : photoDetail.description_content)
+
+        userNameLabel.text = "by: " + owner_name
+        descriptionTextView.text = descriptionText
         viewsCountLabel.text = "\(photoDetail.views) 👀\t"
 
         metaDataDictionary = [
-            ("owner user name: ",  (photoDetail.owner_userName.isEmpty ? "Anonymous" : photoDetail.owner_userName)),
+            ("owner user name: ",  owner_name),
             ("owner real name:", (photoDetail.realname.isEmpty ? "Anonymous" : photoDetail.realname)),
             ("title:", (photoDetail.title_content.isEmpty ? "No Title" : photoDetail.title_content)),
-            ("description:", (photoDetail.description_content.isEmpty ? "No Description" : photoDetail.description_content)),
+            ("description:", descriptionText),
             ("views:", photoDetail.views),
             ("taken:", photoDetail.taken),
             ("posted:", photoDetail.posted),
@@ -263,4 +259,3 @@ extension PhotoDetailViewController: UITableViewDataSource {
         2
     }
 }
-

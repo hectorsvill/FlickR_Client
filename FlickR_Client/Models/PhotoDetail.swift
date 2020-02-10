@@ -8,7 +8,7 @@
 
 import Foundation
 
-class PhotoDetail {
+struct PhotoDetail {
     let isFavorite: Int
     let owner_userName: String
     let realname: String
@@ -48,7 +48,7 @@ class PhotoDetail {
         self.tags = tags
     }
 
-    convenience init(data: [String: AnyObject]) {
+    init(data: [String: AnyObject]) {
         let photo = data["photo"] as! NSDictionary
         let isFavorite = photo["isfavorite"] as! Int
 

@@ -32,6 +32,7 @@ final class FlickRSearchViewController: UIViewController {
         activityIndicator.center = view.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.style = .medium
+        activityIndicator.color = .systemBlue
         view.addSubview(activityIndicator)
         photoFetchQueue.name = "com.hectorstevenvillasano.andIQuote.FlickR-Client"
         searchTextField.delegate = self
