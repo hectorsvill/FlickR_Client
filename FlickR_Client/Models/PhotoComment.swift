@@ -19,7 +19,7 @@ struct PhotoComment: Hashable {
         self.content = content
     }
 
-    init(resultDict: [String: AnyObject]) {
+    init(resultDict: NSDictionary) {
         let id = resultDict["id"] as! String
         let authorName = resultDict["authorname"] as! String
         let content = resultDict["_content"] as! String

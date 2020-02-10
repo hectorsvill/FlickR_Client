@@ -29,7 +29,7 @@ class PhotoCommentsViewController: UIViewController {
     private func fetchPhotoComments() {
         guard let tagSearch = tagSearch else { return }
 
-        api.fetchPhotoComments(with: tagSearch.id) { photComments, error in
+        api.fetchPhotoComments(with: tagSearch.id) { photoComments, error in
             if let error = error {
                 NSLog("error: \(error)")
                 DispatchQueue.main.async {
@@ -37,12 +37,11 @@ class PhotoCommentsViewController: UIViewController {
                 }
             }
 
-////            guard let data = data else { return }
-//
-//            DispatchQueue.main.async {
-//                print(data)
-//                self.activityIndicator.stopAnimating()
-//            }
+            guard let photoComments = photoComments else { return }
+            DispatchQueue.main.async {
+                print(photoComments)
+                self.activityIndicator.stopAnimating()
+            }
 
         }
 
