@@ -30,6 +30,7 @@ final class PhotoDetailViewController: UIViewController {
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.backgroundColor = .clear
         label.textColor = .black
+        label.text = "👀"
         return label
     }()
 
@@ -39,6 +40,7 @@ final class PhotoDetailViewController: UIViewController {
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.backgroundColor = UIColor().flickr_logoColor()
+        label.text = "by:"
         return label
     }()
 
@@ -48,16 +50,18 @@ final class PhotoDetailViewController: UIViewController {
         textView.textAlignment = .justified
         textView.isEditable = false
         textView.isSelectable = false
+        textView.layer.cornerRadius = 3
         return textView
     }()
 
     var commentsButton: UIButton = {
         let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
         let config = UIImage.SymbolConfiguration(scale: .large)
         let plusBubbleImage = UIImage(systemName: "plus.bubble", withConfiguration: config)
         button.setImage(plusBubbleImage, for: .normal)
         button.backgroundColor = .systemBlue
-        button.tintColor = .white
+        button.tintColor = UIColor().flickr_logoColor()
         button.layer.cornerRadius = 3
         button.addTarget(self, action: #selector(likeButtonPressed), for: .touchUpInside)
         return button
@@ -65,11 +69,12 @@ final class PhotoDetailViewController: UIViewController {
 
     var likeButton: UIButton = {
         let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
         let config = UIImage.SymbolConfiguration(scale: .large)
         let thumbsupImage = UIImage(systemName: "hand.thumbsup", withConfiguration: config)
         button.setImage(thumbsupImage, for: .normal)
         button.backgroundColor = .systemBlue
-        button.tintColor = .white
+        button.tintColor = UIColor().flickr_logoColor()
         button.layer.cornerRadius = 3
         button.addTarget(self, action: #selector(commentsButtonPressed), for: .touchUpInside)
         return button
@@ -109,11 +114,12 @@ final class PhotoDetailViewController: UIViewController {
         view.addSubview(photoImageView)
         view.addSubview(tableView)
 
-        let buttonStackView = UIStackView(arrangedSubviews: [likeButton, commentsButton])
+        let buttonStackView = UIStackView(arrangedSubviews: [commentsButton, likeButton])
         buttonStackView.translatesAutoresizingMaskIntoConstraints = false
-        buttonStackView.spacing = 8
         buttonStackView.axis = .horizontal
-        buttonStackView.alignment = .center
+        buttonStackView.spacing = 8
+        buttonStackView.alignment = .fill
+        buttonStackView.distribution = .fillEqually
 
         let stackView = UIStackView(arrangedSubviews: [userNameLabel, viewsCountLabel, descriptionTextView, buttonStackView])
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -131,6 +137,9 @@ final class PhotoDetailViewController: UIViewController {
             stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor,constant: 8),
             stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
             stackView.bottomAnchor.constraint(equalTo: tableView.topAnchor),
+
+            likeButton.widthAnchor.constraint(equalToConstant: 100),
+            commentsButton.widthAnchor.constraint(equalToConstant: 100),
 
             descriptionTextView.heightAnchor.constraint(equalToConstant: 60),
 
@@ -182,19 +191,19 @@ final class PhotoDetailViewController: UIViewController {
     private func setupViewsWithDetailData(photoDetail: PhotoDetail) {
         userNameLabel.text = "by: " + (photoDetail.owner_userName.isEmpty ? "Anonymous" : photoDetail.realname)
         descriptionTextView.text = "\(photoDetail.title_content)\n\n" + (photoDetail.description_content.isEmpty ? "No Description" : photoDetail.description_content)
-        viewsCountLabel.text = "\(photoDetail.views) views\t"
+        viewsCountLabel.text = "\(photoDetail.views) 👀\t"
 
         metaDataDictionary = [
             ("owner user name: ",  (photoDetail.owner_userName.isEmpty ? "Anonymous" : photoDetail.owner_userName)),
             ("real name:", (photoDetail.realname.isEmpty ? "Anonymous" : photoDetail.realname)),
             ("title:", (photoDetail.title_content.isEmpty ? "No Title" : photoDetail.title_content)),
             ("description:", (photoDetail.description_content.isEmpty ? "No Description" : photoDetail.description_content)),
+            ("views:", photoDetail.views),
+            ("taken", photoDetail.taken),
+            ("posted", photoDetail.posted),
+            ("last updated:", photoDetail.lastupdate),
             ("is favorite:", photoDetail.isFavorite == 0 ? "No" : "Yes" ),
             ("is publinc", photoDetail.ispublic == 0 ? "No" : "Yes" ),
-            ("posted", photoDetail.posted),
-            ("taken", photoDetail.taken),
-            ("last updated:", photoDetail.lastupdate),
-            ("views:", photoDetail.views),
             ("can blog:", photoDetail.canblog == 0 ? "No" : "Yes"),
             ("can print:", photoDetail.canprint == 0 ? "No" : "Yes" ),
             ("can Share", photoDetail.canshare == 0 ? "No" : "Yes" ),
@@ -230,7 +239,7 @@ extension PhotoDetailViewController: UITableViewDataSource {
         if indexPath.section == 1 {
             cell.textLabel?.text = ""
             cell.detailTextLabel?.text = photoDetail?.tags[indexPath.row]
-        } else if indexPath.section == 0{
+        } else if indexPath.section == 0 {
             cell.textLabel?.text = metaDataDictionary[indexPath.row].0
             cell.detailTextLabel?.text = metaDataDictionary[indexPath.row].1
             cell.detailTextLabel?.textAlignment = .left

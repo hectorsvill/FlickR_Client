@@ -66,6 +66,24 @@
 			path = Operations;
 			sourceTree = "<group>";
 		};
+		127D2F9923F108C300DA9572 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				127D2F9523EFBBFB00DA9572 /* UIColor+BackgroundColor.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		127D2F9A23F108E600DA9572 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				12835ED123EDD84000CB6813 /* Main.storyboard */,
+				12835ED423EDD84300CB6813 /* Assets.xcassets */,
+				12835ED623EDD84300CB6813 /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		12835EBF23EDD84000CB6813 = {
 			isa = PBXGroup;
 			children = (
@@ -85,16 +103,14 @@
 		12835ECA23EDD84000CB6813 /* FlickR_Client */ = {
 			isa = PBXGroup;
 			children = (
+				12835ED923EDD84300CB6813 /* Info.plist */,
 				12835ECB23EDD84000CB6813 /* AppDelegate.swift */,
 				12835ECD23EDD84000CB6813 /* SceneDelegate.swift */,
-				127D2F9523EFBBFB00DA9572 /* UIColor+BackgroundColor.swift */,
+				127D2F9923F108C300DA9572 /* Extensions */,
 				12835EE723EDFE9800CB6813 /* Model Controller */,
 				12835EE223EDDBE600CB6813 /* Models */,
 				12835EDF23EDD94D00CB6813 /* View Controllers */,
-				12835ED123EDD84000CB6813 /* Main.storyboard */,
-				12835ED423EDD84300CB6813 /* Assets.xcassets */,
-				12835ED623EDD84300CB6813 /* LaunchScreen.storyboard */,
-				12835ED923EDD84300CB6813 /* Info.plist */,
+				127D2F9A23F108E600DA9572 /* Resources */,
 			);
 			path = FlickR_Client;
 			sourceTree = "<group>";
