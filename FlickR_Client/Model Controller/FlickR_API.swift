@@ -78,6 +78,32 @@ class FlickR_API {
         }.resume()
     }
 
+    func fetchPhotoComments(with id: String, completion: @escaping (Data? , Error?) -> ()) {
+        let urlString = createFetchCommentsUrlString(with: id)
+        let url = URL(string: urlString)!
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error, let response = response as? HTTPURLResponse {
+                completion(nil, error)
+                NSLog("\(response)")
+            }
+
+            guard let data = data else {
+                completion(nil, NSError())
+                return
+            }
+
+            do {
+                let resultDict = try JSONSerialization.jsonObject(with: data, options: []) as! [String: AnyObject]
+//                let photoDetail = PhotoDetail(data: resultDict)
+//                completion(photoDetail, nil)
+
+            } catch {
+                completion(nil, error)
+            }
+        }.resume()
+    }
+
+
     func createPhotoUrlString(with tagSearch: TagSearch) -> String {
         "https://farm\(tagSearch.farm).staticflickr.com/\(tagSearch.server)/\(tagSearch.id)_\(tagSearch.secret)_m.jpg"
     }

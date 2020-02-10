@@ -63,7 +63,7 @@ final class PhotoDetailViewController: UIViewController {
         button.backgroundColor = .systemBlue
         button.tintColor = UIColor().flickr_logoColor()
         button.layer.cornerRadius = 3
-        button.addTarget(self, action: #selector(likeButtonPressed), for: .touchUpInside)
+        button.addTarget(self, action: #selector(commentsButtonPressed), for: .touchUpInside)
         return button
     }()
 
@@ -76,12 +76,15 @@ final class PhotoDetailViewController: UIViewController {
         button.backgroundColor = .systemBlue
         button.tintColor = UIColor().flickr_logoColor()
         button.layer.cornerRadius = 3
-        button.addTarget(self, action: #selector(commentsButtonPressed), for: .touchUpInside)
+        button.addTarget(self, action: #selector(likeButtonPressed), for: .touchUpInside)
         return button
     }()
 
     @objc func commentsButtonPressed() {
-        print("view comments")
+        let photoCommentsViewController = PhotoCommentsViewController()
+        photoCommentsViewController.api = api
+        photoCommentsViewController.tagSearch = tagSearch
+        navigationController?.pushViewController(photoCommentsViewController, animated: true)
     }
 
 
@@ -140,8 +143,8 @@ final class PhotoDetailViewController: UIViewController {
             stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
             stackView.bottomAnchor.constraint(equalTo: tableView.topAnchor),
 
-            likeButton.widthAnchor.constraint(equalToConstant: 100),
-            commentsButton.widthAnchor.constraint(equalToConstant: 100),
+//            likeButton.widthAnchor.constraint(equalToConstant: 100),
+//            commentsButton.widthAnchor.constraint(equalToConstant: 100),
 
             descriptionTextView.heightAnchor.constraint(equalToConstant: 60),
 
@@ -169,8 +172,6 @@ final class PhotoDetailViewController: UIViewController {
                 self.photoImageView.image = image
             }
         }
-
-
     }
 
     private func fetchImageDetail() {
@@ -197,18 +198,18 @@ final class PhotoDetailViewController: UIViewController {
 
         metaDataDictionary = [
             ("owner user name: ",  (photoDetail.owner_userName.isEmpty ? "Anonymous" : photoDetail.owner_userName)),
-            ("real name:", (photoDetail.realname.isEmpty ? "Anonymous" : photoDetail.realname)),
+            ("owner real name:", (photoDetail.realname.isEmpty ? "Anonymous" : photoDetail.realname)),
             ("title:", (photoDetail.title_content.isEmpty ? "No Title" : photoDetail.title_content)),
             ("description:", (photoDetail.description_content.isEmpty ? "No Description" : photoDetail.description_content)),
             ("views:", photoDetail.views),
-            ("taken", photoDetail.taken),
-            ("posted", photoDetail.posted),
+            ("taken:", photoDetail.taken),
+            ("posted:", photoDetail.posted),
             ("last updated:", photoDetail.lastupdate),
             ("is favorite:", photoDetail.isFavorite == 0 ? "No" : "Yes" ),
-            ("is publinc", photoDetail.ispublic == 0 ? "No" : "Yes" ),
+            ("is public:", photoDetail.ispublic == 0 ? "No" : "Yes" ),
             ("can blog:", photoDetail.canblog == 0 ? "No" : "Yes"),
             ("can print:", photoDetail.canprint == 0 ? "No" : "Yes" ),
-            ("can Share", photoDetail.canshare == 0 ? "No" : "Yes" ),
+            ("can Share:", photoDetail.canshare == 0 ? "No" : "Yes" ),
         ]
 
         if photoDetail.isFavorite == 1 {

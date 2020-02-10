@@ -12,6 +12,8 @@
 		127D2F9223EF3C8A00DA9572 /* ConcurrentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D2F9123EF3C8A00DA9572 /* ConcurrentOperation.swift */; };
 		127D2F9623EFBBFB00DA9572 /* UIColor+BackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D2F9523EFBBFB00DA9572 /* UIColor+BackgroundColor.swift */; };
 		127D2F9823F0FAA100DA9572 /* SubTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D2F9723F0FAA100DA9572 /* SubTitleTableViewCell.swift */; };
+		127D2F9C23F11AE400DA9572 /* PhotoComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D2F9B23F11AE400DA9572 /* PhotoComment.swift */; };
+		127D2FA023F12B8900DA9572 /* PhotoCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D2F9F23F12B8900DA9572 /* PhotoCommentsViewController.swift */; };
 		12835ECC23EDD84000CB6813 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835ECB23EDD84000CB6813 /* AppDelegate.swift */; };
 		12835ECE23EDD84000CB6813 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835ECD23EDD84000CB6813 /* SceneDelegate.swift */; };
 		12835ED323EDD84000CB6813 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12835ED123EDD84000CB6813 /* Main.storyboard */; };
@@ -31,6 +33,8 @@
 		127D2F9123EF3C8A00DA9572 /* ConcurrentOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcurrentOperation.swift; sourceTree = "<group>"; };
 		127D2F9523EFBBFB00DA9572 /* UIColor+BackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+BackgroundColor.swift"; sourceTree = "<group>"; };
 		127D2F9723F0FAA100DA9572 /* SubTitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubTitleTableViewCell.swift; sourceTree = "<group>"; };
+		127D2F9B23F11AE400DA9572 /* PhotoComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoComment.swift; sourceTree = "<group>"; };
+		127D2F9F23F12B8900DA9572 /* PhotoCommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCommentsViewController.swift; sourceTree = "<group>"; };
 		12835EC823EDD84000CB6813 /* FlickR_Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlickR_Client.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12835ECB23EDD84000CB6813 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		12835ECD23EDD84000CB6813 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -120,6 +124,7 @@
 			children = (
 				12835EE823EDFFE600CB6813 /* FlickRSearchViewController.swift */,
 				12835EED23EE3FF700CB6813 /* PhotoDetailViewController.swift */,
+				127D2F9F23F12B8900DA9572 /* PhotoCommentsViewController.swift */,
 				12835EEC23EE2EA300CB6813 /* Views */,
 			);
 			path = "View Controllers";
@@ -130,6 +135,7 @@
 			children = (
 				12835EE023EDDA2100CB6813 /* TagSearch.swift */,
 				12835EE523EDFAD500CB6813 /* PhotoDetail.swift */,
+				127D2F9B23F11AE400DA9572 /* PhotoComment.swift */,
 				127D2F8C23EF374000DA9572 /* Cache.swift */,
 				127D2F9023EF3C6900DA9572 /* Operations */,
 			);
@@ -225,7 +231,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				127D2F9223EF3C8A00DA9572 /* ConcurrentOperation.swift in Sources */,
+				127D2FA023F12B8900DA9572 /* PhotoCommentsViewController.swift in Sources */,
 				12835EE123EDDA2100CB6813 /* TagSearch.swift in Sources */,
+				127D2F9C23F11AE400DA9572 /* PhotoComment.swift in Sources */,
 				127D2F9823F0FAA100DA9572 /* SubTitleTableViewCell.swift in Sources */,
 				127D2F8D23EF374000DA9572 /* Cache.swift in Sources */,
 				12835EE423EDDEBA00CB6813 /* FlickR_API.swift in Sources */,
