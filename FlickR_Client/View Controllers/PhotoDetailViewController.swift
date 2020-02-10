@@ -146,9 +146,9 @@ extension PhotoDetailViewController {
          navigationController?.pushViewController(photoCommentsViewController, animated: true)
      }
 
-     @objc func likeButtonPressed() {
+    @objc func likeButtonPressed() {
          print("like this image")
-     }
+    }
 
     private func fetchImage() {
         guard let tagSearch = tagSearch else { return }
@@ -217,8 +217,6 @@ extension PhotoDetailViewController {
         tableView.reloadData()
     }
 }
-
-
 extension PhotoDetailViewController: UITableViewDataSource {
     func setupTagTableView() {
         tableView.dataSource = self

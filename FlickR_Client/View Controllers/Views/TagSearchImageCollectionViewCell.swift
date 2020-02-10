@@ -22,8 +22,6 @@ class TagSearchImageCollectionViewCell: UICollectionViewCell {
     } ()
 
     func setupViews() {
-        layer.cornerRadius = 7
-        layer.borderWidth = 4
         layer.borderColor = UIColor.systemBlue.cgColor
         contentView.addSubview(imageView)
 
@@ -32,7 +30,7 @@ class TagSearchImageCollectionViewCell: UICollectionViewCell {
 
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            imageView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            imageView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -40),
             imageView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor),
             imageView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor),
         ])

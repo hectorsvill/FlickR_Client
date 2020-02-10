@@ -21,8 +21,8 @@ struct PhotoComment: Hashable {
 
     init(resultDict: [String: AnyObject]) {
         let id = resultDict["id"] as! String
-        let authorName = resultDict["authorName"] as! String
-        let content = resultDict["Content"] as! String
+        let authorName = resultDict["authorname"] as! String
+        let content = resultDict["_content"] as! String
         self.init(id: id, authorName: authorName, content: content)
     }
 }

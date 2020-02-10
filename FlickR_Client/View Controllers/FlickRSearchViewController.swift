@@ -39,7 +39,7 @@ final class FlickRSearchViewController: UIViewController {
         setupCollectionView()
         view.backgroundColor = UIColor().flickr_logoColor()
         flickR_logo.backgroundColor = UIColor().flickr_logoColor()
-//        navigationController?.navigationBar.tintColor = UIColor().flickr_logoColor()
+        navigationController?.navigationBar.tintColor = UIColor().flickr_logoColor()
 
     }
 
@@ -56,7 +56,7 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.25))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.34))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
 
         let spacing = CGFloat(8)
