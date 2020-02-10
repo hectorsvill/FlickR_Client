@@ -86,6 +86,10 @@ class FlickR_API {
         "https://www.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=\(myKey)&photo_id=\(tagSearch.id)&secret=\(tagSearch.secret)&format=json&nojsoncallback=1"
     }
 
+    func createFetchCommentsUrlString(with id: String) -> String {
+        "https://www.flickr.com/services/rest/?method=flickr.photos.comments.getList&api_key=\(myKey)&photo_id=\(id)&format=json&nojsoncallback=1"
+    }
+
     func createFavoriteUrlString(tagSearch: TagSearch) -> String {
         "https://www.flickr.com/services/rest/?method=flickr.favorites.add&api_key=\(myKey)&photo_id=\(tagSearch.id)&format=json&nojsoncallback=1&auth_token=72157713029811441-47fe58e0caa2c3d4&api_sig=dcaf85570b578b3c917757dd96c174f4"
     }

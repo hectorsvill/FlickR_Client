@@ -120,11 +120,13 @@ final class PhotoDetailViewController: UIViewController {
         buttonStackView.spacing = 8
         buttonStackView.alignment = .fill
         buttonStackView.distribution = .fillEqually
+        buttonStackView.backgroundColor = UIColor().flickr_logoColor()
 
         let stackView = UIStackView(arrangedSubviews: [userNameLabel, viewsCountLabel, descriptionTextView, buttonStackView])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = 8
         stackView.axis = .vertical
+        stackView.backgroundColor = UIColor().flickr_logoColor()
         view.addSubview(stackView)
 
         NSLayoutConstraint.activate([
