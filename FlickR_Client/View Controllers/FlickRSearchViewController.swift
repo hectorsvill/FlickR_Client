@@ -15,8 +15,10 @@ final class FlickRSearchViewController: UIViewController {
     var cache = Cache<Int, Data>()
     private let photoFetchQueue = OperationQueue()
     var fetchPhotoOperations: [Int: FetchPhotoOperation] = [:]
-    @IBOutlet weak var searchTextField: UITextField!
-    @IBOutlet weak var searchButton: UIButton!
+
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var flickrLogoImageView: UIImageView!
+
     @IBOutlet weak var collectionView: UICollectionView!
     var dataSource: collectionDataSource! = nil
     var currentPage = 1
@@ -29,25 +31,42 @@ final class FlickRSearchViewController: UIViewController {
     }
 
     private func setupView() {
+        photoFetchQueue.name = "com.hectorstevenvillasano.andIQuote.FlickR-Client"
         activityIndicator.center = view.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.style = .medium
         activityIndicator.color = .systemBlue
         view.addSubview(activityIndicator)
-        photoFetchQueue.name = "com.hectorstevenvillasano.andIQuote.FlickR-Client"
-        searchTextField.delegate = self
         setupCollectionView()
         view.backgroundColor = UIColor().flickr_logoColor()
         flickR_logo.backgroundColor = UIColor().flickr_logoColor()
         navigationController?.navigationBar.tintColor = UIColor().flickr_logoColor()
-
+        searchBar.delegate = self
+        searchTag(with: "Mountains")
     }
 
     @IBAction func trashButtonPressed(_ sender: Any) {
         title = "#"
+        if !dataSource.snapshot().itemIdentifiers.isEmpty {
+            flickrLogoImageView.isHidden.toggle()
+        }
+        searchBar.text = nil
+        searchBar.resignFirstResponder()
         setupCollectionView()
         setupCollectionView()
         configureDataSource(with: [])
+    }
+}
+
+// MARK: UISearchBarDelegate
+extension FlickRSearchViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchTag(with: searchBar.text!)
+        searchBar.resignFirstResponder()
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        print("searchBarCancelButtonClicked")
     }
 }
 
@@ -93,7 +112,7 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
     }
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        searchTextField.resignFirstResponder()
+        searchBar.resignFirstResponder()
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -145,22 +164,14 @@ extension FlickRSearchViewController {
                 self.fetchPhotoOperations = [:]
                 self.currentTagSearch = newText
                 self.title = "#" + text.trimmingCharacters(in: .whitespaces)
-                self.searchTextField.text = nil
+                self.flickrLogoImageView.isHidden.toggle()
                 self.activityIndicator.stopAnimating()
                 self.setupCollectionView()
                 self.configureDataSource(with: tagSearch)
             }
         }
     }
-
-    @IBAction func searchButtonPressed(_ sender: Any) {
-        if let text = searchTextField.text {
-            searchTag(with: text)
-        }
-
-        searchTextField.resignFirstResponder()
-    }
-
+    
     func loadImage(cell: TagSearchImageCollectionViewCell, indexPath: IndexPath) {
         if let data = cache.value(for: indexPath.item), let image = UIImage(data: data) {
             cell.imageView.image = image
@@ -196,12 +207,3 @@ extension FlickRSearchViewController {
 //        fetchPhotoOperations[indexPath.row]?.cancel()
     }
 }
-
-extension FlickRSearchViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        searchTag(with: textField.text!)
-        textField.resignFirstResponder()
-        return false
-    }
-}
-

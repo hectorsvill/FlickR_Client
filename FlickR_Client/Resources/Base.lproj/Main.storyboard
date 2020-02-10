@@ -16,26 +16,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u0b-ma-wG7">
-                                <rect key="frame" x="356" y="96" width="50" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="1Et-d2-Srp"/>
-                                    <constraint firstAttribute="height" constant="40" id="edx-4I-aIq"/>
-                                </constraints>
-                                <state key="normal" image="magnifyingglass" catalog="system"/>
-                                <connections>
-                                    <action selector="searchButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1Lq-Qg-V4Y"/>
-                                </connections>
-                            </button>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="#search by tag" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="V9V-bU-NMm">
-                                <rect key="frame" x="8" y="96" width="340" height="34"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="textColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                            </textField>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="kUH-3I-8Bm">
-                                <rect key="frame" x="8" y="144" width="398" height="732"/>
+                                <rect key="frame" x="8" y="156" width="398" height="720"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mm2-qr-eaz">
                                     <size key="itemSize" width="65" height="86"/>
@@ -44,7 +26,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <imageView key="backgroundView" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="flickR_logo" id="YpK-qk-En3">
-                                    <rect key="frame" x="0.0" y="0.0" width="398" height="732"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="398" height="720"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" red="0.99696081876754761" green="0.99713116884231567" blue="0.99695020914077759" alpha="0.99951171875" colorSpace="custom" customColorSpace="sRGB"/>
                                 </imageView>
@@ -60,18 +42,23 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="3Bg-MH-lmY">
+                                <rect key="frame" x="0.0" y="88" width="414" height="56"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="CUt-Qs-amf"/>
+                                </connections>
+                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="3Bg-MH-lmY" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="5YG-hu-auq"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="kUH-3I-8Bm" secondAttribute="trailing" constant="8" id="8vM-jI-lsb"/>
-                            <constraint firstItem="u0b-ma-wG7" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="GXA-8l-CGg"/>
+                            <constraint firstItem="3Bg-MH-lmY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="EBl-AC-8JW"/>
                             <constraint firstItem="kUH-3I-8Bm" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="IPU-b1-9vS"/>
-                            <constraint firstItem="u0b-ma-wG7" firstAttribute="leading" secondItem="V9V-bU-NMm" secondAttribute="trailing" constant="8" id="KsX-cs-eLE"/>
-                            <constraint firstItem="kUH-3I-8Bm" firstAttribute="top" secondItem="u0b-ma-wG7" secondAttribute="bottom" constant="8" id="MQB-St-g6J"/>
+                            <constraint firstItem="3Bg-MH-lmY" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="O8c-0w-r4l"/>
                             <constraint firstAttribute="bottom" secondItem="kUH-3I-8Bm" secondAttribute="bottom" constant="20" symbolic="YES" id="Zf7-zA-Stc"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="u0b-ma-wG7" secondAttribute="trailing" constant="8" id="lcX-Ee-PlB"/>
-                            <constraint firstItem="V9V-bU-NMm" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="m5y-Z2-sae"/>
-                            <constraint firstItem="V9V-bU-NMm" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="wiL-fW-z4A"/>
+                            <constraint firstItem="kUH-3I-8Bm" firstAttribute="top" secondItem="3Bg-MH-lmY" secondAttribute="bottom" constant="12" id="tch-at-ExN"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -86,8 +73,8 @@
                     <connections>
                         <outlet property="collectionView" destination="kUH-3I-8Bm" id="LAL-Bk-lre"/>
                         <outlet property="flickR_logo" destination="YpK-qk-En3" id="3Ik-Vv-Ymm"/>
-                        <outlet property="searchButton" destination="u0b-ma-wG7" id="aeV-3q-Ma8"/>
-                        <outlet property="searchTextField" destination="V9V-bU-NMm" id="3X5-AD-tRI"/>
+                        <outlet property="flickrLogoImageView" destination="YpK-qk-En3" id="nWh-Cl-hUp"/>
+                        <outlet property="searchBar" destination="3Bg-MH-lmY" id="oUe-0l-QRD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -122,6 +109,5 @@
     </scenes>
     <resources>
         <image name="flickR_logo" width="1499" height="749"/>
-        <image name="magnifyingglass" catalog="system" width="64" height="56"/>
     </resources>
 </document>
