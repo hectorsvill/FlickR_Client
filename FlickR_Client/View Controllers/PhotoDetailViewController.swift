@@ -25,7 +25,7 @@ final class PhotoDetailViewController: UIViewController {
     var viewsCountLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .left
+        label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.backgroundColor = .clear
         label.textColor = .black
@@ -44,8 +44,7 @@ final class PhotoDetailViewController: UIViewController {
     var descriptionTextView: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.textAlignment = .left
-
+        textView.textAlignment = .justified
         textView.isEditable = false
         textView.isSelectable = false
         return textView
@@ -53,17 +52,48 @@ final class PhotoDetailViewController: UIViewController {
 
     var commentsButton: UIButton = {
         let button = UIButton()
-
-
+        let config = UIImage.SymbolConfiguration(scale: .large)
+        let plusBubbleImage = UIImage(systemName: "plus.bubble", withConfiguration: config)
+        button.setImage(plusBubbleImage, for: .normal)
+        button.setTitle(" Comments", for: .normal)
+        button.backgroundColor = .systemBlue
+        button.tintColor = .white
+        button.layer.cornerRadius = 3
+        button.addTarget(self, action: #selector(likeButtonPressed), for: .touchUpInside)
         return button
     }()
+
+    var likeButton: UIButton = {
+        let button = UIButton()
+        let config = UIImage.SymbolConfiguration(scale: .large)
+        let thumbsupImage = UIImage(systemName: "hand.thumbsup", withConfiguration: config)
+        button.setImage(thumbsupImage, for: .normal)
+        button.setTitle(" Like", for: .normal)
+        button.backgroundColor = .systemBlue
+        button.tintColor = .white
+        button.layer.cornerRadius = 3
+        button.addTarget(self, action: #selector(commentsButtonPressed), for: .touchUpInside)
+        return button
+    }()
+
+    @objc func commentsButtonPressed() {
+        print("view comments")
+    }
+
+
+    @objc func likeButtonPressed() {
+        print("like this image")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewDidLoad()
+
     }
 
     private func setupViewDidLoad() {
+
+//        navigationController?.navigationItem.rightBarButtonItem = UIBarButtonItem(image: thumbsupImage, style: .plain, target: self, action: #selector(likeButtonPressed))
         activityIndicator.center = view.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.style = .medium
@@ -80,12 +110,9 @@ final class PhotoDetailViewController: UIViewController {
         tagTableView.translatesAutoresizingMaskIntoConstraints = false
         title = tagSearch?.title
         view.addSubview(photoImageView)
-//        view.addSubview(userNameLabel)
-//        view.addSubview(descriptionTextView)
-        //        view.addSubview(viewsCountLabel)
         view.addSubview(tagTableView)
 
-        let stackView = UIStackView(arrangedSubviews: [userNameLabel, viewsCountLabel, descriptionTextView])
+        let stackView = UIStackView(arrangedSubviews: [userNameLabel, viewsCountLabel, descriptionTextView, likeButton,commentsButton])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = 8
         stackView.axis = .vertical
@@ -97,26 +124,13 @@ final class PhotoDetailViewController: UIViewController {
             photoImageView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
             photoImageView.heightAnchor.constraint(equalToConstant: 200),
 
-            stackView.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant:  -8),
-            stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-            stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+            stackView.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant:  8),
+            stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor,constant: 8),
+            stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
             stackView.bottomAnchor.constraint(equalTo: tagTableView.topAnchor),
 
-//            viewsCountLabel.bottomAnchor.constraint(equalTo: photoImageView.bottomAnchor),
-//            viewsCountLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-//
-//            userNameLabel.heightAnchor.constraint(equalToConstant: 24),
-//            userNameLabel.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant: 8),
-//            userNameLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8),
-//            userNameLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
-//            userNameLabel.heightAnchor.constraint(equalToConstant: 24),
-//
             descriptionTextView.heightAnchor.constraint(equalToConstant: 60),
-//            descriptionTextView.topAnchor.constraint(equalTo: userNameLabel.bottomAnchor, constant: 8),
-//            descriptionTextView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8),
-//            descriptionTextView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
-//
-//            tagTableView.heightAnchor.constraint(equalToConstant: 120),
+
             tagTableView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 8),
             tagTableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
             tagTableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
