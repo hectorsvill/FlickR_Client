@@ -19,7 +19,7 @@ final class PhotoDetailViewController: UIViewController {
     var photoImageView: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.contentMode = .scaleAspectFit
+        image.contentMode = .scaleAspectFill
         return image
     }()
 
@@ -153,7 +153,7 @@ extension PhotoDetailViewController {
     private func fetchImage() {
         guard let tagSearch = tagSearch else { return }
 
-        api.fetchImage(with: tagSearch) { data, error in
+        api.fetchImage(with: tagSearch, size: "z") { data, error in
             if let error = error {
                 NSLog("\(error)")
             }

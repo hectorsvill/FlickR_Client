@@ -37,8 +37,8 @@ class FlickR_API {
         }.resume()
     }
 
-    func fetchImage(with tagSearch: TagSearch, completion: @escaping (Data?, Error?) -> ()) {
-        let urlString = createPhotoUrlString(with: tagSearch)
+    func fetchImage(with tagSearch: TagSearch, size: String,completion: @escaping (Data?, Error?) -> ()) {
+        let urlString = createPhotoUrlString(with: tagSearch, size: size)
         let url = URL(string: urlString)!
         let request = URLRequest(url: url)
 
@@ -106,8 +106,8 @@ class FlickR_API {
     }
 
 
-    func createPhotoUrlString(with tagSearch: TagSearch) -> String {
-        "https://farm\(tagSearch.farm).staticflickr.com/\(tagSearch.server)/\(tagSearch.id)_\(tagSearch.secret)_m.jpg"
+    func createPhotoUrlString(with tagSearch: TagSearch, size: String = "m") -> String {
+        "https://farm\(tagSearch.farm).staticflickr.com/\(tagSearch.server)/\(tagSearch.id)_\(tagSearch.secret)_\(size).jpg"
     }
 
     func createPhotoDetailUrlString(with tagSearch: TagSearch) -> String {
