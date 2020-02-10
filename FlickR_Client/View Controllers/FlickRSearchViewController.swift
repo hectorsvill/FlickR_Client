@@ -42,14 +42,12 @@ final class FlickRSearchViewController: UIViewController {
         flickR_logo.backgroundColor = UIColor().flickr_logoColor()
         navigationController?.navigationBar.tintColor = UIColor().flickr_logoColor()
         searchBar.delegate = self
+        searchBar.text = "Mountains"
         searchTag(with: "Mountains")
     }
 
     @IBAction func trashButtonPressed(_ sender: Any) {
-        title = "#"
-        if !dataSource.snapshot().itemIdentifiers.isEmpty {
-            flickrLogoImageView.isHidden.toggle()
-        }
+        flickrLogoImageView.isHidden = false
         searchBar.text = nil
         searchBar.resignFirstResponder()
         setupCollectionView()
@@ -63,10 +61,6 @@ extension FlickRSearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchTag(with: searchBar.text!)
         searchBar.resignFirstResponder()
-    }
-
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        print("searchBarCancelButtonClicked")
     }
 }
 
@@ -120,8 +114,8 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         let photoDetailView = PhotoDetailViewController()
         photoDetailView.tagSearch = tagSearch
         photoDetailView.api = api
-//        present(photoDetailView, animated: true)
-        navigationController?.pushViewController(photoDetailView, animated: true)
+        present(photoDetailView, animated: true)
+//        navigationController?.pushViewController(photoDetailView, animated: true)
     }
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -149,7 +143,6 @@ extension FlickRSearchViewController {
 
     func searchTag(with text: String) {
         guard !text.isEmpty else { return }
-
         activityIndicator.startAnimating()
 
         let newText = text.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: " ", with: "+")
@@ -160,18 +153,17 @@ extension FlickRSearchViewController {
 
             DispatchQueue.main.async {
                 guard let tagSearch = tagSearch else { return }
+                self.flickrLogoImageView.isHidden = !tagSearch.isEmpty ? true : false
                 self.cache = Cache<Int, Data>()
                 self.fetchPhotoOperations = [:]
                 self.currentTagSearch = newText
-                self.title = "#" + text.trimmingCharacters(in: .whitespaces)
-                self.flickrLogoImageView.isHidden.toggle()
                 self.activityIndicator.stopAnimating()
                 self.setupCollectionView()
                 self.configureDataSource(with: tagSearch)
             }
         }
     }
-    
+
     func loadImage(cell: TagSearchImageCollectionViewCell, indexPath: IndexPath) {
         if let data = cache.value(for: indexPath.item), let image = UIImage(data: data) {
             cell.imageView.image = image

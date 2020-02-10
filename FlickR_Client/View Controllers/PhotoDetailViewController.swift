@@ -19,7 +19,9 @@ final class PhotoDetailViewController: UIViewController {
     var photoImageView: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.contentMode = .scaleAspectFill
+        image.contentMode = .scaleAspectFit
+        image.layer.borderColor = UIColor.black.cgColor
+        image.layer.borderWidth = 1
         return image
     }()
 
@@ -126,7 +128,7 @@ extension PhotoDetailViewController {
             photoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             photoImageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
             photoImageView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-            photoImageView.heightAnchor.constraint(equalToConstant: 200),
+            photoImageView.heightAnchor.constraint(equalToConstant: 400),
             stackView.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant:  8),
             stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor,constant: 8),
             stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
