@@ -13,7 +13,8 @@ final class PhotoDetailViewController: UIViewController {
     var tagSearch: TagSearch?
     let activityIndicator = UIActivityIndicatorView()
     var photoDetail: PhotoDetail?
-    let tagTableView = UITableView()
+    let tableView = UITableView()
+    var metaDataDictionary: [(String, String)] = []
 
     var photoImageView: UIImageView = {
         let image = UIImageView()
@@ -55,7 +56,6 @@ final class PhotoDetailViewController: UIViewController {
         let config = UIImage.SymbolConfiguration(scale: .large)
         let plusBubbleImage = UIImage(systemName: "plus.bubble", withConfiguration: config)
         button.setImage(plusBubbleImage, for: .normal)
-        button.setTitle(" Comments", for: .normal)
         button.backgroundColor = .systemBlue
         button.tintColor = .white
         button.layer.cornerRadius = 3
@@ -68,7 +68,6 @@ final class PhotoDetailViewController: UIViewController {
         let config = UIImage.SymbolConfiguration(scale: .large)
         let thumbsupImage = UIImage(systemName: "hand.thumbsup", withConfiguration: config)
         button.setImage(thumbsupImage, for: .normal)
-        button.setTitle(" Like", for: .normal)
         button.backgroundColor = .systemBlue
         button.tintColor = .white
         button.layer.cornerRadius = 3
@@ -92,8 +91,6 @@ final class PhotoDetailViewController: UIViewController {
     }
 
     private func setupViewDidLoad() {
-
-//        navigationController?.navigationItem.rightBarButtonItem = UIBarButtonItem(image: thumbsupImage, style: .plain, target: self, action: #selector(likeButtonPressed))
         activityIndicator.center = view.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.style = .medium
@@ -107,12 +104,18 @@ final class PhotoDetailViewController: UIViewController {
 
     func setupViews() {
         view.backgroundColor = UIColor().flickr_logoColor()
-        tagTableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         title = tagSearch?.title
         view.addSubview(photoImageView)
-        view.addSubview(tagTableView)
+        view.addSubview(tableView)
 
-        let stackView = UIStackView(arrangedSubviews: [userNameLabel, viewsCountLabel, descriptionTextView, likeButton,commentsButton])
+        let buttonStackView = UIStackView(arrangedSubviews: [likeButton, commentsButton])
+        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
+        buttonStackView.spacing = 8
+        buttonStackView.axis = .horizontal
+        buttonStackView.alignment = .center
+
+        let stackView = UIStackView(arrangedSubviews: [userNameLabel, viewsCountLabel, descriptionTextView, buttonStackView])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = 8
         stackView.axis = .vertical
@@ -127,14 +130,14 @@ final class PhotoDetailViewController: UIViewController {
             stackView.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant:  8),
             stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor,constant: 8),
             stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
-            stackView.bottomAnchor.constraint(equalTo: tagTableView.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: tableView.topAnchor),
 
             descriptionTextView.heightAnchor.constraint(equalToConstant: 60),
 
-            tagTableView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 8),
-            tagTableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-            tagTableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-            tagTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 8),
+            tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
         ])
 
@@ -174,44 +177,78 @@ final class PhotoDetailViewController: UIViewController {
                 self.setupViewsWithDetailData(photoDetail: photoDetail)
             }
         })
-
     }
 
     private func setupViewsWithDetailData(photoDetail: PhotoDetail) {
         userNameLabel.text = "by: " + (photoDetail.owner_userName.isEmpty ? "Anonymous" : photoDetail.realname)
         descriptionTextView.text = "\(photoDetail.title_content)\n\n" + (photoDetail.description_content.isEmpty ? "No Description" : photoDetail.description_content)
         viewsCountLabel.text = "\(photoDetail.views) views\t"
-        tagTableView.reloadData()
 
-        print("isFavorite: ", photoDetail.isFavorite)
+        metaDataDictionary = [
+            ("owner user name: ",  (photoDetail.owner_userName.isEmpty ? "Anonymous" : photoDetail.owner_userName)),
+            ("real name:", (photoDetail.realname.isEmpty ? "Anonymous" : photoDetail.realname)),
+            ("title:", (photoDetail.title_content.isEmpty ? "No Title" : photoDetail.title_content)),
+            ("description:", (photoDetail.description_content.isEmpty ? "No Description" : photoDetail.description_content)),
+            ("is favorite:", photoDetail.isFavorite == 0 ? "No" : "Yes" ),
+            ("is publinc", photoDetail.ispublic == 0 ? "No" : "Yes" ),
+            ("posted", photoDetail.posted),
+            ("taken", photoDetail.taken),
+            ("last updated:", photoDetail.lastupdate),
+            ("views:", photoDetail.views),
+            ("can blog:", photoDetail.canblog == 0 ? "No" : "Yes"),
+            ("can print:", photoDetail.canprint == 0 ? "No" : "Yes" ),
+            ("can Share", photoDetail.canshare == 0 ? "No" : "Yes" ),
+        ]
+
+        if photoDetail.isFavorite == 1 {
+            let config = UIImage.SymbolConfiguration(scale: .large)
+            let thumbsupImage = UIImage(systemName: "hand.thumbsup.fill", withConfiguration: config)
+            likeButton.setImage(thumbsupImage, for: .normal)
+        }
+
+        tableView.reloadData()
     }
 }
 
 
 extension PhotoDetailViewController: UITableViewDataSource {
     func setupTagTableView() {
-        tagTableView.dataSource = self
-        tagTableView.register(UITableViewCell.self, forCellReuseIdentifier: "TagCell")
-        tagTableView.backgroundColor = UIColor().flickr_logoColor()
-        tagTableView.allowsSelection = false
+        tableView.dataSource = self
+        tableView.register(SubTitleTableViewCell.self, forCellReuseIdentifier: "MetaCell")
+        tableView.backgroundColor = UIColor().flickr_logoColor()
+        tableView.allowsSelection = false
+        tableView.separatorStyle = .singleLine
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return photoDetail?.tags.count ?? 0
+        section == 0 ? metaDataDictionary.count :  (photoDetail?.tags.count ?? 0)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tagTableView.dequeueReusableCell(withIdentifier: "TagCell", for: indexPath)
-        cell.textLabel?.text = photoDetail?.tags[indexPath.row]
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "MetaCell", for: indexPath) as? SubTitleTableViewCell else { return UITableViewCell() }
+
+        if indexPath.section == 1 {
+            cell.textLabel?.text = ""
+            cell.detailTextLabel?.text = photoDetail?.tags[indexPath.row]
+        } else if indexPath.section == 0{
+            cell.textLabel?.text = metaDataDictionary[indexPath.row].0
+            cell.detailTextLabel?.text = metaDataDictionary[indexPath.row].1
+            cell.detailTextLabel?.textAlignment = .left
+        }
+
         cell.backgroundColor = UIColor().flickr_logoColor()
+        cell.textLabel?.font = UIFont.systemFont(ofSize: 12)
         cell.layer.cornerRadius = 8
+
         return cell
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Tags"
+        section == 0 ? "Meta Data" : "Tags"
     }
 
-
-
+    func numberOfSections(in tableView: UITableView) -> Int {
+        2
+    }
 }
+
