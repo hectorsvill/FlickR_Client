@@ -42,6 +42,7 @@ final class FlickRSearchViewController: UIViewController {
         flickR_logo.backgroundColor = UIColor().flickr_logoColor()
         navigationController?.navigationBar.tintColor = UIColor().flickr_logoColor()
         searchBar.delegate = self
+        searchBar.backgroundColor = UIColor().flickr_logoColor()
         searchBar.text = "Mountains"
         searchTag(with: "Mountains")
     }
@@ -88,6 +89,7 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         collectionView.collectionViewLayout = createLayout()
         collectionView.delegate = self
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        collectionView.backgroundColor = UIColor().flickr_logoColor()
 
         dataSource = UICollectionViewDiffableDataSource<Int, TagSearch>(collectionView: collectionView) { collectionView, indexPath, tagSearch -> UICollectionViewCell? in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchImageCollectionViewCell else { return UICollectionViewCell() }

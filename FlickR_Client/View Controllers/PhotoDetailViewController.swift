@@ -32,37 +32,6 @@ final class PhotoDetailViewController: UIViewController {
         return control
     }()
 
-    var viewsCountLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.backgroundColor = .clear
-        label.textColor = .black
-        label.text = "👀"
-        return label
-    }()
-
-    var userNameLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.backgroundColor = UIColor().flickr_logoColor()
-        label.text = "by:"
-        return label
-    }()
-
-    var descriptionTextView: UITextView = {
-        let textView = UITextView()
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.textAlignment = .justified
-        textView.isEditable = false
-        textView.isSelectable = false
-        textView.layer.cornerRadius = 3
-        return textView
-    }()
-
     var commentsButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -218,7 +187,7 @@ extension PhotoDetailViewController {
             guard let photoComments = photoComments else { return }
             DispatchQueue.main.async {
                 self.photoComments = photoComments
-                print("photo comments: ", photoComments.count)
+                print("photos counts: ", photoComments.count)
                 self.tableView.reloadData()
             }
         }
@@ -227,10 +196,6 @@ extension PhotoDetailViewController {
     private func setupViewsWithDetailData(photoDetail: PhotoDetail) {
         let owner_name = photoDetail.owner_userName.isEmpty ? "Anonymous" : photoDetail.realname
         let descriptionText = "\(photoDetail.title_content)\n\n" + (photoDetail.description_content.isEmpty ? "No Description" : photoDetail.description_content)
-
-        userNameLabel.text = "by: " + owner_name
-        descriptionTextView.text = descriptionText
-        viewsCountLabel.text = "\(photoDetail.views) 👀\t"
 
         metaDataDictionary = [
             ("owner user name: ",  owner_name),
@@ -276,18 +241,25 @@ extension PhotoDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "MetaCell", for: indexPath) as? SubTitleTableViewCell else { return UITableViewCell() }
 
-        if indexPath.section == 1 {
-            cell.textLabel?.text = ""
-            cell.detailTextLabel?.text = photoDetail?.tags[indexPath.row]
-        } else if indexPath.section == 0 {
-            cell.textLabel?.text = metaDataDictionary[indexPath.row].0
-            cell.detailTextLabel?.text = metaDataDictionary[indexPath.row].1
-            cell.detailTextLabel?.textAlignment = .left
+        if segmentedControl.selectedSegmentIndex == 0 {
+            if indexPath.section == 1 {
+                cell.textLabel?.text = ""
+                cell.detailTextLabel?.text = photoDetail?.tags[indexPath.row]
+            } else if indexPath.section == 0 {
+                cell.textLabel?.text = metaDataDictionary[indexPath.row].0
+                cell.detailTextLabel?.text = metaDataDictionary[indexPath.row].1
+                cell.detailTextLabel?.textAlignment = .left
+            }
+        } else {
+            cell.textLabel?.text = photoComments[indexPath.row].authorName
+            cell.detailTextLabel?.text = photoComments[indexPath.row].content
         }
 
         cell.backgroundColor = UIColor().flickr_logoColor()
+        cell.textLabel?.textColor = .black
+        cell.detailTextLabel?.textColor = .black
+        cell.detailTextLabel?.numberOfLines = 0
         cell.textLabel?.font = UIFont.systemFont(ofSize: 12)
-        cell.layer.cornerRadius = 8
 
         return cell
     }

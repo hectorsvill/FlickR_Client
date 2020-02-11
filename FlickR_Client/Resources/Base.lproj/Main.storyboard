@@ -8,6 +8,22 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--View Controller-->
+        <scene sceneID="XN8-Ix-pJI">
+            <objects>
+                <viewController id="Obw-Ia-KYw" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="PyX-w9-yw9">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="EKj-lA-5fj"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="HEP-Zy-bQt"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KSZ-DT-acj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1019" y="-538"/>
+        </scene>
         <!--Flickr Client-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -44,6 +60,7 @@
                             </collectionView>
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="3Bg-MH-lmY">
                                 <rect key="frame" x="0.0" y="88" width="414" height="56"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                 <connections>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="CUt-Qs-amf"/>
@@ -63,6 +80,11 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="Flickr Client" id="Re4-jd-Q71">
+                        <barButtonItem key="leftBarButtonItem" title="Log In" id="DmE-eH-uhw">
+                            <connections>
+                                <segue destination="Obw-Ia-KYw" kind="show" id="zSh-kA-XC6"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="trash" id="6NT-xB-wIe">
                             <connections>
                                 <action selector="trashButtonPressed:" destination="BYZ-38-t0r" id="xtk-Ja-s58"/>
@@ -79,31 +101,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1047.8260869565217" y="138.61607142857142"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="wro-Pc-gXm">
-            <objects>
-                <viewController id="AWg-f8-UNo" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="ggd-Ys-XQj">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="KAF-YK-vcc">
-                                <rect key="frame" x="108" y="185" width="131" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <segments>
-                                    <segment title="First"/>
-                                    <segment title="Second"/>
-                                </segments>
-                            </segmentedControl>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="1dY-hN-wiq"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8EN-8C-R7x" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1984" y="166"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="QUV-rU-RhK">

@@ -9,8 +9,8 @@
 import Foundation
 
 class FlickR_API {
-    var myKey = UserDefaults().string(forKey: "myKey_flickr") ?? ""
-    var mySecret = UserDefaults().string(forKey: "mySecret_flickr") ?? ""
+    var myKey = UserDefaults().string(forKey: "myKey_flickr") ?? "44f367e28c0954b2a073d37c1ada9dbe"
+    var mySecret = UserDefaults().string(forKey: "mySecret_flickr") ?? "f07ff5f4115ae5d2"
     let count = 12
     func fetchTagSearch(with tag: String, page: Int = 1, completion: @escaping ([TagSearch]?, Error?) -> ()) {
         let urlString = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=\(myKey)&tags=\(tag)&per_page=\(count)&format=json&nojsoncallback=1&page=\(page)"
@@ -94,12 +94,9 @@ class FlickR_API {
             do {
                 let resultDict = try JSONSerialization.jsonObject(with: data, options: []) as! [String: AnyObject]
                 let result_comments = resultDict["comments"] as! NSDictionary
-                print(result_comments)
-                if let comments = result_comments["comments"] as? [NSDictionary] {
+                if let comments = result_comments["comment"] as? [NSDictionary] {
                     let photocomments = comments.map { return PhotoComment(resultDict: $0) }
                     completion(photocomments, nil)
-                } else {
-                    completion([], nil)
                 }
             } catch {
                 completion(nil, error)
