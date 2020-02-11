@@ -6,9 +6,12 @@
 //  Copyright © 2020 s. All rights reserved.
 //
 
+import WebKit
 import UIKit
+import OAuthSwift
 
 final class FlickRSearchViewController: UIViewController {
+    var oauthSwift: OAuthSwift?
     typealias collectionDataSource = UICollectionViewDiffableDataSource<Int, TagSearch>
     let activityIndicator = UIActivityIndicatorView()
     let api = FlickR_API()
@@ -45,6 +48,7 @@ final class FlickRSearchViewController: UIViewController {
         searchBar.backgroundColor = UIColor().flickr_logoColor()
         searchBar.text = "Mountains"
         searchTag(with: "Mountains")
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log In", style: .done, target: self, action: #selector(doOAuthFlickr))
     }
 
     @IBAction func trashButtonPressed(_ sender: Any) {
@@ -129,6 +133,8 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
 
 
 extension FlickRSearchViewController {
+
+
     @objc func fetchNextData() {
         api.fetchTagSearch(with: currentTagSearch, page: currentPage) { tagSearch, error in
             if let error = error {
@@ -199,4 +205,53 @@ extension FlickRSearchViewController {
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 //        fetchPhotoOperations[indexPath.row]?.cancel()
     }
+}
+
+
+extension FlickRSearchViewController: OAuthWebViewControllerDelegate {
+    func oauthWebViewControllerDidPresent() {
+    }
+
+    func oauthWebViewControllerDidDismiss() {
+    }
+
+    func oauthWebViewControllerWillAppear() {
+    }
+
+    func oauthWebViewControllerDidAppear() {
+    }
+
+    func oauthWebViewControllerWillDisappear() {
+    }
+
+    func oauthWebViewControllerDidDisappear() {
+        oauthSwift?.cancel()
+    }
+
+    @objc func doOAuthFlickr(){
+        let oauthswift = OAuth1Swift(
+            consumerKey: api.myKey,
+            consumerSecret: api.mySecret,
+            requestTokenUrl: "https://www.flickr.com/services/oauth/request_token",
+            authorizeUrl:    "https://www.flickr.com/services/oauth/authorize",
+            accessTokenUrl:  "https://www.flickr.com/services/oauth/access_token"
+        )
+        self.oauthSwift = oauthswift
+
+        oauthswift.authorizeURLHandler = SafariURLHandler(viewController: self, oauthSwift: self.oauthSwift!)
+
+        let _ = oauthswift.authorize(withCallbackURL: URL(string: "oauth-swift://oauth-callback/flickr")!) { result in
+            switch result {
+            case .success(let (credential, _, _)):
+                self.api.authToken = credential.oauthToken
+                self.api.authTokenSecret =  credential.oauthTokenSecret
+                print("token: \(credential.oauthToken) \n secret: \(credential.oauthTokenSecret)")
+            case .failure(let error):
+                print(error.description)
+            }
+        }
+
+
+    }
+
 }

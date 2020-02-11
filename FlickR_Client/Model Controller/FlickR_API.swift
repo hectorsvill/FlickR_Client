@@ -9,9 +9,12 @@
 import Foundation
 
 class FlickR_API {
-    var myKey = UserDefaults().string(forKey: "myKey_flickr") ?? "44f367e28c0954b2a073d37c1ada9dbe"
-    var mySecret = UserDefaults().string(forKey: "mySecret_flickr") ?? "f07ff5f4115ae5d2"
+    var myKey =  "44f367e28c0954b2a073d37c1ada9dbe" // UserDefaults().string(forKey: "myKey_flickr") ??
+    var mySecret = "f07ff5f4115ae5d2" /// UserDefaults().string(forKey: "mySecret_flickr")
     let count = 12
+    var authToken = ""
+    var authTokenSecret = ""
+
     func fetchTagSearch(with tag: String, page: Int = 1, completion: @escaping ([TagSearch]?, Error?) -> ()) {
         let urlString = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=\(myKey)&tags=\(tag)&per_page=\(count)&format=json&nojsoncallback=1&page=\(page)"
         let url = URL(string: urlString)

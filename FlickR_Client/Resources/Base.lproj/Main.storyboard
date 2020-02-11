@@ -8,22 +8,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="XN8-Ix-pJI">
-            <objects>
-                <viewController id="Obw-Ia-KYw" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="PyX-w9-yw9">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="EKj-lA-5fj"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="HEP-Zy-bQt"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KSZ-DT-acj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1019" y="-538"/>
-        </scene>
         <!--Flickr Client-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -80,11 +64,6 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="Flickr Client" id="Re4-jd-Q71">
-                        <barButtonItem key="leftBarButtonItem" title="Log In" id="DmE-eH-uhw">
-                            <connections>
-                                <segue destination="Obw-Ia-KYw" kind="show" id="zSh-kA-XC6"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="trash" id="6NT-xB-wIe">
                             <connections>
                                 <action selector="trashButtonPressed:" destination="BYZ-38-t0r" id="xtk-Ja-s58"/>
