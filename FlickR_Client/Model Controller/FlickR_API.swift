@@ -77,8 +77,8 @@ class FlickR_API {
         }.resume()
     }
 
-    func fetchPhotoComments(with id: String, completion: @escaping ([PhotoComment]? , Error?) -> ()) {
-        let urlString = createFetchCommentsUrlString(with: id)
+    func fetchPhotoComments(id: String, completion: @escaping ([PhotoComment]? , Error?) -> ()) {
+        let urlString = createFetchCommentsUrlString(id: id)
         let url = URL(string: urlString)!
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error, let response = response as? HTTPURLResponse {
@@ -116,7 +116,7 @@ class FlickR_API {
         "https://www.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=\(myKey)&photo_id=\(tagSearch.id)&secret=\(tagSearch.secret)&format=json&nojsoncallback=1"
     }
 
-    func createFetchCommentsUrlString(with id: String) -> String {
+    func createFetchCommentsUrlString(id: String) -> String {
         "https://www.flickr.com/services/rest/?method=flickr.photos.comments.getList&api_key=\(myKey)&photo_id=\(id)&format=json&nojsoncallback=1"
     }
 

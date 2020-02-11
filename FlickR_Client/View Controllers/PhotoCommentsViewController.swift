@@ -29,7 +29,7 @@ class PhotoCommentsViewController: UIViewController {
     private func fetchPhotoComments() {
         guard let tagSearch = tagSearch else { return }
 
-        api.fetchPhotoComments(with: tagSearch.id) { photoComments, error in
+        api.fetchPhotoComments(id: tagSearch.id) { photoComments, error in
             if let error = error {
                 NSLog("error: \(error)")
                 DispatchQueue.main.async {

@@ -15,6 +15,7 @@ final class PhotoDetailViewController: UIViewController {
     var photoDetail: PhotoDetail?
     let tableView = UITableView()
     var metaDataDictionary: [(String, String)] = []
+    var photoComments: [PhotoComment] = []
 
     var photoImageView: UIImageView = {
         let image = UIImageView()
@@ -30,10 +31,6 @@ final class PhotoDetailViewController: UIViewController {
         control.addTarget(self, action: #selector(segmentControlDidChange), for: .valueChanged)
         return control
     }()
-
-    @objc func segmentControlDidChange() {
-        tableView.reloadData()
-    }
 
     var viewsCountLabel: UILabel = {
         let label = UILabel()
@@ -107,7 +104,7 @@ final class PhotoDetailViewController: UIViewController {
         activityIndicator.startAnimating()
         fetchImage()
         setupViews()
-        fetchImageDetail()
+        fetchPhotoDetail()
         setupTagTableView()
 
 //        let symbolConfiguration = UIImage.SymbolConfiguration(scale: .large)
@@ -172,6 +169,10 @@ extension PhotoDetailViewController {
          print("like this image")
     }
 
+    @objc func segmentControlDidChange() {
+        tableView.reloadData()
+    }
+
     private func fetchImage() {
         guard let tagSearch = tagSearch else { return }
 
@@ -190,7 +191,7 @@ extension PhotoDetailViewController {
         }
     }
 
-    private func fetchImageDetail() {
+    private func fetchPhotoDetail() {
         guard let tagSearch = tagSearch else { return }
         api.fetchImageDetail(with: tagSearch, completion: { photoDetail, error in
             if let error = error {
@@ -202,8 +203,25 @@ extension PhotoDetailViewController {
             DispatchQueue.main.async {
                 self.photoDetail = photoDetail
                 self.setupViewsWithDetailData(photoDetail: photoDetail)
+                self.fetchPhotoComments()
             }
         })
+    }
+
+    private func fetchPhotoComments() {
+        let urlString = api.createFetchCommentsUrlString(id: tagSearch!.id)
+        api.fetchPhotoComments(id: urlString) { photoComments, error in
+            if let error = error {
+                NSLog("\(error)")
+            }
+
+            guard let photoComments = photoComments else { return }
+            DispatchQueue.main.async {
+                self.photoComments = photoComments
+                print("photo comments: ", photoComments.count)
+                self.tableView.reloadData()
+            }
+        }
     }
 
     private func setupViewsWithDetailData(photoDetail: PhotoDetail) {
@@ -252,7 +270,7 @@ extension PhotoDetailViewController: UITableViewDataSource {
         if segmentedControl.selectedSegmentIndex == 0 {
             return section == 0 ? metaDataDictionary.count :  (photoDetail?.tags.count ?? 0)
         }
-        return 0
+        return photoComments.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -279,13 +297,13 @@ extension PhotoDetailViewController: UITableViewDataSource {
             return section == 0 ? "META" : "TAGS"
         }
 
-        return "0 Comments"
+        return "\(photoComments.count) Comments"
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
         if segmentedControl.selectedSegmentIndex == 0 {
             return 2
         }
-        return 0
+        return 1
     }
 }

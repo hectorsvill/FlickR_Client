@@ -63,7 +63,6 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="Flickr Client" id="Re4-jd-Q71">
-                        <barButtonItem key="leftBarButtonItem" title="Sign In" id="Mr7-0g-CaP"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="trash" id="6NT-xB-wIe">
                             <connections>
                                 <action selector="trashButtonPressed:" destination="BYZ-38-t0r" id="xtk-Ja-s58"/>
