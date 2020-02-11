@@ -9,8 +9,8 @@
 import Foundation
 
 class FlickR_API {
-    var myKey =  "44f367e28c0954b2a073d37c1ada9dbe" // UserDefaults().string(forKey: "myKey_flickr") ??
-    var mySecret = "f07ff5f4115ae5d2" /// UserDefaults().string(forKey: "mySecret_flickr")
+    var myKey =  "3bdd201f34c01f58333b6931b9fd2a26" // UserDefaults().string(forKey: "myKey_flickr") ??
+    var mySecret = "ccf74a50623dc8b1" /// UserDefaults().string(forKey: "mySecret_flickr")
     let count = 12
     var authToken = ""
     var authTokenSecret = ""

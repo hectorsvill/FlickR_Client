@@ -250,8 +250,5 @@ extension FlickRSearchViewController: OAuthWebViewControllerDelegate {
                 print(error.description)
             }
         }
-
-
     }
-
 }
