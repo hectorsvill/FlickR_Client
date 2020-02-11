@@ -20,9 +20,14 @@ final class PhotoDetailViewController: UIViewController {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .scaleAspectFit
-        image.layer.borderColor = UIColor.black.cgColor
-        image.layer.borderWidth = 1
         return image
+    }()
+
+    var segmentedControl: UISegmentedControl = {
+        let control = UISegmentedControl(items: ["META", "Comments"])
+        control.translatesAutoresizingMaskIntoConstraints = false
+        control.selectedSegmentIndex = 0
+        return control
     }()
 
     var viewsCountLabel: UILabel = {
@@ -105,7 +110,6 @@ extension PhotoDetailViewController {
     func setupViews() {
         view.backgroundColor = UIColor().flickr_logoColor()
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        title = tagSearch?.title
         view.addSubview(photoImageView)
         view.addSubview(tableView)
 
@@ -124,17 +128,23 @@ extension PhotoDetailViewController {
         stackView.backgroundColor = UIColor().flickr_logoColor()
         view.addSubview(stackView)
 
+        view.addSubview(segmentedControl)
+
         NSLayoutConstraint.activate([
             photoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             photoImageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
             photoImageView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-            photoImageView.heightAnchor.constraint(equalToConstant: 400),
-            stackView.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant:  8),
-            stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor,constant: 8),
-            stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
-            stackView.bottomAnchor.constraint(equalTo: tableView.topAnchor),
-            descriptionTextView.heightAnchor.constraint(equalToConstant: 60),
-            tableView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 8),
+            photoImageView.heightAnchor.constraint(equalToConstant: 325),
+            segmentedControl.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant: 8),
+            segmentedControl.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8),
+            segmentedControl.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
+//            segmentedControl.widthAnchor.constraint(equalToConstant: 40)
+//            stackView.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant:  8),
+//            stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor,constant: 8),
+//            stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
+//            stackView.bottomAnchor.constraint(equalTo: tableView.topAnchor),
+////            descriptionTextView.heightAnchor.constraint(equalToConstant: 60),
+            tableView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 8),
             tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
             tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
@@ -165,6 +175,7 @@ extension PhotoDetailViewController {
 
             DispatchQueue.main.async {
                 self.photoImageView.image = image
+                self.activityIndicator.stopAnimating()
             }
         }
     }
@@ -180,7 +191,6 @@ extension PhotoDetailViewController {
             guard let photoDetail = photoDetail else { return }
             DispatchQueue.main.async {
                 self.photoDetail = photoDetail
-                self.activityIndicator.stopAnimating()
                 self.setupViewsWithDetailData(photoDetail: photoDetail)
             }
         })

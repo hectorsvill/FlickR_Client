@@ -91,7 +91,7 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
 
         dataSource = UICollectionViewDiffableDataSource<Int, TagSearch>(collectionView: collectionView) { collectionView, indexPath, tagSearch -> UICollectionViewCell? in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchImageCollectionViewCell else { return UICollectionViewCell() }
-            cell.titleLable.text = tagSearch.title
+            cell.titleLable.text = tagSearch.title.isEmpty ? "no title" : tagSearch.title
             self.loadImage(cell: cell, indexPath: indexPath)
             return cell
         }
@@ -114,8 +114,7 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         let photoDetailView = PhotoDetailViewController()
         photoDetailView.tagSearch = tagSearch
         photoDetailView.api = api
-        present(photoDetailView, animated: true)
-//        navigationController?.pushViewController(photoDetailView, animated: true)
+        navigationController?.pushViewController(photoDetailView, animated: true)
     }
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
