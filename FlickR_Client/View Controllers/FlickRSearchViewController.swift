@@ -207,7 +207,7 @@ extension FlickRSearchViewController {
     }
 }
 
-
+// MARK: OAuthWebViewControllerDelegate
 extension FlickRSearchViewController: OAuthWebViewControllerDelegate {
     func oauthWebViewControllerDidPresent() {
     }
@@ -236,19 +236,28 @@ extension FlickRSearchViewController: OAuthWebViewControllerDelegate {
             authorizeUrl:    "https://www.flickr.com/services/oauth/authorize",
             accessTokenUrl:  "https://www.flickr.com/services/oauth/access_token"
         )
+
         self.oauthSwift = oauthswift
 
         oauthswift.authorizeURLHandler = SafariURLHandler(viewController: self, oauthSwift: self.oauthSwift!)
 
         let _ = oauthswift.authorize(withCallbackURL: URL(string: "oauth-swift://oauth-callback/flickr")!) { result in
             switch result {
-            case .success(let (credential, _, _)):
+            case .success(let (credential, _, parameters)):
                 self.api.authToken = credential.oauthToken
                 self.api.authTokenSecret =  credential.oauthTokenSecret
-                print("token: \(credential.oauthToken) \n secret: \(credential.oauthTokenSecret)")
+                print("token: \(credential.oauthToken) \n secret: \(credential.oauthTokenSecret), \(parameters), ")
+                self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log Out", style: .done, target: self, action: #selector(self.logOutButtonPressed))
             case .failure(let error):
                 print(error.description)
             }
         }
+    }
+
+    @objc func logOutButtonPressed() {
+        api.authToken = ""
+        api.authTokenSecret = ""
+        oauthSwift = nil
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log In", style: .done, target: self, action: #selector(doOAuthFlickr))
     }
 }

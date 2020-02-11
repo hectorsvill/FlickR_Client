@@ -62,6 +62,7 @@ final class PhotoDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewDidLoad()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Like", style: .plain, target: self, action: #selector(likeButtonPressed))
     }
 
     private func setupViewDidLoad() {
@@ -128,14 +129,12 @@ extension PhotoDetailViewController {
     }
 
     @objc func commentsButtonPressed() {
-         let photoCommentsViewController = PhotoCommentsViewController()
-         photoCommentsViewController.api = api
-         photoCommentsViewController.tagSearch = tagSearch
-         navigationController?.pushViewController(photoCommentsViewController, animated: true)
+
      }
 
     @objc func likeButtonPressed() {
-         print("like this image")
+        let urlString = api.createFavoriteUrlString(tagSearch: tagSearch!)
+        print(urlString)
     }
 
     @objc func segmentControlDidChange() {
