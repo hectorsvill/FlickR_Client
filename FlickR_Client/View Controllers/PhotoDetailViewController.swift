@@ -27,8 +27,13 @@ final class PhotoDetailViewController: UIViewController {
         let control = UISegmentedControl(items: ["META", "Comments"])
         control.translatesAutoresizingMaskIntoConstraints = false
         control.selectedSegmentIndex = 0
+        control.addTarget(self, action: #selector(segmentControlDidChange), for: .valueChanged)
         return control
     }()
+
+    @objc func segmentControlDidChange() {
+        tableView.reloadData()
+    }
 
     var viewsCountLabel: UILabel = {
         let label = UILabel()
@@ -77,11 +82,11 @@ final class PhotoDetailViewController: UIViewController {
     var likeButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        let config = UIImage.SymbolConfiguration(scale: .large)
-        let thumbsupImage = UIImage(systemName: "hand.thumbsup", withConfiguration: config)
+        let symbolConfiguration = UIImage.SymbolConfiguration(scale: .large)
+        let thumbsupImage = UIImage(systemName: "hand.thumbsup", withConfiguration: symbolConfiguration)
         button.setImage(thumbsupImage, for: .normal)
-        button.backgroundColor = .systemBlue
-        button.tintColor = UIColor().flickr_logoColor()
+        button.backgroundColor = .clear
+        button.tintColor = .black
         button.layer.cornerRadius = 3
         button.addTarget(self, action: #selector(likeButtonPressed), for: .touchUpInside)
         return button
@@ -104,8 +109,13 @@ final class PhotoDetailViewController: UIViewController {
         setupViews()
         fetchImageDetail()
         setupTagTableView()
+
+//        let symbolConfiguration = UIImage.SymbolConfiguration(scale: .large)
+//        let thumbsupImage = UIImage(systemName: "hand.thumbsup", withConfiguration: symbolConfiguration)
+//        navigationController?.navigationItem.rightBarButtonItem = UIBarButtonItem(image: thumbsupImage, style: .plain, target: self, action: #selector(likeButtonPressed))
     }
 }
+
 extension PhotoDetailViewController {
     func setupViews() {
         view.backgroundColor = UIColor().flickr_logoColor()
@@ -113,23 +123,23 @@ extension PhotoDetailViewController {
         view.addSubview(photoImageView)
         view.addSubview(tableView)
 
-        let buttonStackView = UIStackView(arrangedSubviews: [commentsButton, likeButton])
-        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
-        buttonStackView.axis = .horizontal
-        buttonStackView.spacing = 8
-        buttonStackView.alignment = .fill
-        buttonStackView.distribution = .fillEqually
-        buttonStackView.backgroundColor = UIColor().flickr_logoColor()
-
-        let stackView = UIStackView(arrangedSubviews: [userNameLabel, viewsCountLabel, descriptionTextView, buttonStackView])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = 8
-        stackView.axis = .vertical
-        stackView.backgroundColor = UIColor().flickr_logoColor()
-        view.addSubview(stackView)
+//        let buttonStackView = UIStackView(arrangedSubviews: [commentsButton, likeButton])
+//        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
+//        buttonStackView.axis = .horizontal
+//        buttonStackView.spacing = 8
+//        buttonStackView.alignment = .fill
+//        buttonStackView.distribution = .fillEqually
+//        buttonStackView.backgroundColor = UIColor().flickr_logoColor()
+//
+//        let stackView = UIStackView(arrangedSubviews: [userNameLabel, viewsCountLabel, descriptionTextView, buttonStackView])
+//        stackView.translatesAutoresizingMaskIntoConstraints = false
+//        stackView.spacing = 8
+//        stackView.axis = .vertical
+//        stackView.backgroundColor = UIColor().flickr_logoColor()
+//        view.addSubview(stackView)
 
         view.addSubview(segmentedControl)
-
+        view.addSubview(likeButton)
         NSLayoutConstraint.activate([
             photoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             photoImageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
@@ -145,8 +155,8 @@ extension PhotoDetailViewController {
 //            stackView.bottomAnchor.constraint(equalTo: tableView.topAnchor),
 ////            descriptionTextView.heightAnchor.constraint(equalToConstant: 60),
             tableView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 8),
-            tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-            tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+            tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
+            tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
@@ -239,7 +249,10 @@ extension PhotoDetailViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        section == 0 ? metaDataDictionary.count :  (photoDetail?.tags.count ?? 0)
+        if segmentedControl.selectedSegmentIndex == 0 {
+            return section == 0 ? metaDataDictionary.count :  (photoDetail?.tags.count ?? 0)
+        }
+        return 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -262,10 +275,17 @@ extension PhotoDetailViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        section == 0 ? "Meta Data" : "Tags"
+        if segmentedControl.selectedSegmentIndex == 0 {
+            return section == 0 ? "META" : "TAGS"
+        }
+
+        return "0 Comments"
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        2
+        if segmentedControl.selectedSegmentIndex == 0 {
+            return 2
+        }
+        return 0
     }
 }
