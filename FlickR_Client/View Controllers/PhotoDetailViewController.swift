@@ -45,24 +45,12 @@ final class PhotoDetailViewController: UIViewController {
         return button
     }()
 
-    var likeButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        let symbolConfiguration = UIImage.SymbolConfiguration(scale: .large)
-        let thumbsupImage = UIImage(systemName: "hand.thumbsup", withConfiguration: symbolConfiguration)
-        button.setImage(thumbsupImage, for: .normal)
-        button.backgroundColor = .clear
-        button.tintColor = .black
-        button.layer.cornerRadius = 3
-        button.addTarget(self, action: #selector(likeButtonPressed), for: .touchUpInside)
-        return button
-    }()
-
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewDidLoad()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Like", style: .plain, target: self, action: #selector(likeButtonPressed))
+
+        let thumbsupImage = UIImage(systemName: "hand.thumbsup")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: thumbsupImage, style: .plain, target: self, action: #selector(likeButtonPressed))
     }
 
     private func setupViewDidLoad() {
@@ -77,9 +65,6 @@ final class PhotoDetailViewController: UIViewController {
         fetchPhotoDetail()
         setupTagTableView()
 
-//        let symbolConfiguration = UIImage.SymbolConfiguration(scale: .large)
-//        let thumbsupImage = UIImage(systemName: "hand.thumbsup", withConfiguration: symbolConfiguration)
-//        navigationController?.navigationItem.rightBarButtonItem = UIBarButtonItem(image: thumbsupImage, style: .plain, target: self, action: #selector(likeButtonPressed))
     }
 }
 
@@ -89,24 +74,8 @@ extension PhotoDetailViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(photoImageView)
         view.addSubview(tableView)
-
-//        let buttonStackView = UIStackView(arrangedSubviews: [commentsButton, likeButton])
-//        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
-//        buttonStackView.axis = .horizontal
-//        buttonStackView.spacing = 8
-//        buttonStackView.alignment = .fill
-//        buttonStackView.distribution = .fillEqually
-//        buttonStackView.backgroundColor = UIColor().flickr_logoColor()
-//
-//        let stackView = UIStackView(arrangedSubviews: [userNameLabel, viewsCountLabel, descriptionTextView, buttonStackView])
-//        stackView.translatesAutoresizingMaskIntoConstraints = false
-//        stackView.spacing = 8
-//        stackView.axis = .vertical
-//        stackView.backgroundColor = UIColor().flickr_logoColor()
-//        view.addSubview(stackView)
-
         view.addSubview(segmentedControl)
-        view.addSubview(likeButton)
+
         NSLayoutConstraint.activate([
             photoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             photoImageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
@@ -115,12 +84,6 @@ extension PhotoDetailViewController {
             segmentedControl.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant: 8),
             segmentedControl.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8),
             segmentedControl.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
-//            segmentedControl.widthAnchor.constraint(equalToConstant: 40)
-//            stackView.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant:  8),
-//            stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor,constant: 8),
-//            stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
-//            stackView.bottomAnchor.constraint(equalTo: tableView.topAnchor),
-////            descriptionTextView.heightAnchor.constraint(equalToConstant: 60),
             tableView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 8),
             tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
             tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
@@ -134,7 +97,55 @@ extension PhotoDetailViewController {
 
     @objc func likeButtonPressed() {
         let urlString = api.createFavoriteUrlString(tagSearch: tagSearch!)
+        URLSession.shared.dataTask(with: URL(string: urlString)!) { data, _, error in
+            if let error = error {
+                NSLog("\(error)")
+            }
+
+            guard let data = data else { return }
+            let resultDict = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: AnyObject]
+            DispatchQueue.main.async {
+                if let stat = resultDict["stat"] as? String, let message = resultDict["message"] as? String {
+                    
+                    if stat == "ok" {
+                        let thumbsupImage = UIImage(systemName: "hand.thumbsup.fill")
+                        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: thumbsupImage, style: .plain, target: self, action: #selector(self.unLikeButtonPressed))
+                    } else {
+                        let alertController = UIAlertController(title: "Error adding image to favorites", message: message, preferredStyle: .alert)
+                        alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
+
+                        self.present(alertController, animated: true)
+                    }
+                }
+            }
+        }.resume()
+    }
+
+    @objc func unLikeButtonPressed() {
+        let urlString = api.createFavoriteUrlString(action: "remove", tagSearch: tagSearch!)
         print(urlString)
+        URLSession.shared.dataTask(with: URL(string: urlString)!) { data, _, error in
+            if let error = error {
+                NSLog("\(error)")
+            }
+
+            guard let data = data else { return }
+            let resultDict = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: AnyObject]
+            DispatchQueue.main.async {
+                if let stat = resultDict["stat"] as? String, let message = resultDict["message"] as? String {
+
+                    if stat == "ok" {
+                        let thumbsupImage = UIImage(systemName: "hand.thumbsup")
+                        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: thumbsupImage, style: .plain, target: self, action: #selector(self.likeButtonPressed))
+                    } else {
+                        let alertController = UIAlertController(title: "Error removing image from favorites", message: message, preferredStyle: .alert)
+                        alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
+
+                        self.present(alertController, animated: true)
+                    }
+                }
+            }
+        }.resume()
     }
 
     @objc func segmentControlDidChange() {
@@ -186,7 +197,6 @@ extension PhotoDetailViewController {
             guard let photoComments = photoComments else { return }
             DispatchQueue.main.async {
                 self.photoComments = photoComments
-                print("photos counts: ", photoComments.count)
                 self.tableView.reloadData()
             }
         }
@@ -211,12 +221,6 @@ extension PhotoDetailViewController {
             ("can print:", photoDetail.canprint == 0 ? "No" : "Yes" ),
             ("can Share:", photoDetail.canshare == 0 ? "No" : "Yes" ),
         ]
-
-        if photoDetail.isFavorite == 1 {
-            let config = UIImage.SymbolConfiguration(scale: .large)
-            let thumbsupImage = UIImage(systemName: "hand.thumbsup.fill", withConfiguration: config)
-            likeButton.setImage(thumbsupImage, for: .normal)
-        }
 
         tableView.reloadData()
     }

@@ -107,7 +107,6 @@ class FlickR_API {
         }.resume()
     }
 
-
     func createPhotoUrlString(with tagSearch: TagSearch, size: String = "m") -> String {
         "https://farm\(tagSearch.farm).staticflickr.com/\(tagSearch.server)/\(tagSearch.id)_\(tagSearch.secret)_\(size).jpg"
     }
@@ -123,5 +122,4 @@ class FlickR_API {
     func createFavoriteUrlString(action: String = "add", tagSearch: TagSearch) -> String {
         "https://www.flickr.com/services/rest/?method=flickr.favorites.\(action)&api_key=\(myKey)&photo_id=\(tagSearch.id)&format=json&nojsoncallback=1&auth_token=\(authToken)" //"&api_sig=dcaf85570b578b3c917757dd96c174f4"
     }
-    //https://www.flickr.com/services/rest/?method=flickr.favorites.remove&api_key=7d336d9e7c4d1b31cbba0a429216afc4&photo_id=9576279208&format=json&nojsoncallback=1&auth_token=72157713063788528-a60cf9cb11ae6ebb&api_sig=6e834e0bc780157cefc08b4b46765cef
 }
