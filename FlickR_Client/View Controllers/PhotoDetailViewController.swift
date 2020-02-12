@@ -100,7 +100,7 @@ extension PhotoDetailViewController {
 
     @objc func unLikeButtonPressed() {
 
-        
+
     }
 
     @objc func segmentControlDidChange() {
@@ -240,6 +240,7 @@ extension PhotoDetailViewController: UITableViewDataSource {
         let commentViewController = CommentViewController()
         commentViewController.api = api
         commentViewController.photoID = tagSearch!.id
+        commentViewController.deleagate = self
         present(commentViewController, animated: true)
     }
 

@@ -51,44 +51,27 @@ class CommentViewController: UIViewController {
 
     @objc func addcommentButtonPressed() {
         guard !commentTextView.text.isEmpty,
-            let text = commentTextView.text,
-            let url = URL(string: api.createAddCommentsUrl(photoID: photoID!, commentText: api.textHelper(text))) else { return }
-        print(url.absoluteURL)
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            if let error = error {
-                NSLog("\(error)")
-            }
-            guard let data = data else { return }
-            let resultDict = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: AnyObject]
-            DispatchQueue.main.async {
+            let text = commentTextView.text, let photoID = photoID,
+            let url = URL(string: api.createAddCommentsUrl) else { return }
 
-                if let stat = resultDict["stat"] as? String, let message = resultDict["message"] as? String {
 
-                    if stat == "ok" {
 
-                        //send commnet to detail view
-                        print(resultDict)
-                        let comment = PhotoComment(id: self.photoID!, authorName: self.api.userName, content: text)
-                        self.deleagate?.addComment(comment: comment)
+        api.oauthSwift?.client.request(url, method: .POST, parameters: ["photo_id":"\(photoID)", "comment_text":text,"format": "json"], headers: [:], body: nil, checkTokenExpiration: true, completionHandler: { result in
+            switch result {
+            case .success(let response):
+                let dataString = response.dataString(encoding: .utf8)!
 
-                        let alertController = UIAlertController(title: "Comment added!", message: "", preferredStyle: .alert)
-
-                        alertController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-                            self.dismiss(animated: true, completion: nil)
-                        })
-                        
-                        self.present(alertController, animated: true)
-
-                    } else {
-                        let alertController = UIAlertController(title: "Error adding comment", message: message, preferredStyle: .alert)
-                        alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
-
-                        self.present(alertController, animated: true)
-                    }
+                print(dataString)
+                DispatchQueue.main.async {
+                    self.deleagate?.addComment(comment: PhotoComment(id: photoID, authorName: self.api.userName, content: text))
+                    self.dismiss(animated: true)
                 }
-            }
 
-        }.resume()
+            case .failure(let error):
+                print(error)
+            }
+        })
+
     }
 
     override func viewDidLoad() {
