@@ -14,6 +14,7 @@ class FlickR_API {
     let count = 12
     var authToken = ""
     var authTokenSecret = ""
+    var userName = ""
 
     func fetchTagSearch(with tag: String, page: Int = 1, completion: @escaping ([TagSearch]?, Error?) -> ()) {
         let urlString = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=\(myKey)&tags=\(tag)&per_page=\(count)&format=json&nojsoncallback=1&page=\(page)"

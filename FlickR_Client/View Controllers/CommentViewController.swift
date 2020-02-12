@@ -8,9 +8,14 @@
 
 import UIKit
 
+protocol AddCommentDelegate {
+    func addComment(comment: PhotoComment)
+}
+
 class CommentViewController: UIViewController {
     var api: FlickR_API!
     var photoID: String?
+    var deleagate: AddCommentDelegate?
     
     var commentTextView: UITextView = {
         let textView = UITextView()
@@ -46,10 +51,8 @@ class CommentViewController: UIViewController {
 
     @objc func addcommentButtonPressed() {
         guard !commentTextView.text.isEmpty,
-            let text = commentTextView.text else { return }
-
-        let urlString = api.createAddCommentsUrl(photoID: photoID!, commentText: text)
-        guard let url = URL(string: urlString) else { return }
+            let text = commentTextView.text,
+            let url = URL(string: api.createAddCommentsUrl(photoID: photoID!, commentText: text)) else { return }
 
         URLSession.shared.dataTask(with: url) { data, _, error in
             if let error = error {
@@ -58,9 +61,15 @@ class CommentViewController: UIViewController {
             guard let data = data else { return }
             let resultDict = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: AnyObject]
             DispatchQueue.main.async {
+
                 if let stat = resultDict["stat"] as? String, let message = resultDict["message"] as? String {
 
                     if stat == "ok" {
+
+                        //send commnet to detail view
+                        let comment = PhotoComment(id: self.photoID!, authorName: self.api.userName, content: text)
+                        self.deleagate?.addComment(comment: comment)
+
                         let alertController = UIAlertController(title: "Comment added!", message: "", preferredStyle: .alert)
 
                         alertController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
@@ -83,7 +92,6 @@ class CommentViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         commentTextView.becomeFirstResponder()
         setupView()
     }
@@ -93,7 +101,6 @@ class CommentViewController: UIViewController {
         view.addSubview(commentTextView)
         view.addSubview(addCommentButton)
         view.addSubview(cancelButton)
-        commentTextView.delegate = self
         
         NSLayoutConstraint.activate([
             commentTextView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
@@ -112,12 +119,4 @@ class CommentViewController: UIViewController {
     }
 }
 
-extension CommentViewController: UITextViewDelegate {
 
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        print("return pressed")
-        textField.resignFirstResponder()
-        return false
-    }
-
-}

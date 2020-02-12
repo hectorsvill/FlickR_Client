@@ -292,3 +292,9 @@ extension PhotoDetailViewController: UITableViewDataSource {
         return 2
     }
 }
+
+extension PhotoDetailViewController: AddCommentDelegate {
+    func addComment(comment: PhotoComment) {
+        photoComments.insert(comment, at: 0)
+    }
+}

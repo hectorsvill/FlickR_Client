@@ -243,9 +243,10 @@ extension FlickRSearchViewController: OAuthWebViewControllerDelegate {
 
         let _ = oauthswift.authorize(withCallbackURL: URL(string: "oauth-swift://oauth-callback/flickr")!) { result in
             switch result {
-            case .success(let (credential, _, _)):
+            case .success(let (credential, _, parameters)):
                 self.api.authToken = credential.oauthToken
                 self.api.authTokenSecret =  credential.oauthTokenSecret
+                self.api.userName = parameters["username"] as! String
 //                print("token: \(credential.oauthToken) \n secret: \(credential.oauthTokenSecret), \(parameters), ")
                 self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log Out", style: .done, target: self, action: #selector(self.logOutButtonPressed))
             case .failure(let error):
