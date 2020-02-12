@@ -84,30 +84,61 @@ extension PhotoDetailViewController {
             present(alertController, animated: true)
             return
         }
+        let url = URL(string: "https://www.flickr.com/services/rest/?method=flickr.favorites.add")!
+        api.oauthSwift?.client.request(url, method: .POST, parameters: ["photo_id":"\(tagSearch!.id)", "format": "json"], headers: [:], body: nil, checkTokenExpiration: true, completionHandler: { result in
+            switch result {
+            case .success(let response):
+                
+                let dataString = response.dataString(encoding: .utf8)!
+                print(dataString)
+//                let resultDict = try! JSONSerialization.jsonObject(with: response.data, options: [])
+//                DispatchQueue.main.async {
+//                    if let stat = resultDict["stat"] as? String, let message = resultDict["message"] as? String {
+//
+//                        if stat == "ok" {
+//                            let thumbsupImage = UIImage(systemName: "hand.thumbsup.fill")
+//                            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: thumbsupImage, style: .plain, target: self, action: #selector(self.unLikeButtonPressed))
+//                        } else {
+//                            let alertController = UIAlertController(title: "Error adding image to favorites", message: message, preferredStyle: .alert)
+//                            alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
+//
+//                            self.present(alertController, animated: true)
+//                        }
+//                    }
+//                }
 
-        let urlString = api.createFavoriteUrlString(tagSearch: tagSearch!)
-        URLSession.shared.dataTask(with: URL(string: urlString)!) { data, _, error in
-            if let error = error {
-                NSLog("\(error)")
+
+            case .failure(let error):
+                print(error)
             }
+        })
 
-            guard let data = data else { return }
-            let resultDict = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: AnyObject]
-            DispatchQueue.main.async {
-                if let stat = resultDict["stat"] as? String, let message = resultDict["message"] as? String {
-                    
-                    if stat == "ok" {
-                        let thumbsupImage = UIImage(systemName: "hand.thumbsup.fill")
-                        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: thumbsupImage, style: .plain, target: self, action: #selector(self.unLikeButtonPressed))
-                    } else {
-                        let alertController = UIAlertController(title: "Error adding image to favorites", message: message, preferredStyle: .alert)
-                        alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
 
-                        self.present(alertController, animated: true)
-                    }
-                }
-            }
-        }.resume()
+
+
+//        let urlString = api.createFavoriteUrlString(tagSearch: tagSearch!)
+//        URLSession.shared.dataTask(with: URL(string: urlString)!) { data, _, error in
+//            if let error = error {
+//                NSLog("\(error)")
+//            }
+//
+//            guard let data = data else { return }
+//            let resultDict = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: AnyObject]
+//            DispatchQueue.main.async {
+//                if let stat = resultDict["stat"] as? String, let message = resultDict["message"] as? String {
+//
+//                    if stat == "ok" {
+//                        let thumbsupImage = UIImage(systemName: "hand.thumbsup.fill")
+//                        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: thumbsupImage, style: .plain, target: self, action: #selector(self.unLikeButtonPressed))
+//                    } else {
+//                        let alertController = UIAlertController(title: "Error adding image to favorites", message: message, preferredStyle: .alert)
+//                        alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
+//
+//                        self.present(alertController, animated: true)
+//                    }
+//                }
+//            }
+//        }.resume()
     }
 
     @objc func unLikeButtonPressed() {

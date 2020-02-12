@@ -7,11 +7,13 @@
 //
 
 import Foundation
+import OAuthSwift
 
 class FlickR_API {
     var myKey = UserDefaults().string(forKey: "myKey_flickr") ?? ""
     var mySecret =  UserDefaults().string(forKey: "mySecret_flickr") ?? ""
     let count = 12
+    var oauthSwift: OAuthSwift?
     var authToken = ""
     var authTokenSecret = ""
     var userName = ""

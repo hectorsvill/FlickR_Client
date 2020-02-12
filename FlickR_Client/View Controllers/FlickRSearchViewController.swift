@@ -11,7 +11,6 @@ import UIKit
 import OAuthSwift
 
 final class FlickRSearchViewController: UIViewController {
-    var oauthSwift: OAuthSwift?
     typealias collectionDataSource = UICollectionViewDiffableDataSource<Int, TagSearch>
     let activityIndicator = UIActivityIndicatorView()
     let api = FlickR_API()
@@ -225,7 +224,7 @@ extension FlickRSearchViewController: OAuthWebViewControllerDelegate {
     }
 
     func oauthWebViewControllerDidDisappear() {
-        oauthSwift?.cancel()
+        api.oauthSwift?.cancel()
     }
 
     @objc func doOAuthFlickr(){
@@ -237,9 +236,9 @@ extension FlickRSearchViewController: OAuthWebViewControllerDelegate {
             accessTokenUrl:  "https://www.flickr.com/services/oauth/access_token"
         )
 
-        self.oauthSwift = oauthswift
+        self.api.oauthSwift = oauthswift
 
-        oauthswift.authorizeURLHandler = SafariURLHandler(viewController: self, oauthSwift: self.oauthSwift!)
+        oauthswift.authorizeURLHandler = SafariURLHandler(viewController: self, oauthSwift: self.api.oauthSwift!)
 
         let _ = oauthswift.authorize(withCallbackURL: URL(string: "oauth-swift://oauth-callback/flickr")!) { result in
             switch result {
@@ -247,7 +246,7 @@ extension FlickRSearchViewController: OAuthWebViewControllerDelegate {
                 self.api.authToken = credential.oauthToken
                 self.api.authTokenSecret =  credential.oauthTokenSecret
                 self.api.userName = parameters["username"] as! String
-//                print("token: \(credential.oauthToken) \n secret: \(credential.oauthTokenSecret), \(parameters), ")
+                print("token: \(credential.oauthToken) \n secret: \(credential.oauthTokenSecret), \(parameters), ")
                 self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log Out", style: .done, target: self, action: #selector(self.logOutButtonPressed))
             case .failure(let error):
                 print(error.description)
@@ -258,7 +257,7 @@ extension FlickRSearchViewController: OAuthWebViewControllerDelegate {
     @objc func logOutButtonPressed() {
         api.authToken = ""
         api.authTokenSecret = ""
-        oauthSwift = nil
+        api.oauthSwift = nil
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log In", style: .done, target: self, action: #selector(doOAuthFlickr))
     }
 }
