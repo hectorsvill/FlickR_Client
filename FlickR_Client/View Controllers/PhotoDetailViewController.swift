@@ -113,7 +113,11 @@ extension PhotoDetailViewController {
     @objc func unLikeButtonPressed() {
         let urlString = api.createFavoriteUrlString(action: "remove", tagSearch: tagSearch!)
         print(urlString)
-        URLSession.shared.dataTask(with: URL(string: urlString)!) { data, _, error in
+
+        var request = URLRequest(url: URL(string: urlString)!)
+        request.httpMethod = "POST"
+
+        URLSession.shared.dataTask(with: request) { data, _, error in
             if let error = error {
                 NSLog("\(error)")
             }
@@ -296,5 +300,6 @@ extension PhotoDetailViewController: UITableViewDataSource {
 extension PhotoDetailViewController: AddCommentDelegate {
     func addComment(comment: PhotoComment) {
         photoComments.insert(comment, at: 0)
+        tableView.reloadData()
     }
 }

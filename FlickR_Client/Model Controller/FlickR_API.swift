@@ -16,6 +16,10 @@ class FlickR_API {
     var authTokenSecret = ""
     var userName = ""
 
+    func textHelper(_ text: String) -> String{
+        text.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: " ", with: "+")
+    }
+
     func fetchTagSearch(with tag: String, page: Int = 1, completion: @escaping ([TagSearch]?, Error?) -> ()) {
         let urlString = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=\(myKey)&tags=\(tag)&per_page=\(count)&format=json&nojsoncallback=1&page=\(page)"
         let url = URL(string: urlString)
@@ -125,7 +129,10 @@ class FlickR_API {
     }
 
     func createAddCommentsUrl(photoID: String, commentText: String) -> String {
-        return "https://www.flickr.com/services/rest/?method=flickr.photos.comments.addComment&api_key=\(myKey)&photo_id=\(photoID)&comment_text=\(commentText)&format=json&nojsoncallback=1&auth_token=\(authToken)" //"&api_sig=561c39440708dd7b69c471f7af137d8d"
+        return "https://www.flickr.com/services/rest/?method=flickr.photos.comments.addComment&api_key=71c04c15f4abb724bea774e0d2f6bce8&photo_id=\(photoID)&comment_text=\(commentText)&format=json&nojsoncallback=1&auth_token=72157713068168242-ff4392c32660ad4e&api_sig=60aa568835b13d041df4e983f7603b23"
+//        return "https://www.flickr.com/services/rest/?method=flickr.photos.comments.addComment&api_key=\(myKey)&photo_id=\(photoID)&comment_text=\(commentText)&format=json&nojsoncallback=1&auth_token=72157713068168242-ff4392c32660ad4e&api_sig=60aa568835b13d041df4e983f7603b23"   // \(authToken)"
     }
+
+
     // https://www.flickr.com/services/rest/?method=flickr.photos.comments.addComment&api_key=71c04c15f4abb724bea774e0d2f6bce8&photo_id=49514816352&comment_text=cool&format=json&nojsoncallback=1&auth_token=72157713068168242-ff4392c32660ad4e&api_sig=561c39440708dd7b69c471f7af137d8d
 }

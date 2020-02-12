@@ -152,7 +152,7 @@ extension FlickRSearchViewController {
         guard !text.isEmpty else { return }
         activityIndicator.startAnimating()
 
-        let newText = text.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: " ", with: "+")
+        let newText = api.textHelper(text)
         api.fetchTagSearch(with: newText) { tagSearch, error in
             if let error = error {
                 NSLog("\(error)")

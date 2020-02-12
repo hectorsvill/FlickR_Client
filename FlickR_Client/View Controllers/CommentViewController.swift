@@ -52,8 +52,8 @@ class CommentViewController: UIViewController {
     @objc func addcommentButtonPressed() {
         guard !commentTextView.text.isEmpty,
             let text = commentTextView.text,
-            let url = URL(string: api.createAddCommentsUrl(photoID: photoID!, commentText: text)) else { return }
-
+            let url = URL(string: api.createAddCommentsUrl(photoID: photoID!, commentText: api.textHelper(text))) else { return }
+        print(url.absoluteURL)
         URLSession.shared.dataTask(with: url) { data, _, error in
             if let error = error {
                 NSLog("\(error)")
@@ -67,6 +67,7 @@ class CommentViewController: UIViewController {
                     if stat == "ok" {
 
                         //send commnet to detail view
+                        print(resultDict)
                         let comment = PhotoComment(id: self.photoID!, authorName: self.api.userName, content: text)
                         self.deleagate?.addComment(comment: comment)
 
