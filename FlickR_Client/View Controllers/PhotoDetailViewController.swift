@@ -64,7 +64,6 @@ final class PhotoDetailViewController: UIViewController {
         setupViews()
         fetchPhotoDetail()
         setupTagTableView()
-
     }
 }
 
@@ -93,7 +92,8 @@ extension PhotoDetailViewController {
 
     @objc func commentsButtonPressed() {
 
-     }
+
+    }
 
     @objc func likeButtonPressed() {
         let urlString = api.createFavoriteUrlString(tagSearch: tagSearch!)
@@ -181,7 +181,7 @@ extension PhotoDetailViewController {
             guard let photoDetail = photoDetail else { return }
             DispatchQueue.main.async {
                 self.photoDetail = photoDetail
-                self.setupViewsWithDetailData(photoDetail: photoDetail)
+                self.setupTableViewDataSource(photoDetail: photoDetail)
                 self.fetchPhotoComments()
             }
         })
@@ -202,7 +202,7 @@ extension PhotoDetailViewController {
         }
     }
 
-    private func setupViewsWithDetailData(photoDetail: PhotoDetail) {
+    private func setupTableViewDataSource(photoDetail: PhotoDetail) {
         let owner_name = photoDetail.owner_userName.isEmpty ? "Anonymous" : photoDetail.realname
         let descriptionText = "\(photoDetail.title_content)\n\n" + (photoDetail.description_content.isEmpty ? "No Description" : photoDetail.description_content)
 
@@ -229,6 +229,7 @@ extension PhotoDetailViewController: UITableViewDataSource {
     func setupTagTableView() {
         tableView.dataSource = self
         tableView.register(SubTitleTableViewCell.self, forCellReuseIdentifier: "MetaCell")
+        tableView.register(CommentTableViewCell.self, forCellReuseIdentifier: "CommentCell")
         tableView.backgroundColor = UIColor().flickr_logoColor()
         tableView.allowsSelection = false
         tableView.separatorStyle = .singleLine
@@ -238,12 +239,12 @@ extension PhotoDetailViewController: UITableViewDataSource {
         if segmentedControl.selectedSegmentIndex == 0 {
             return section == 0 ? metaDataDictionary.count :  (photoDetail?.tags.count ?? 0)
         }
-        return photoComments.count
+
+        return section == 0 ? 1 : photoComments.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "MetaCell", for: indexPath) as? SubTitleTableViewCell else { return UITableViewCell() }
-
         if segmentedControl.selectedSegmentIndex == 0 {
             if indexPath.section == 1 {
                 cell.textLabel?.text = ""
@@ -254,8 +255,14 @@ extension PhotoDetailViewController: UITableViewDataSource {
                 cell.detailTextLabel?.textAlignment = .left
             }
         } else {
-            cell.textLabel?.text = photoComments[indexPath.row].authorName
-            cell.detailTextLabel?.text = photoComments[indexPath.row].content
+            if indexPath.section == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentTableViewCell
+                cell.button.addTarget(self, action: #selector(commentButtonPressed), for: .touchUpInside)
+                return cell
+            } else {
+                cell.textLabel?.text = photoComments[indexPath.row].authorName
+                cell.detailTextLabel?.text = photoComments[indexPath.row].content
+            }
         }
 
         cell.backgroundColor = UIColor().flickr_logoColor()
@@ -267,18 +274,23 @@ extension PhotoDetailViewController: UITableViewDataSource {
         return cell
     }
 
+    @objc func commentButtonPressed() {
+        print("add comment")
+
+    }
+
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if segmentedControl.selectedSegmentIndex == 0 {
             return section == 0 ? "META" : "TAGS"
         }
 
-        return "\(photoComments.count) Comments"
+        return  section == 0 ? "" : "\(photoComments.count) Comments"
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
         if segmentedControl.selectedSegmentIndex == 0 {
             return 2
         }
-        return 1
+        return 2
     }
 }

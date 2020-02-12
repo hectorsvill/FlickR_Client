@@ -9,7 +9,6 @@
 import UIKit
 
 class SubTitleTableViewCell: UITableViewCell {
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
     }
@@ -18,4 +17,3 @@ class SubTitleTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
