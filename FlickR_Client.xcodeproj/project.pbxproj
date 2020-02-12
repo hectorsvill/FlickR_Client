@@ -25,6 +25,7 @@
 		12835EEB23EE2E9000CB6813 /* TagSearchImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EEA23EE2E9000CB6813 /* TagSearchImageCollectionViewCell.swift */; };
 		12835EEE23EE3FF700CB6813 /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EED23EE3FF700CB6813 /* PhotoDetailViewController.swift */; };
 		12ADB25023F37B8100FF9C67 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ADB24F23F37B8100FF9C67 /* CommentTableViewCell.swift */; };
+		12ADB25423F37E0C00FF9C67 /* CommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ADB25323F37E0C00FF9C67 /* CommentViewController.swift */; };
 		901D9EDC810DA48BFE285ABB /* Pods_FlickR_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A2F182D78E09062F70199A /* Pods_FlickR_Client.framework */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +50,7 @@
 		12835EEA23EE2E9000CB6813 /* TagSearchImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSearchImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		12835EED23EE3FF700CB6813 /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
 		12ADB24F23F37B8100FF9C67 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
+		12ADB25323F37E0C00FF9C67 /* CommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewController.swift; sourceTree = "<group>"; };
 		1441D2E3AA546F9437655D3C /* Pods-FlickR_Client.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickR_Client.release.xcconfig"; path = "Target Support Files/Pods-FlickR_Client/Pods-FlickR_Client.release.xcconfig"; sourceTree = "<group>"; };
 		7B76D9119FABC83A41541172 /* Pods-FlickR_Client.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickR_Client.debug.xcconfig"; path = "Target Support Files/Pods-FlickR_Client/Pods-FlickR_Client.debug.xcconfig"; sourceTree = "<group>"; };
 		85A2F182D78E09062F70199A /* Pods_FlickR_Client.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlickR_Client.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -140,6 +142,7 @@
 			children = (
 				12835EE823EDFFE600CB6813 /* FlickRSearchViewController.swift */,
 				12835EED23EE3FF700CB6813 /* PhotoDetailViewController.swift */,
+				12ADB25323F37E0C00FF9C67 /* CommentViewController.swift */,
 				12835EEC23EE2EA300CB6813 /* Views */,
 			);
 			path = "View Controllers";
@@ -306,6 +309,7 @@
 				12835EE423EDDEBA00CB6813 /* FlickR_API.swift in Sources */,
 				127D2F8F23EF3C1C00DA9572 /* FetchPhotoOperation.swift in Sources */,
 				12835EE623EDFAD500CB6813 /* PhotoDetail.swift in Sources */,
+				12ADB25423F37E0C00FF9C67 /* CommentViewController.swift in Sources */,
 				12835ECC23EDD84000CB6813 /* AppDelegate.swift in Sources */,
 				127D2F9623EFBBFB00DA9572 /* UIColor+BackgroundColor.swift in Sources */,
 				12ADB25023F37B8100FF9C67 /* CommentTableViewCell.swift in Sources */,

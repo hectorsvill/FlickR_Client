@@ -32,19 +32,6 @@ final class PhotoDetailViewController: UIViewController {
         return control
     }()
 
-    var commentsButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        let config = UIImage.SymbolConfiguration(scale: .large)
-        let plusBubbleImage = UIImage(systemName: "plus.bubble", withConfiguration: config)
-        button.setImage(plusBubbleImage, for: .normal)
-        button.backgroundColor = .systemBlue
-        button.tintColor = UIColor().flickr_logoColor()
-        button.layer.cornerRadius = 3
-        button.addTarget(self, action: #selector(commentsButtonPressed), for: .touchUpInside)
-        return button
-    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewDidLoad()
@@ -90,12 +77,14 @@ extension PhotoDetailViewController {
         ])
     }
 
-    @objc func commentsButtonPressed() {
-
-
-    }
-
     @objc func likeButtonPressed() {
+        guard !api.authToken.isEmpty else {
+            let alertController = UIAlertController(title: "Auth Error", message: "Please Log In", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alertController, animated: true)
+            return
+        }
+
         let urlString = api.createFavoriteUrlString(tagSearch: tagSearch!)
         URLSession.shared.dataTask(with: URL(string: urlString)!) { data, _, error in
             if let error = error {
@@ -275,8 +264,17 @@ extension PhotoDetailViewController: UITableViewDataSource {
     }
 
     @objc func commentButtonPressed() {
-        print("add comment")
+        guard !api.authToken.isEmpty else {
+            let alertController = UIAlertController(title: "Auth Error", message: "Please Log In", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alertController, animated: true)
+            return
+        }
 
+        let commentViewController = CommentViewController()
+        commentViewController.api = api
+        commentViewController.photoID = tagSearch!.id
+        present(commentViewController, animated: true)
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
