@@ -252,7 +252,7 @@ extension PhotoDetailViewController: UITableViewDataSource {
             return section == 0 ? "META" : "TAGS"
         }
 
-        return  section == 0 ? "" : "\(photoComments.count) Comments"
+        return  section == 0 ? "" : "\(photoComments.count) Comment"
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
