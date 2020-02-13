@@ -132,8 +132,6 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
 
 
 extension FlickRSearchViewController {
-
-
     @objc func fetchNextData() {
         api.fetchTagSearch(with: currentTagSearch, page: currentPage) { tagSearch, error in
             if let error = error {
