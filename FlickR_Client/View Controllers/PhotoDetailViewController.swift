@@ -84,8 +84,8 @@ extension PhotoDetailViewController {
             present(alertController, animated: true)
             return
         }
-        let url = URL(string: api.createFavoriteUrlString)!
-        api.oauthSwift?.client.request(url, method: .POST, parameters: ["photo_id":"\(tagSearch!.id)", "format": "json"], headers: [:], body: nil, checkTokenExpiration: true, completionHandler: { result in
+
+        api.oauthSwift?.client.request(api.serviceFavoiritesAddURL, method: .POST, parameters: ["photo_id":"\(tagSearch!.id)", "format": "json"], headers: [:], body: nil, checkTokenExpiration: true, completionHandler: { result in
             switch result {
             case .success(let response):
                 let dataString = response.dataString(encoding: .utf8)!

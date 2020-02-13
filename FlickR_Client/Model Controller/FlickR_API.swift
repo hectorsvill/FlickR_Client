@@ -126,8 +126,8 @@ class FlickR_API {
         "https://www.flickr.com/services/rest/?method=flickr.photos.comments.getList&api_key=\(myKey)&photo_id=\(id)&format=json&nojsoncallback=1"
     }
 
-    var createFavoriteUrlString: String {
-        "https://www.flickr.com/services/rest/?method=flickr.favorites"
+    var serviceFavoiritesAddURL: URL {
+        URL(string: "https://www.flickr.com/services/rest/?method=flickr.favorites.add")!
     }
 
     var createAddCommentsUrl: String {
