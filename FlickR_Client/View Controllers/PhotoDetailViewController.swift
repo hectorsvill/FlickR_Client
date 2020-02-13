@@ -88,19 +88,22 @@ extension PhotoDetailViewController {
         api.oauthSwift?.client.request(url, method: .POST, parameters: ["photo_id":"\(tagSearch!.id)", "format": "json"], headers: [:], body: nil, checkTokenExpiration: true, completionHandler: { result in
             switch result {
             case .success(let response):
-                let dataString = response.dataString(encoding: .utf8)
-                let alertController = UIAlertController(title: "Error adding image to favorites", message: dataString, preferredStyle: .alert)
+                let dataString = response.dataString(encoding: .utf8)!
+                var alertTitle = "ERROR: please try again"
+
+                if dataString.contains("ok") {
+                    alertTitle = "adding image to favorites"
+                }else if dataString.contains("Photo is already in favorites") {
+                    alertTitle = "Photo is already in favorites"
+                }
+
+                let alertController = UIAlertController(title: alertTitle, message: "", preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
                 self.present(alertController, animated: true)
             case .failure(let error):
                 print(error)
             }
         })
-    }
-
-    @objc func unLikeButtonPressed() {
-
-
     }
 
     @objc func segmentControlDidChange() {

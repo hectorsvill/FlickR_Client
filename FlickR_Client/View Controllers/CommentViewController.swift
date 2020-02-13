@@ -57,19 +57,24 @@ class CommentViewController: UIViewController {
 
 
         api.oauthSwift?.client.request(url, method: .POST, parameters: ["photo_id":"\(photoID)", "comment_text":text,"format": "json"], headers: [:], body: nil, checkTokenExpiration: true, completionHandler: { result in
-            switch result {
-            case .success(let response):
-                let dataString = response.dataString(encoding: .utf8)!
+           switch result {
+           case .success(let response):
+               let dataString = response.dataString(encoding: .utf8)!
+               var alertTitle = "ERROR: please try again"
 
-                print(dataString)
-                DispatchQueue.main.async {
-                    self.deleagate?.addComment(comment: PhotoComment(id: photoID, authorName: self.api.userName, content: text))
-                    self.dismiss(animated: true)
-                }
+               if dataString.contains("ok") {
+                   alertTitle = "added comment to photo"
+               }
 
-            case .failure(let error):
-                print(error)
-            }
+               let alertController = UIAlertController(title: alertTitle, message: "", preferredStyle: .alert)
+               alertController.addAction(UIAlertAction(title: "OK", style: .cancel) { _ in
+                self.dismiss(animated: true, completion: nil)
+               })
+               self.deleagate?.addComment(comment: PhotoComment(id: photoID, authorName: self.api.userName, content: text))
+               self.present(alertController, animated: true)
+           case .failure(let error):
+               print(error)
+           }
         })
 
     }
