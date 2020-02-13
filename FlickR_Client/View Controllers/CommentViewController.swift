@@ -45,16 +45,12 @@ final class CommentViewController: UIViewController {
            return button
        }()
 
-    @objc func cancelButtonPressed() {
-        dismiss(animated: true)
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         commentTextView.becomeFirstResponder()
         setupView()
     }
-
 }
 
 extension CommentViewController {
@@ -63,7 +59,7 @@ extension CommentViewController {
         view.addSubview(commentTextView)
         view.addSubview(addCommentButton)
         view.addSubview(cancelButton)
-        
+
         NSLayoutConstraint.activate([
             commentTextView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             commentTextView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
@@ -78,6 +74,10 @@ extension CommentViewController {
             cancelButton.leftAnchor.constraint(equalTo: addCommentButton.leftAnchor, constant: 16),
             cancelButton.rightAnchor.constraint(equalTo: addCommentButton.rightAnchor, constant: -16),
         ])
+    }
+
+    @objc func cancelButtonPressed() {
+        dismiss(animated: true)
     }
 
     @objc func addcommentButtonPressed() {
