@@ -130,10 +130,7 @@ class FlickR_API {
         URL(string: "https://www.flickr.com/services/rest/?method=flickr.favorites.add")!
     }
 
-    var createAddCommentsUrl: String {
-        "https://www.flickr.com/services/rest/?method=flickr.photos.comments.addComment"
+    var serviceAddCommentURL: URL {
+        URL(string: "https://www.flickr.com/services/rest/?method=flickr.photos.comments.addComment")!
     }
-
-
-    // https://www.flickr.com/services/rest/?method=flickr.photos.comments.addComment&api_key=71c04c15f4abb724bea774e0d2f6bce8&photo_id=49514816352&comment_text=cool&format=json&nojsoncallback=1&auth_token=72157713068168242-ff4392c32660ad4e&api_sig=561c39440708dd7b69c471f7af137d8d
 }

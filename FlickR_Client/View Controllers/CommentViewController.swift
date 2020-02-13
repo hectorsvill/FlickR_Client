@@ -51,27 +51,25 @@ class CommentViewController: UIViewController {
 
     @objc func addcommentButtonPressed() {
         guard !commentTextView.text.isEmpty,
-            let text = commentTextView.text, let photoID = photoID,
-            let url = URL(string: api.createAddCommentsUrl) else { return }
+            let text = commentTextView.text, let photoID = photoID else { return }
+        api.oauthSwift?.client.request(api.serviceAddCommentURL, method: .POST, parameters: ["photo_id":"\(photoID)", "comment_text":text,"format": "json"], headers: [:], body: nil, checkTokenExpiration: true, completionHandler: { result in
+            switch result {
+            case .success(let response):
+                let dataString = response.dataString(encoding: .utf8)!
+                var alertTitle = "ERROR: please try again"
 
+                if dataString.contains("ok") {
+                    alertTitle = "added comment to photo"
+                    self.deleagate?.addComment(comment: PhotoComment(id: photoID, authorName: self.api.userName, content: text))
+                }
+                
+                let alertController = UIAlertController(title: alertTitle, message: "", preferredStyle: .alert)
 
+                alertController.addAction(UIAlertAction(title: "OK", style: .cancel) { _ in
+                    self.dismiss(animated: true, completion: nil)
+                })
 
-        api.oauthSwift?.client.request(url, method: .POST, parameters: ["photo_id":"\(photoID)", "comment_text":text,"format": "json"], headers: [:], body: nil, checkTokenExpiration: true, completionHandler: { result in
-           switch result {
-           case .success(let response):
-               let dataString = response.dataString(encoding: .utf8)!
-               var alertTitle = "ERROR: please try again"
-
-               if dataString.contains("ok") {
-                   alertTitle = "added comment to photo"
-               }
-
-               let alertController = UIAlertController(title: alertTitle, message: "", preferredStyle: .alert)
-               alertController.addAction(UIAlertAction(title: "OK", style: .cancel) { _ in
-                self.dismiss(animated: true, completion: nil)
-               })
-               self.deleagate?.addComment(comment: PhotoComment(id: photoID, authorName: self.api.userName, content: text))
-               self.present(alertController, animated: true)
+                self.present(alertController, animated: true)
            case .failure(let error):
                print(error)
            }
