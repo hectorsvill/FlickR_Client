@@ -84,7 +84,7 @@ extension PhotoDetailViewController {
             present(alertController, animated: true)
             return
         }
-        let url = URL(string: "https://www.flickr.com/services/rest/?method=flickr.favorites.add")!
+        let url = URL(string: api.createFavoriteUrlString)!
         api.oauthSwift?.client.request(url, method: .POST, parameters: ["photo_id":"\(tagSearch!.id)", "format": "json"], headers: [:], body: nil, checkTokenExpiration: true, completionHandler: { result in
             switch result {
             case .success(let response):
@@ -269,3 +269,4 @@ extension PhotoDetailViewController: AddCommentDelegate {
         tableView.reloadData()
     }
 }
+
