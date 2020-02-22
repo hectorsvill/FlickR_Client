@@ -57,37 +57,22 @@ final class PhotoDetailViewController: UIViewController {
     }
 
     @objc func imageTapped() {
-        UIView.animate(withDuration: 1.0, delay: 0,  options: [], animations: {
-            self.photoImageView.frame = UIScreen.main.bounds
+//        self.photoImageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
 
+        UIView.animate(withDuration: 1.0, delay: 0.5,  options: [.curveEaseOut], animations: {
+            self.photoImageView.center = self.view.center
+            self.tableView.isHidden = true
+            self.segmentedControl.isHidden = true
         }) { _ in
-            let viewController = ImageDetailViewController()
-            viewController.image = self.photoImageView.image
-            viewController.modalPresentationStyle = .fullScreen
-            self.present(viewController, animated: false)
+            self.photoImageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = false
+//            let viewController = ImageDetailViewController()
+//            viewController.image = self.photoImageView.image
+//            viewController.modalPresentationStyle = .fullScreen
+//            self.present(viewController, animated: false)
         }
 
     }
 }
-
-// MARK: TransitioningDelegate
-//extension PhotoDetailViewController: UIViewControllerTransitioningDelegate {
-//    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        let superView = photoImageView.superview!
-//        transition.originFrame = superView.convert(superView.frame, to: nil)
-//
-////        transition.originFrame = CGRect(x: transition.originFrame.origin.x, y: transition.originFrame.origin.y, width: transition.originFrame.size.width , height: transition.originFrame.size.height )
-//
-//        transition.presenting = true
-//
-//        return transition
-//    }
-//
-//    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        transition.presenting = false
-//        return nil
-//    }
-//}
 
 extension PhotoDetailViewController {
     func setupViews() {
