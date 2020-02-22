@@ -81,8 +81,8 @@ extension CommentViewController {
     }
 
     @objc func addcommentButtonPressed() {
-        guard !commentTextView.text.isEmpty,
-            let text = commentTextView.text, let photoID = photoID else { return }
+        guard !commentTextView.text.isEmpty, let text = commentTextView.text, let photoID = photoID else { return }
+
         api.oauthSwift?.client.request(api.serviceAddCommentURL, method: .POST, parameters: ["photo_id":"\(photoID)", "comment_text":text,"format": "json"], headers: [:], body: nil, checkTokenExpiration: true, completionHandler: { result in
             switch result {
             case .success(let response):
@@ -105,9 +105,7 @@ extension CommentViewController {
                print(error)
            }
         })
-
     }
-
 }
 
 

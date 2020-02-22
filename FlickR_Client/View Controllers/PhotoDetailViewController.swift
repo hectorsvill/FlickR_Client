@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import OAuthSwift
 
 final class PhotoDetailViewController: UIViewController {
+
     var api: FlickR_API!
     var tagSearch: TagSearch?
     let activityIndicator = UIActivityIndicatorView()
@@ -16,6 +18,8 @@ final class PhotoDetailViewController: UIViewController {
     let tableView = UITableView()
     var metaDataDictionary: [(String, String)] = []
     var photoComments: [PhotoComment] = []
+
+    let transition = PopAnimator()
 
     var photoImageView: UIImageView = {
         let image = UIImageView()
@@ -35,7 +39,6 @@ final class PhotoDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewDidLoad()
-
         let thumbsupImage = UIImage(systemName: "hand.thumbsup")
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: thumbsupImage, style: .plain, target: self, action: #selector(likeButtonPressed))
     }
@@ -52,13 +55,51 @@ final class PhotoDetailViewController: UIViewController {
         fetchPhotoDetail()
         setupTagTableView()
     }
+
+    @objc func imageTapped() {
+        UIView.animate(withDuration: 1.0, delay: 0,  options: [], animations: {
+            self.photoImageView.frame = UIScreen.main.bounds
+
+        }) { _ in
+            let viewController = ImageDetailViewController()
+            viewController.image = self.photoImageView.image
+            viewController.modalPresentationStyle = .fullScreen
+            self.present(viewController, animated: false)
+        }
+
+    }
 }
+
+// MARK: TransitioningDelegate
+//extension PhotoDetailViewController: UIViewControllerTransitioningDelegate {
+//    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        let superView = photoImageView.superview!
+//        transition.originFrame = superView.convert(superView.frame, to: nil)
+//
+////        transition.originFrame = CGRect(x: transition.originFrame.origin.x, y: transition.originFrame.origin.y, width: transition.originFrame.size.width , height: transition.originFrame.size.height )
+//
+//        transition.presenting = true
+//
+//        return transition
+//    }
+//
+//    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        transition.presenting = false
+//        return nil
+//    }
+//}
 
 extension PhotoDetailViewController {
     func setupViews() {
         view.backgroundColor = UIColor().flickr_logoColor()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(photoImageView)
+
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        tapGestureRecognizer.numberOfTapsRequired = 1
+        photoImageView.isUserInteractionEnabled = true
+        photoImageView.addGestureRecognizer(tapGestureRecognizer)
+
         view.addSubview(tableView)
         view.addSubview(segmentedControl)
 
@@ -79,9 +120,7 @@ extension PhotoDetailViewController {
 
     @objc func likeButtonPressed() {
         guard !api.authToken.isEmpty else {
-            let alertController = UIAlertController(title: "Auth Error", message: "Please Log In", preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "OK", style: .default))
-            present(alertController, animated: true)
+            self.doOAuthFlickr()
             return
         }
 
@@ -234,9 +273,10 @@ extension PhotoDetailViewController: UITableViewDataSource {
 
     @objc func commentButtonPressed() {
         guard !api.authToken.isEmpty else {
-            let alertController = UIAlertController(title: "Auth Error", message: "Please Log In", preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "OK", style: .default))
-            present(alertController, animated: true)
+            self.doOAuthFlickr()
+//            let alertController = UIAlertController(title: "Auth Error", message: "Please Log In", preferredStyle: .alert)
+//            alertController.addAction(UIAlertAction(title: "OK", style: .default))
+//            present(alertController, animated: true)
             return
         }
 
@@ -270,3 +310,52 @@ extension PhotoDetailViewController: AddCommentDelegate {
     }
 }
 
+extension PhotoDetailViewController: OAuthWebViewControllerDelegate {
+
+    func oauthWebViewControllerDidPresent() {
+    }
+
+    func oauthWebViewControllerDidDismiss() {
+    }
+
+    func oauthWebViewControllerWillAppear() {
+    }
+
+    func oauthWebViewControllerDidAppear() {
+    }
+
+    func oauthWebViewControllerWillDisappear() {
+    }
+
+    func oauthWebViewControllerDidDisappear() {
+        api.oauthSwift?.cancel()
+    }
+
+    @objc func doOAuthFlickr(){
+        let oauthswift = OAuth1Swift(
+            consumerKey: api.myKey,
+            consumerSecret: api.mySecret,
+            requestTokenUrl: "https://www.flickr.com/services/oauth/request_token",
+            authorizeUrl:    "https://www.flickr.com/services/oauth/authorize",
+            accessTokenUrl:  "https://www.flickr.com/services/oauth/access_token"
+        )
+
+        self.api.oauthSwift = oauthswift
+
+        oauthswift.authorizeURLHandler = SafariURLHandler(viewController: self, oauthSwift: self.api.oauthSwift!)
+
+        let _ = oauthswift.authorize(withCallbackURL: URL(string: "oauth-swift://oauth-callback/flickr")!) { result in
+            switch result {
+            case .success(let (credential, _, parameters)):
+                self.api.authToken = credential.oauthToken
+                self.api.authTokenSecret =  credential.oauthTokenSecret
+                self.api.userName = parameters["username"] as! String
+
+
+//                self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log Out", style: .done, target: self, action: #selector(self.logOutButtonPressed))
+            case .failure(let error):
+                print(error.description)
+            }
+        }
+    }
+}

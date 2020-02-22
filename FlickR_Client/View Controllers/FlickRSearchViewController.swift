@@ -32,6 +32,14 @@ final class FlickRSearchViewController: UIViewController {
         setupView()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if !api.authToken.isEmpty {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log Out", style: .done, target: self, action: #selector(self.logOutButtonPressed))
+        }
+    }
+
     private func setupView() {
         photoFetchQueue.name = "com.hectorstevenvillasano.andIQuote.FlickR-Client"
         activityIndicator.center = view.center
@@ -54,7 +62,6 @@ final class FlickRSearchViewController: UIViewController {
         flickrLogoImageView.isHidden = false
         searchBar.text = nil
         searchBar.resignFirstResponder()
-        setupCollectionView()
         setupCollectionView()
         configureDataSource(with: [])
     }
@@ -244,7 +251,6 @@ extension FlickRSearchViewController: OAuthWebViewControllerDelegate {
                 self.api.authToken = credential.oauthToken
                 self.api.authTokenSecret =  credential.oauthTokenSecret
                 self.api.userName = parameters["username"] as! String
-                print("token: \(credential.oauthToken) \n secret: \(credential.oauthTokenSecret), \(parameters), ")
                 self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log Out", style: .done, target: self, action: #selector(self.logOutButtonPressed))
             case .failure(let error):
                 print(error.description)

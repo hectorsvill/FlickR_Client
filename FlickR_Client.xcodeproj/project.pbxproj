@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		123E2D2123FF07B000CC2FD6 /* ImageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123E2D2023FF07B000CC2FD6 /* ImageDetailViewController.swift */; };
+		123E2D2323FF166B00CC2FD6 /* PopAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123E2D2223FF166B00CC2FD6 /* PopAnimator.swift */; };
 		127D2F8D23EF374000DA9572 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D2F8C23EF374000DA9572 /* Cache.swift */; };
 		127D2F8F23EF3C1C00DA9572 /* FetchPhotoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D2F8E23EF3C1C00DA9572 /* FetchPhotoOperation.swift */; };
 		127D2F9223EF3C8A00DA9572 /* ConcurrentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D2F9123EF3C8A00DA9572 /* ConcurrentOperation.swift */; };
@@ -30,6 +32,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		123E2D2023FF07B000CC2FD6 /* ImageDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailViewController.swift; sourceTree = "<group>"; };
+		123E2D2223FF166B00CC2FD6 /* PopAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopAnimator.swift; sourceTree = "<group>"; };
 		127D2F8C23EF374000DA9572 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		127D2F8E23EF3C1C00DA9572 /* FetchPhotoOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchPhotoOperation.swift; sourceTree = "<group>"; };
 		127D2F9123EF3C8A00DA9572 /* ConcurrentOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcurrentOperation.swift; sourceTree = "<group>"; };
@@ -142,6 +146,7 @@
 			children = (
 				12835EE823EDFFE600CB6813 /* FlickRSearchViewController.swift */,
 				12835EED23EE3FF700CB6813 /* PhotoDetailViewController.swift */,
+				123E2D2023FF07B000CC2FD6 /* ImageDetailViewController.swift */,
 				12ADB25323F37E0C00FF9C67 /* CommentViewController.swift */,
 				12835EEC23EE2EA300CB6813 /* Views */,
 			);
@@ -151,6 +156,7 @@
 		12835EE223EDDBE600CB6813 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				123E2D2223FF166B00CC2FD6 /* PopAnimator.swift */,
 				12835EE023EDDA2100CB6813 /* TagSearch.swift */,
 				12835EE523EDFAD500CB6813 /* PhotoDetail.swift */,
 				127D2F9B23F11AE400DA9572 /* PhotoComment.swift */,
@@ -311,10 +317,12 @@
 				12835EE623EDFAD500CB6813 /* PhotoDetail.swift in Sources */,
 				12ADB25423F37E0C00FF9C67 /* CommentViewController.swift in Sources */,
 				12835ECC23EDD84000CB6813 /* AppDelegate.swift in Sources */,
+				123E2D2323FF166B00CC2FD6 /* PopAnimator.swift in Sources */,
 				127D2F9623EFBBFB00DA9572 /* UIColor+BackgroundColor.swift in Sources */,
 				12ADB25023F37B8100FF9C67 /* CommentTableViewCell.swift in Sources */,
 				12835EEB23EE2E9000CB6813 /* TagSearchImageCollectionViewCell.swift in Sources */,
 				12835ECE23EDD84000CB6813 /* SceneDelegate.swift in Sources */,
+				123E2D2123FF07B000CC2FD6 /* ImageDetailViewController.swift in Sources */,
 				12835EEE23EE3FF700CB6813 /* PhotoDetailViewController.swift in Sources */,
 				12835EE923EDFFE600CB6813 /* FlickRSearchViewController.swift in Sources */,
 			);
@@ -471,7 +479,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hectorstevenvillasano.andIQuote.FlickR-Client";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -490,7 +498,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hectorstevenvillasano.andIQuote.FlickR-Client";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

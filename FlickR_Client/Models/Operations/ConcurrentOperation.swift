@@ -9,7 +9,7 @@
 import Foundation
 
 class ConcurrentOperation: Operation {
-    private let stateQueue = DispatchQueue(label: "com.hectorstevenvillasano.andIQuote.FlickR-Client.ConcuttentOperationQueue")
+    private let stateQueue = DispatchQueue(label: "com.hectorstevenvillasano.andIQuote.FlickR-Client.ConcurrentOperationQueue")
 
     enum State: String {
         case isReady, isExecuting, isFinished
