@@ -39,20 +39,13 @@ class ImageDetailViewController: UIViewController, UIViewControllerTransitioning
         view.backgroundColor = UIColor().flickr_logoColor()
         setupView()
     }
-
-    @objc func exitButtonPressed() {
-
-        dismiss(animated: true)
-    }
-}
-
-extension ImageDetailViewController: UIScrollViewDelegate {
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        imageView
-    }
 }
 
 extension ImageDetailViewController {
+    @objc func exitButtonPressed() {
+
+        dismiss(animated: false)
+    }
     private func setupView() {
         guard let image = image else { return }
         imageView.image = image
@@ -61,18 +54,10 @@ extension ImageDetailViewController {
         scrollView.minimumZoomScale = 1.0
         scrollView.maximumZoomScale = 6.0
         scrollView.delegate = self
-        view.addSubview(exitButton)
-        exitButton.addTarget(self, action: #selector(exitButtonPressed), for: .touchUpInside)
-
         scrollView.addSubview(imageView)
 
         NSLayoutConstraint.activate([
-            exitButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            exitButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
-            exitButton.heightAnchor.constraint(equalToConstant: 50),
-
-
-            scrollView.topAnchor.constraint(equalTo: exitButton.bottomAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             scrollView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
             scrollView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
@@ -85,3 +70,8 @@ extension ImageDetailViewController {
     }
 }
 
+extension ImageDetailViewController: UIScrollViewDelegate {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        imageView
+    }
+}

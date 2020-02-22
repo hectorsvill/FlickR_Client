@@ -68,7 +68,7 @@ final class PhotoDetailViewController: UIViewController {
     @objc func imageTapped() {
 //        self.photoImageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
 
-        UIView.animate(withDuration: 0.5, delay: 0,  options: [.curveEaseOut], animations: {
+        UIView.animate(withDuration: 0.3, delay: 0,  options: [.curveEaseOut], animations: {
 
             self.photoImageView.center.y =  self.view.center.y
             self.tableView.isHidden = true
@@ -77,11 +77,13 @@ final class PhotoDetailViewController: UIViewController {
             let viewController = ImageDetailViewController()
             viewController.image = self.photoImageView.image
             viewController.modalPresentationStyle = .fullScreen
-            self.present(viewController, animated: false) {
+            self.navigationController?.pushViewController(viewController, animated: false)
+
+//            present(viewController, animated: false) {
                 self.photoImageView.center.y += self.centerY
                 self.tableView.isHidden = false
                 self.segmentedControl.isHidden = false
-            }
+//            }
 
 
 
