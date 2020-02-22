@@ -19,6 +19,8 @@ final class PhotoDetailViewController: UIViewController {
     var metaDataDictionary: [(String, String)] = []
     var photoComments: [PhotoComment] = []
 
+    var center: CGPoint!
+
     let transition = PopAnimator()
 
     var photoImageView: UIImageView = {
@@ -54,7 +56,11 @@ final class PhotoDetailViewController: UIViewController {
         setupViews()
         fetchPhotoDetail()
         setupTagTableView()
+
+        center = photoImageView.center
+
     }
+
 
     @objc func imageTapped() {
 //        self.photoImageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
@@ -64,11 +70,13 @@ final class PhotoDetailViewController: UIViewController {
             self.tableView.isHidden = true
             self.segmentedControl.isHidden = true
         }) { _ in
-            self.photoImageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = false
-//            let viewController = ImageDetailViewController()
-//            viewController.image = self.photoImageView.image
-//            viewController.modalPresentationStyle = .fullScreen
-//            self.present(viewController, animated: false)
+            self.photoImageView.center = self.center
+            self.tableView.isHidden = false
+            self.segmentedControl.isHidden = false
+            let viewController = ImageDetailViewController()
+            viewController.image = self.photoImageView.image
+            viewController.modalPresentationStyle = .fullScreen
+            self.present(viewController, animated: false)
         }
 
     }
