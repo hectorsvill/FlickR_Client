@@ -43,9 +43,9 @@ class ImageDetailViewController: UIViewController, UIViewControllerTransitioning
 
 extension ImageDetailViewController {
     @objc func exitButtonPressed() {
-
         dismiss(animated: false)
     }
+
     private func setupView() {
         guard let image = image else { return }
         imageView.image = image
@@ -63,10 +63,8 @@ extension ImageDetailViewController {
             scrollView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
             imageView.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor),
             imageView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            imageView.heightAnchor.constraint(equalToConstant: 325),
-
+//            imageView.heightAnchor.constraint(equalToConstant: 325),
         ])
-
     }
 }
 

@@ -30,6 +30,10 @@ final class FlickRSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+
+
+
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -53,8 +57,9 @@ final class FlickRSearchViewController: UIViewController {
         navigationController?.navigationBar.tintColor = UIColor().flickr_logoColor()
         searchBar.delegate = self
         searchBar.backgroundColor = UIColor().flickr_logoColor()
-        searchBar.text = "Mountains"
-        searchTag(with: "Mountains")
+        let search = "Art"
+        searchBar.text = search
+        searchTag(with: search)
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log In", style: .done, target: self, action: #selector(doOAuthFlickr))
     }
 
@@ -96,14 +101,15 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
     }
 
     func setupCollectionView() {
-        collectionView.collectionViewLayout = createLayout()
+        //collectionView.collectionViewLayout = PinterestLayout()//createLayout()
+
+        collectionView?.contentInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         collectionView.delegate = self
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = UIColor().flickr_logoColor()
 
         dataSource = UICollectionViewDiffableDataSource<Int, TagSearch>(collectionView: collectionView) { collectionView, indexPath, tagSearch -> UICollectionViewCell? in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchImageCollectionViewCell else { return UICollectionViewCell() }
-            cell.titleLable.text = tagSearch.title.isEmpty ? "no title" : tagSearch.title
             self.loadImage(cell: cell, indexPath: indexPath)
             return cell
         }
@@ -115,6 +121,11 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         snapShot.appendItems(dataSource.snapshot().itemIdentifiers)
         snapShot.appendItems(results)
         dataSource.apply(snapShot, animatingDifferences: false)
+        collectionView.collectionViewLayout = PinterestLayout()
+        if let layout = collectionView?.collectionViewLayout as? PinterestLayout {
+            layout.delegate = self
+        }
+
     }
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -136,7 +147,18 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         }
     }
 }
+extension FlickRSearchViewController: PinterestLayoutDelegate  {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let itemSize = (collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right + 10)) / 2
 
+        return CGSize(width: itemSize, height: itemSize)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+        guard let data = cache.value(for: indexPath.item), let image = UIImage(data: data) else { return 0}
+        return image.size.height
+    }
+}
 
 extension FlickRSearchViewController {
     @objc func fetchNextData() {
@@ -148,6 +170,7 @@ extension FlickRSearchViewController {
             guard let tagSearch = tagSearch else { return }
             DispatchQueue.main.async {
                 self.configureDataSource(with: tagSearch)
+
             }
         }
     }

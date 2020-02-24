@@ -22,32 +22,21 @@ class TagSearchImageCollectionViewCell: UICollectionViewCell {
         return imageView
     } ()
 
-    var titleLable: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.italicSystemFont(ofSize: 13)
-        label.textAlignment = .center
-        label.textColor = .black
-        return label
-    }()
-
     func setupViews() {
         layer.borderColor = UIColor.systemBlue.cgColor
+        contentView.layer.cornerRadius = 7
+        contentView.clipsToBounds = true
         contentView.addSubview(imageView)
-        contentView.addSubview(titleLable)
+
+        contentView.backgroundColor = .red
         imageView.frame = frame
         imageView.image = #imageLiteral(resourceName: "flickR_logo")
 
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            imageView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -40),
+            imageView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
             imageView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor),
             imageView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor),
-
-            titleLable.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
-            titleLable.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: 16),
-            titleLable.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -16),
-
         ])
     }
 }
