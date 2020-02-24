@@ -28,7 +28,6 @@ class TagSearchImageCollectionViewCell: UICollectionViewCell {
         contentView.clipsToBounds = true
         contentView.addSubview(imageView)
 
-        contentView.backgroundColor = .red
         imageView.frame = frame
         imageView.image = #imageLiteral(resourceName: "flickR_logo")
 
