@@ -19,12 +19,7 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="kUH-3I-8Bm">
                                 <rect key="frame" x="8" y="156" width="398" height="720"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mm2-qr-eaz">
-                                    <size key="itemSize" width="65" height="86"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
+                                <collectionViewLayout key="collectionViewLayout" id="9en-hV-gM9" customClass="PinterestLayout" customModule="FlickR_Client" customModuleProvider="target"/>
                                 <imageView key="backgroundView" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="flickR_logo" id="YpK-qk-En3">
                                     <rect key="frame" x="0.0" y="0.0" width="398" height="720"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

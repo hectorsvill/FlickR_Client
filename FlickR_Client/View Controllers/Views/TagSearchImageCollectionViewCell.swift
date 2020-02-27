@@ -17,13 +17,15 @@ class TagSearchImageCollectionViewCell: UICollectionViewCell {
     var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 20
         return imageView
     } ()
 
     func setupViews() {
-        layer.borderColor = UIColor.systemBlue.cgColor
+        layer.borderColor = UIColor.white.cgColor
+        layer.borderWidth = 3
+        layer.cornerRadius = 7
         contentView.layer.cornerRadius = 7
         contentView.clipsToBounds = true
         contentView.addSubview(imageView)
