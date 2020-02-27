@@ -109,6 +109,7 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
 
         dataSource = UICollectionViewDiffableDataSource<Int, TagSearch>(collectionView: collectionView) { [weak self] collectionView, indexPath, tagSearch -> UICollectionViewCell? in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchImageCollectionViewCell else { return UICollectionViewCell() }
+            cell.imageView.image = UIImage()
             self?.loadImage(cell: cell, indexPath: indexPath)
             return cell
         }
@@ -207,7 +208,7 @@ extension FlickRSearchViewController {
     func loadImage(cell: TagSearchImageCollectionViewCell, indexPath: IndexPath) {
         if let data = cache.value(for: indexPath.item), let image = UIImage(data: data) {
             cell.imageView.image = image
-            return 
+            return
         }
         
         let tagSearch = dataSource.snapshot().itemIdentifiers[indexPath.item]
