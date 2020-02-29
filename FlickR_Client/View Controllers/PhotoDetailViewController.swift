@@ -10,7 +10,6 @@ import UIKit
 import OAuthSwift
 
 final class PhotoDetailViewController: UIViewController {
-
     var api: FlickR_API!
     var tagSearch: TagSearch?
     let activityIndicator = UIActivityIndicatorView()
@@ -301,24 +300,8 @@ extension PhotoDetailViewController: AddCommentDelegate {
     }
 }
 
-extension PhotoDetailViewController: OAuthWebViewControllerDelegate {
-
-    func oauthWebViewControllerDidPresent() {
-    }
-
-    func oauthWebViewControllerDidDismiss() {
-    }
-
-    func oauthWebViewControllerWillAppear() {
-    }
-
-    func oauthWebViewControllerDidAppear() {
-    }
-
-    func oauthWebViewControllerWillDisappear() {
-    }
-
-    func oauthWebViewControllerDidDisappear() {
+extension PhotoDetailViewController {
+    override func oauthWebViewControllerDidDisappear() {
         api.oauthSwift?.cancel()
     }
 

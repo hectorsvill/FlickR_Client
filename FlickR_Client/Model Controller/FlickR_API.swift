@@ -63,6 +63,7 @@ class FlickR_API {
     func fetchImageDetail(with tagSearch: TagSearch, completion: @escaping (PhotoDetail? , Error?) -> ()) {
         let urlString = createPhotoDetailUrlString(with: tagSearch)
         let url = URL(string: urlString)!
+
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error, let response = response as? HTTPURLResponse {
                 completion(nil, error)
@@ -87,6 +88,7 @@ class FlickR_API {
     func fetchPhotoComments(id: String, completion: @escaping ([PhotoComment]? , Error?) -> ()) {
         let urlString = createFetchCommentsUrlString(id: id)
         let url = URL(string: urlString)!
+
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error, let response = response as? HTTPURLResponse {
                 completion(nil, error)
@@ -135,3 +137,4 @@ class FlickR_API {
         return URL(string: "https://www.flickr.com/services/rest/?method=flickr.favorites.getList")!
     }
 }
+

@@ -11,8 +11,11 @@ import UIKit
 import OAuthSwift
 
 final class FlickRSearchViewController: UIViewController {
-    var sizes: [CGFloat] = []
+//    var sizes: [CGFloat] = []
     typealias collectionDataSource = UICollectionViewDiffableDataSource<Int, TagSearch>
+    @IBOutlet weak var collectionView: UICollectionView!
+    var dataSource: collectionDataSource! = nil
+
     let activityIndicator = UIActivityIndicatorView()
     let api = FlickR_API()
     var cache = Cache<Int, Data>()
@@ -22,8 +25,6 @@ final class FlickRSearchViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var flickrLogoImageView: UIImageView!
 
-    @IBOutlet weak var collectionView: UICollectionView!
-    var dataSource: collectionDataSource! = nil
     var currentPage = 1
     var currentTagSearch = ""
     @IBOutlet weak var flickR_logo: UIImageView!
@@ -79,6 +80,10 @@ extension FlickRSearchViewController: UISearchBarDelegate {
 
 // MARK: UICollectionViewDelegate
 extension FlickRSearchViewController: UICollectionViewDelegate {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        searchBar.resignFirstResponder()
+    }
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
          let tagSearch = dataSource.snapshot().itemIdentifiers[indexPath.item]
          let photoDetailView = PhotoDetailViewController()
@@ -108,10 +113,14 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         //            layout.delegate = self
         //        }
 
-        dataSource = UICollectionViewDiffableDataSource<Int, TagSearch>(collectionView: collectionView) { [weak self] collectionView, indexPath, tagSearch -> UICollectionViewCell? in
+        dataSource = UICollectionViewDiffableDataSource<Int, TagSearch>(collectionView: collectionView) {
+            [weak self] collectionView, indexPath, tagSearch -> UICollectionViewCell? in
+
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchImageCollectionViewCell else { return UICollectionViewCell() }
+
             cell.imageView.image = UIImage()
             self?.loadImage(cell: cell, indexPath: indexPath)
+
             return cell
         }
     }
@@ -143,17 +152,10 @@ extension FlickRSearchViewController {
         snapShot.appendItems(dataSource.snapshot().itemIdentifiers)
         snapShot.appendItems(results)
 
-
-        for _ in snapShot.itemIdentifiers {
-            let size = CGFloat.random(in: 120...250)
-            sizes.append(size)
-        }
         dataSource.apply(snapShot, animatingDifferences: false)
     }
 
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        searchBar.resignFirstResponder()
-    }
+
 }
 
 // MARK: Networking
@@ -226,6 +228,42 @@ extension FlickRSearchViewController {
         fetchPhotoOperations[indexPath.item] = fetchPhotoOperation
     }
 }
+
+// MARK: OAuthWebViewControllerDelegate
+extension FlickRSearchViewController {
+    override func oauthWebViewControllerDidDisappear() {
+        api.oauthSwift?.cancel()
+    }
+
+    @objc func doOAuthFlickr(){
+        let oauthswift = OAuth1Swift(
+            consumerKey: api.myKey,
+            consumerSecret: api.mySecret,
+            requestTokenUrl: "https://www.flickr.com/services/oauth/request_token",
+            authorizeUrl:    "https://www.flickr.com/services/oauth/authorize",
+            accessTokenUrl:  "https://www.flickr.com/services/oauth/access_token"
+        )
+
+        self.api.oauthSwift = oauthswift
+        oauthswift.authorizeURLHandler = SafariURLHandler(viewController: self, oauthSwift: self.api.oauthSwift!)
+
+        let _ = oauthswift.authorize(withCallbackURL: URL(string: "oauth-swift://oauth-callback/flickr")!) { result in
+            switch result {
+            case .success(let (_, _, parameters)):
+                self.api.userName = parameters["username"] as! String
+                self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log Out", style: .done, target: self, action: #selector(self.logOutButtonPressed))
+            case .failure(let error):
+                print(error.description)
+            }
+        }
+    }
+
+    @objc func logOutButtonPressed() {
+        api.oauthSwift = nil
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log In", style: .done, target: self, action: #selector(doOAuthFlickr))
+    }
+}
+
 
 
 //extension FlickRSearchViewController: PinterestLayoutDelegate  {
