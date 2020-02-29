@@ -14,7 +14,7 @@ class FlickR_API {
     var mySecret =  UserDefaults().string(forKey: "mySecret_flickr") ?? "f07ff5f4115ae5d2"
     let count = 5
     var oauthSwift: OAuthSwift?
-    var userName = ""
+    var userName = ""  { didSet  {fetchFavoriteList { _ in }}}
 }
 
 extension FlickR_API {
@@ -140,5 +140,30 @@ extension FlickR_API {
             }
         }.resume()
     }
+
+    func fetchFavoriteList(completion: @escaping (Result<[TagSearch], Error>) -> ()) {
+        guard  let oauthSwift = oauthSwift else {
+            completion(.failure(NSError()))
+            return
+        }
+
+        oauthSwift.client.get(serviceFetchFavorites, parameters: ["format": "json"], headers: [:]) { result in
+            switch result {
+            case .success(let data):
+                var str = String(data: data.data, encoding: .utf8)!
+                str = str.replacingOccurrences(of: "jsonFlickrApi(", with: "")
+                str = str.replacingOccurrences(of: ")", with: "")
+
+                let newData = str.data(using: .utf8)!
+                let resultDict = try! JSONSerialization.jsonObject(with: newData, options: []) as! [String: AnyObject]
+                let result_photo = resultDict["photos"] as! NSDictionary
+                let result_photos = result_photo["photo"] as! [NSDictionary]
+                print("success: \(result_photos)")
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
 }
 
