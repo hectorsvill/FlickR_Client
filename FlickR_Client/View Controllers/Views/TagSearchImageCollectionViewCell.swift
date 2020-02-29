@@ -34,10 +34,10 @@ class TagSearchImageCollectionViewCell: UICollectionViewCell {
         imageView.image = #imageLiteral(resourceName: "flickR_logo")
 
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            imageView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
-            imageView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor),
-            imageView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor),
+            imageView.topAnchor.constraint(equalTo: topAnchor),
+            imageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -80),
+            imageView.leftAnchor.constraint(equalTo: leftAnchor),
+            imageView.rightAnchor.constraint(equalTo: rightAnchor),
         ])
     }
 }
