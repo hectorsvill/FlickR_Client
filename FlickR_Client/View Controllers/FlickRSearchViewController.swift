@@ -77,7 +77,47 @@ extension FlickRSearchViewController: UISearchBarDelegate {
     }
 }
 
+// MARK: UICollectionViewDelegate
 extension FlickRSearchViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+         let tagSearch = dataSource.snapshot().itemIdentifiers[indexPath.item]
+         let photoDetailView = PhotoDetailViewController()
+         photoDetailView.tagSearch = tagSearch
+         photoDetailView.api = api
+         navigationController?.pushViewController(photoDetailView, animated: true)
+     }
+
+     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+         if indexPath.item == dataSource.snapshot().itemIdentifiers.count - 1 {
+             currentPage += 1
+             self.perform(#selector(fetchNextData), with: nil)
+         }
+     }
+
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        fetchPhotoOperations[indexPath.row]?.cancel()
+    }
+
+    func setupCollectionView() {
+        collectionView.collectionViewLayout = createLayout()
+        collectionView.delegate = self
+        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        collectionView.backgroundColor = UIColor().flickr_logoColor()
+
+        //        if let layout = collectionView.collectionViewLayout as? PinterestLayout {
+        //            layout.delegate = self
+        //        }
+
+        dataSource = UICollectionViewDiffableDataSource<Int, TagSearch>(collectionView: collectionView) { [weak self] collectionView, indexPath, tagSearch -> UICollectionViewCell? in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchImageCollectionViewCell else { return UICollectionViewCell() }
+            cell.imageView.image = UIImage()
+            self?.loadImage(cell: cell, indexPath: indexPath)
+            return cell
+        }
+    }
+}
+
+extension FlickRSearchViewController {
     private func createLayout() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -97,24 +137,6 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         return  layout
     }
 
-    func setupCollectionView() {
-        collectionView.collectionViewLayout = createLayout()
-        collectionView.delegate = self
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        collectionView.backgroundColor = UIColor().flickr_logoColor()
-
-//        if let layout = collectionView.collectionViewLayout as? PinterestLayout {
-//            layout.delegate = self
-//        }
-
-        dataSource = UICollectionViewDiffableDataSource<Int, TagSearch>(collectionView: collectionView) { [weak self] collectionView, indexPath, tagSearch -> UICollectionViewCell? in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchImageCollectionViewCell else { return UICollectionViewCell() }
-            cell.imageView.image = UIImage()
-            self?.loadImage(cell: cell, indexPath: indexPath)
-            return cell
-        }
-    }
-
     func configureDataSource(with results: [TagSearch]) {
         var snapShot = NSDiffableDataSourceSnapshot<Int, TagSearch>()
         snapShot.appendSections([0])
@@ -132,42 +154,9 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         searchBar.resignFirstResponder()
     }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let tagSearch = dataSource.snapshot().itemIdentifiers[indexPath.item]
-        let photoDetailView = PhotoDetailViewController()
-        photoDetailView.tagSearch = tagSearch
-        photoDetailView.api = api
-        navigationController?.pushViewController(photoDetailView, animated: true)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-
-        if indexPath.item == dataSource.snapshot().itemIdentifiers.count - 1 {
-            currentPage += 1
-            self.perform(#selector(fetchNextData), with: nil)
-        }
-    }
-
-
 }
 
-//extension FlickRSearchViewController: PinterestLayoutDelegate  {
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let itemSize = (collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right + 10)) / 2
-//
-//        return CGSize(width: itemSize, height: itemSize)
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-////        guard let cell = collectionView.cellForItem(at: indexPath) as? TagSearchImageCollectionViewCell else { return CGFloat(40)}
-//
-//
-////        print(cell.imageView.image?.size.height)
-//        return sizes[indexPath.item]
-//    }
-//}
-
+// MARK: Networking
 extension FlickRSearchViewController {
     @objc func fetchNextData() {
         api.fetchTagSearch(with: currentTagSearch, page: currentPage) { tagSearch, error in
@@ -187,6 +176,7 @@ extension FlickRSearchViewController {
         activityIndicator.startAnimating()
 
         let newText = api.textHelper(text)
+
         api.fetchTagSearch(with: newText) { tagSearch, error in
             if let error = error {
                 NSLog("\(error)")
@@ -235,59 +225,22 @@ extension FlickRSearchViewController {
         OperationQueue.main.addOperation(checkingForReUsedCell)
         fetchPhotoOperations[indexPath.item] = fetchPhotoOperation
     }
-
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        fetchPhotoOperations[indexPath.row]?.cancel()
-    }
 }
 
-// MARK: OAuthWebViewControllerDelegate
-extension FlickRSearchViewController: OAuthWebViewControllerDelegate {
-    func oauthWebViewControllerDidPresent() {
-    }
 
-    func oauthWebViewControllerDidDismiss() {
-    }
+//extension FlickRSearchViewController: PinterestLayoutDelegate  {
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        let itemSize = (collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right + 10)) / 2
+//
+//        return CGSize(width: itemSize, height: itemSize)
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+////        guard let cell = collectionView.cellForItem(at: indexPath) as? TagSearchImageCollectionViewCell else { return CGFloat(40)}
+//
+//
+////        print(cell.imageView.image?.size.height)
+//        return sizes[indexPath.item]
+//    }
+//}
 
-    func oauthWebViewControllerWillAppear() {
-    }
-
-    func oauthWebViewControllerDidAppear() {
-    }
-
-    func oauthWebViewControllerWillDisappear() {
-    }
-
-    func oauthWebViewControllerDidDisappear() {
-        api.oauthSwift?.cancel()
-    }
-
-    @objc func doOAuthFlickr(){
-        let oauthswift = OAuth1Swift(
-            consumerKey: api.myKey,
-            consumerSecret: api.mySecret,
-            requestTokenUrl: "https://www.flickr.com/services/oauth/request_token",
-            authorizeUrl:    "https://www.flickr.com/services/oauth/authorize",
-            accessTokenUrl:  "https://www.flickr.com/services/oauth/access_token"
-        )
-
-        self.api.oauthSwift = oauthswift
-
-        oauthswift.authorizeURLHandler = SafariURLHandler(viewController: self, oauthSwift: self.api.oauthSwift!)
-
-        let _ = oauthswift.authorize(withCallbackURL: URL(string: "oauth-swift://oauth-callback/flickr")!) { result in
-            switch result {
-            case .success(let (_, _, parameters)):
-                self.api.userName = parameters["username"] as! String
-                self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log Out", style: .done, target: self, action: #selector(self.logOutButtonPressed))
-            case .failure(let error):
-                print(error.description)
-            }
-        }
-    }
-
-    @objc func logOutButtonPressed() {
-        api.oauthSwift = nil
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log In", style: .done, target: self, action: #selector(doOAuthFlickr))
-    }
-}

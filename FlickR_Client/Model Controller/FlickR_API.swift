@@ -14,11 +14,10 @@ class FlickR_API {
     var mySecret =  UserDefaults().string(forKey: "mySecret_flickr") ?? "f07ff5f4115ae5d2"
     let count = 5
     var oauthSwift: OAuthSwift?
-    
     var userName = ""
 
     func textHelper(_ text: String) -> String{
-        text.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: " ", with: "+")
+        return text.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: " ", with: "+")
     }
 
     func fetchTagSearch(with tag: String, page: Int = 1, completion: @escaping ([TagSearch]?, Error?) -> ()) {
@@ -58,7 +57,6 @@ class FlickR_API {
 
             guard let data = data else { return }
             completion(data, nil)
-
         }.resume()
     }
 
@@ -114,22 +112,26 @@ class FlickR_API {
     }
 
     func createPhotoUrlString(with tagSearch: TagSearch, size: String = "m") -> String {
-        "https://farm\(tagSearch.farm).staticflickr.com/\(tagSearch.server)/\(tagSearch.id)_\(tagSearch.secret)_\(size).jpg"
+        return "https://farm\(tagSearch.farm).staticflickr.com/\(tagSearch.server)/\(tagSearch.id)_\(tagSearch.secret)_\(size).jpg"
     }
 
     func createPhotoDetailUrlString(with tagSearch: TagSearch) -> String {
-        "https://www.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=\(myKey)&photo_id=\(tagSearch.id)&secret=\(tagSearch.secret)&format=json&nojsoncallback=1"
+        return "https://www.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=\(myKey)&photo_id=\(tagSearch.id)&secret=\(tagSearch.secret)&format=json&nojsoncallback=1"
     }
 
     func createFetchCommentsUrlString(id: String) -> String {
-        "https://www.flickr.com/services/rest/?method=flickr.photos.comments.getList&api_key=\(myKey)&photo_id=\(id)&format=json&nojsoncallback=1"
+        return "https://www.flickr.com/services/rest/?method=flickr.photos.comments.getList&api_key=\(myKey)&photo_id=\(id)&format=json&nojsoncallback=1"
     }
 
     var serviceFavoiritesAddURL: URL {
-        URL(string: "https://www.flickr.com/services/rest/?method=flickr.favorites.add")!
+        return URL(string: "https://www.flickr.com/services/rest/?method=flickr.favorites.add")!
     }
 
     var serviceAddCommentURL: URL {
-        URL(string: "https://www.flickr.com/services/rest/?method=flickr.photos.comments.addComment")!
+        return URL(string: "https://www.flickr.com/services/rest/?method=flickr.photos.comments.addComment")!
+    }
+
+    var serviceFetchFavorites: URL {
+        return URL(string: "https://www.flickr.com/services/rest/?method=flickr.favorites.getList")!
     }
 }
