@@ -59,6 +59,7 @@ final class PhotoDetailViewController: UIViewController {
 
         centerY = photoImageView.center.y
     }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         centerY = photoImageView.center.y
@@ -66,10 +67,7 @@ final class PhotoDetailViewController: UIViewController {
     }
 
     @objc func imageTapped() {
-//        self.photoImageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-
         UIView.animate(withDuration: 0.3, delay: 0,  options: [.curveEaseOut], animations: {
-
             self.photoImageView.center.y =  self.view.center.y
             self.tableView.isHidden = true
             self.segmentedControl.isHidden = true
@@ -78,17 +76,10 @@ final class PhotoDetailViewController: UIViewController {
             viewController.image = self.photoImageView.image
             viewController.modalPresentationStyle = .fullScreen
             self.navigationController?.pushViewController(viewController, animated: false)
-
-//            present(viewController, animated: false) {
-                self.photoImageView.center.y += self.centerY
-                self.tableView.isHidden = false
-                self.segmentedControl.isHidden = false
-//            }
-
-
-
+            self.photoImageView.center.y += self.centerY
+            self.tableView.isHidden = false
+            self.segmentedControl.isHidden = false
         }
-
     }
 }
 
@@ -122,7 +113,7 @@ extension PhotoDetailViewController {
     }
 
     @objc func likeButtonPressed() {
-        guard !api.authToken.isEmpty else {
+        guard let _ = api.oauthSwift else {
             self.doOAuthFlickr()
             return
         }
@@ -275,11 +266,8 @@ extension PhotoDetailViewController: UITableViewDataSource {
     }
 
     @objc func commentButtonPressed() {
-        guard !api.authToken.isEmpty else {
+        guard let _ = api.oauthSwift else {
             self.doOAuthFlickr()
-//            let alertController = UIAlertController(title: "Auth Error", message: "Please Log In", preferredStyle: .alert)
-//            alertController.addAction(UIAlertAction(title: "OK", style: .default))
-//            present(alertController, animated: true)
             return
         }
 
@@ -349,13 +337,8 @@ extension PhotoDetailViewController: OAuthWebViewControllerDelegate {
 
         let _ = oauthswift.authorize(withCallbackURL: URL(string: "oauth-swift://oauth-callback/flickr")!) { result in
             switch result {
-            case .success(let (credential, _, parameters)):
-                self.api.authToken = credential.oauthToken
-                self.api.authTokenSecret =  credential.oauthTokenSecret
+            case .success(let (_, _, parameters)):
                 self.api.userName = parameters["username"] as! String
-
-
-//                self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log Out", style: .done, target: self, action: #selector(self.logOutButtonPressed))
             case .failure(let error):
                 print(error.description)
             }

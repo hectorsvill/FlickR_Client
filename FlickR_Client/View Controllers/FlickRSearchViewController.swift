@@ -36,7 +36,7 @@ final class FlickRSearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if !api.authToken.isEmpty {
+        if let _ = api.oauthSwift {
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log Out", style: .done, target: self, action: #selector(self.logOutButtonPressed))
         }
     }
@@ -277,9 +277,7 @@ extension FlickRSearchViewController: OAuthWebViewControllerDelegate {
 
         let _ = oauthswift.authorize(withCallbackURL: URL(string: "oauth-swift://oauth-callback/flickr")!) { result in
             switch result {
-            case .success(let (credential, _, parameters)):
-                self.api.authToken = credential.oauthToken
-                self.api.authTokenSecret =  credential.oauthTokenSecret
+            case .success(let (_, _, parameters)):
                 self.api.userName = parameters["username"] as! String
                 self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log Out", style: .done, target: self, action: #selector(self.logOutButtonPressed))
             case .failure(let error):
@@ -289,8 +287,6 @@ extension FlickRSearchViewController: OAuthWebViewControllerDelegate {
     }
 
     @objc func logOutButtonPressed() {
-        api.authToken = ""
-        api.authTokenSecret = ""
         api.oauthSwift = nil
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log In", style: .done, target: self, action: #selector(doOAuthFlickr))
     }

@@ -14,8 +14,7 @@ class FlickR_API {
     var mySecret =  UserDefaults().string(forKey: "mySecret_flickr") ?? "f07ff5f4115ae5d2"
     let count = 5
     var oauthSwift: OAuthSwift?
-    var authToken = ""
-    var authTokenSecret = ""
+    
     var userName = ""
 
     func textHelper(_ text: String) -> String{

@@ -63,13 +63,13 @@ extension ImageDetailViewController {
             scrollView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
             imageView.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor),
             imageView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-//            imageView.heightAnchor.constraint(equalToConstant: 325),
+
         ])
     }
 }
 
 extension ImageDetailViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        imageView
+        return imageView
     }
 }
