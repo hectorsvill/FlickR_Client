@@ -11,16 +11,29 @@ import OAuthSwift
 
 // MARK: OAuthWebViewControllerDelegate
 extension UIViewController: OAuthWebViewControllerDelegate {
-    public func oauthWebViewControllerDidPresent() {}
+    public func oauthWebViewControllerDidPresent() {
+        print("oauthWebViewControllerDidPresent")
+    }
 
-    public func oauthWebViewControllerDidDismiss() {}
+    public func oauthWebViewControllerDidDismiss() {
+        print("oauthWebViewControllerDidPresent")
+    }
 
-    public func oauthWebViewControllerWillAppear() {}
+    public func oauthWebViewControllerWillAppear() {
+        print("oauthWebViewControllerDidPresent")
+    }
 
-    public func oauthWebViewControllerDidAppear() {}
+    public func oauthWebViewControllerDidAppear() {
+        print("oauthWebViewControllerDidPresent")
+    }
 
-    public func oauthWebViewControllerWillDisappear() {}
+    public func oauthWebViewControllerWillDisappear() {
+        print("oauthWebViewControllerDidPresent")
+    }
 
-    @objc public func oauthWebViewControllerDidDisappear() {}
+    public func oauthWebViewControllerDidDisappear() {
+        
+        print("oauthWebViewControllerDidPresent")
+    }
 }
 

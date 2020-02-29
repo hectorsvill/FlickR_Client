@@ -231,10 +231,6 @@ extension FlickRSearchViewController {
 
 // MARK: OAuthWebViewControllerDelegate
 extension FlickRSearchViewController {
-    override func oauthWebViewControllerDidDisappear() {
-        api.oauthSwift?.cancel()
-    }
-
     @objc func doOAuthFlickr(){
         let oauthswift = OAuth1Swift(
             consumerKey: api.myKey,

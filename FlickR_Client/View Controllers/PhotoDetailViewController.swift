@@ -301,10 +301,6 @@ extension PhotoDetailViewController: AddCommentDelegate {
 }
 
 extension PhotoDetailViewController {
-    override func oauthWebViewControllerDidDisappear() {
-        api.oauthSwift?.cancel()
-    }
-
     @objc func doOAuthFlickr(){
         let oauthswift = OAuth1Swift(
             consumerKey: api.myKey,
