@@ -21,7 +21,8 @@ struct Favorite {
     let server: String
     let title: String
 
-    init(date_faved: String, farm: Int, id: String, isfamily: Int, isfriend: Int, ispublic: Int, owner: String, secret: String, server: String, title: String) {
+    init(date_faved: String, farm: Int, id: String, isfamily: Int, isfriend: Int,
+         ispublic: Int, owner: String, secret: String, server: String, title: String) {
         self.date_faved = date_faved
         self.farm = farm
         self.id = id

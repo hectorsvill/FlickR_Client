@@ -40,7 +40,7 @@ final class FlickRSearchViewController: UIViewController {
         if let _ = api.oauthSwift {
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log Out", style: .done, target: self, action: #selector(self.logOutButtonPressed))
         } else {
-            navigateToLogIn()
+//            navigateToLogIn()
         }
     }
 
@@ -141,7 +141,7 @@ extension FlickRSearchViewController {
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.4))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
 
         let spacing = CGFloat(8)
 

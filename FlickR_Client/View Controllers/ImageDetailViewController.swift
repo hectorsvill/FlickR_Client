@@ -45,7 +45,6 @@ final class ImageDetailViewController: UIViewController {
 
     private func configureNavigationButtons() {
         let imageName = api.favorites.filter { $0.id == tagSearch!.id }.isEmpty ? "hand.thumbsup" : "hand.thumbsup.fill"
-        print(imageName)
         let thumbsupImage = UIImage(systemName: imageName)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: thumbsupImage, style: .plain, target: self, action: #selector(likeButtonPressed))
     }
