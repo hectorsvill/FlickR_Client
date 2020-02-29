@@ -40,7 +40,13 @@ final class ImageDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewDidLoad()
-        let thumbsupImage = UIImage(systemName: "hand.thumbsup")
+        configureNavigationButtons()
+    }
+
+    private func configureNavigationButtons() {
+        let imageName = api.favorites.filter { $0.id == tagSearch!.id }.isEmpty ? "hand.thumbsup" : "hand.thumbsup.fill"
+        print(imageName)
+        let thumbsupImage = UIImage(systemName: imageName)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: thumbsupImage, style: .plain, target: self, action: #selector(likeButtonPressed))
     }
 
@@ -131,7 +137,10 @@ extension ImageDetailViewController {
 
                 let alertController = UIAlertController(title: alertTitle, message: "", preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
-                self.present(alertController, animated: true)
+                self.present(alertController, animated: true) { 
+                    self.configureNavigationButtons()
+                }
+
             case .failure(let error):
                 print(error)
             }

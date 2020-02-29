@@ -15,6 +15,7 @@ class FlickR_API {
     let count = 5
     var oauthSwift: OAuthSwift?
     var userName = ""  { didSet  {fetchFavoriteList { _ in }}}
+    var favorites: [Favorite] = []
 }
 
 extension FlickR_API {
@@ -158,7 +159,12 @@ extension FlickR_API {
                 let resultDict = try! JSONSerialization.jsonObject(with: newData, options: []) as! [String: AnyObject]
                 let result_photo = resultDict["photos"] as! NSDictionary
                 let result_photos = result_photo["photo"] as! [NSDictionary]
-                print("success: \(result_photos)")
+
+                let favorites = result_photos.map {
+                    return Favorite(data: $0)
+                }
+
+                self.favorites = favorites
             case .failure(let error):
                 completion(.failure(error))
             }

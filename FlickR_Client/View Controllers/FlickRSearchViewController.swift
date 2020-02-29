@@ -256,6 +256,7 @@ extension FlickRSearchViewController {
 
     @objc func logOutButtonPressed() {
         api.oauthSwift = nil
+        api.userName = ""
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log In", style: .done, target: self, action: #selector(doOAuthFlickr))
     }
 }
