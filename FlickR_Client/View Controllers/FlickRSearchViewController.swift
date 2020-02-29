@@ -86,7 +86,7 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
          let tagSearch = dataSource.snapshot().itemIdentifiers[indexPath.item]
-         let photoDetailView = PhotoDetailViewController()
+         let photoDetailView = ImageDetailViewController()
          photoDetailView.tagSearch = tagSearch
          photoDetailView.api = api
          navigationController?.pushViewController(photoDetailView, animated: true)

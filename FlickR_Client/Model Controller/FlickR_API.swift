@@ -15,11 +15,39 @@ class FlickR_API {
     let count = 5
     var oauthSwift: OAuthSwift?
     var userName = ""
+}
 
+extension FlickR_API {
     func textHelper(_ text: String) -> String{
         return text.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: " ", with: "+")
     }
 
+    func createPhotoUrlString(with tagSearch: TagSearch, size: String = "m") -> String {
+         return "https://farm\(tagSearch.farm).staticflickr.com/\(tagSearch.server)/\(tagSearch.id)_\(tagSearch.secret)_\(size).jpg"
+     }
+
+     func createPhotoDetailUrlString(with tagSearch: TagSearch) -> String {
+         return "https://www.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=\(myKey)&photo_id=\(tagSearch.id)&secret=\(tagSearch.secret)&format=json&nojsoncallback=1"
+     }
+
+     func createFetchCommentsUrlString(id: String) -> String {
+         return "https://www.flickr.com/services/rest/?method=flickr.photos.comments.getList&api_key=\(myKey)&photo_id=\(id)&format=json&nojsoncallback=1"
+     }
+
+     var serviceFavoiritesAddURL: URL {
+         return URL(string: "https://www.flickr.com/services/rest/?method=flickr.favorites.add")!
+     }
+
+     var serviceAddCommentURL: URL {
+         return URL(string: "https://www.flickr.com/services/rest/?method=flickr.photos.comments.addComment")!
+     }
+
+     var serviceFetchFavorites: URL {
+         return URL(string: "https://www.flickr.com/services/rest/?method=flickr.favorites.getList")!
+     }
+}
+
+extension FlickR_API {
     func fetchTagSearch(with tag: String, page: Int = 1, completion: @escaping ([TagSearch]?, Error?) -> ()) {
         let urlString = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=\(myKey)&tags=\(tag)&per_page=\(count)&format=json&nojsoncallback=1&page=\(page)"
         let url = URL(string: urlString)
@@ -111,30 +139,6 @@ class FlickR_API {
                 completion(nil, error)
             }
         }.resume()
-    }
-
-    func createPhotoUrlString(with tagSearch: TagSearch, size: String = "m") -> String {
-        return "https://farm\(tagSearch.farm).staticflickr.com/\(tagSearch.server)/\(tagSearch.id)_\(tagSearch.secret)_\(size).jpg"
-    }
-
-    func createPhotoDetailUrlString(with tagSearch: TagSearch) -> String {
-        return "https://www.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=\(myKey)&photo_id=\(tagSearch.id)&secret=\(tagSearch.secret)&format=json&nojsoncallback=1"
-    }
-
-    func createFetchCommentsUrlString(id: String) -> String {
-        return "https://www.flickr.com/services/rest/?method=flickr.photos.comments.getList&api_key=\(myKey)&photo_id=\(id)&format=json&nojsoncallback=1"
-    }
-
-    var serviceFavoiritesAddURL: URL {
-        return URL(string: "https://www.flickr.com/services/rest/?method=flickr.favorites.add")!
-    }
-
-    var serviceAddCommentURL: URL {
-        return URL(string: "https://www.flickr.com/services/rest/?method=flickr.photos.comments.addComment")!
-    }
-
-    var serviceFetchFavorites: URL {
-        return URL(string: "https://www.flickr.com/services/rest/?method=flickr.favorites.getList")!
     }
 }
 
