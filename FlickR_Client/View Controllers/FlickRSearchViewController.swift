@@ -40,11 +40,15 @@ final class FlickRSearchViewController: UIViewController {
         if let _ = api.oauthSwift {
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log Out", style: .done, target: self, action: #selector(self.logOutButtonPressed))
         } else {
-            let vc = LogInViewController()
-            vc.modalPresentationStyle = .fullScreen
-            present(vc, animated: true, completion: nil)
-
+            navigateToLogIn()
         }
+    }
+
+    private func navigateToLogIn() {
+        let vc = LogInViewController()
+        vc.api = api
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true, completion: nil)
     }
 
     private func setupView() {
@@ -262,7 +266,7 @@ extension FlickRSearchViewController {
     @objc func logOutButtonPressed() {
         api.oauthSwift = nil
         api.userName = ""
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log In", style: .done, target: self, action: #selector(doOAuthFlickr))
+        navigateToLogIn()
     }
 }
 
