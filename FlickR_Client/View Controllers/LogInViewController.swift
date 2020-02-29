@@ -90,8 +90,7 @@ class LogInViewController: UIViewController {
                switch result {
                case .success(let (_, _, parameters)):
                    api.userName = parameters["username"] as! String
-                   self.dismiss(animated: true, completion: nil)
-//                   self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log Out", style: .done, target: self, action: #selector(self.logOutButtonPressed))
+                   self.dismiss(animated: true)
                case .failure(let error):
                    print(error.description)
                }

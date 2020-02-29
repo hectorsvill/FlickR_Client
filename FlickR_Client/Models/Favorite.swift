@@ -11,15 +11,28 @@ import Foundation
 
 struct Favorite {
     let date_faved: String
-    let farm: Int;
-    let id: String;
+    let farm: Int
+    let id: String
     let isfamily: Int
     let isfriend: Int
     let ispublic: Int
     let owner: String
     let secret: String
     let server: String
-    let title: String;
+    let title: String
+
+    init(date_faved: String, farm: Int, id: String, isfamily: Int, isfriend: Int, ispublic: Int, owner: String, secret: String, server: String, title: String) {
+        self.date_faved = date_faved
+        self.farm = farm
+        self.id = id
+        self.isfamily = isfamily
+        self.isfriend = isfriend
+        self.ispublic = ispublic
+        self.owner = owner
+        self.secret = secret
+        self.server = server
+        self.title = title
+    }
 
     init(data: NSDictionary) {
         self.date_faved = data["date_faved"] as! String

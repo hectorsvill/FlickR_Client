@@ -118,12 +118,12 @@ extension ImageDetailViewController {
     }
 
     @objc func likeButtonPressed() {
-        guard let _ = api.oauthSwift else {
+        guard let _ = api.oauthSwift, let tagSearch = tagSearch else {
             self.doOAuthFlickr()
             return
         }
 
-        api.oauthSwift?.client.request(api.serviceFavoiritesAddURL, method: .POST, parameters: ["photo_id":"\(tagSearch!.id)", "format": "json"], headers: [:], body: nil, checkTokenExpiration: true, completionHandler: { result in
+        api.oauthSwift?.client.request(api.serviceFavoiritesAddURL, method: .POST, parameters: ["photo_id":"\(tagSearch.id)", "format": "json"], headers: [:], body: nil, checkTokenExpiration: true, completionHandler: { result in
             switch result {
             case .success(let response):
                 let dataString = response.dataString(encoding: .utf8)!
@@ -131,7 +131,9 @@ extension ImageDetailViewController {
 
                 if dataString.contains("ok") {
                     alertTitle = "adding image to favorites"
-                }else if dataString.contains("Photo is already in favorites") {
+                    let favorite = Favorite(date_faved: "", farm: tagSearch.farm, id: tagSearch.id, isfamily: tagSearch.isfamily, isfriend: tagSearch.isfriend, ispublic: tagSearch.ispublic, owner: tagSearch.owner, secret: tagSearch.secret, server: tagSearch.server, title: tagSearch.title)
+                    self.api.favorites.append(favorite)
+                } else if dataString.contains("Photo is already in favorites") {
                     alertTitle = "Photo is already in favorites"
                 }
 
