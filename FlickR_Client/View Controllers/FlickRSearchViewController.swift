@@ -39,6 +39,11 @@ final class FlickRSearchViewController: UIViewController {
 
         if let _ = api.oauthSwift {
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log Out", style: .done, target: self, action: #selector(self.logOutButtonPressed))
+        } else {
+            let vc = LogInViewController()
+            vc.modalPresentationStyle = .fullScreen
+            present(vc, animated: true, completion: nil)
+
         }
     }
 
