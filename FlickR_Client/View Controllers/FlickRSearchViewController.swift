@@ -118,14 +118,10 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = UIColor().flickr_logoColor()
 
-        //        if let layout = collectionView.collectionViewLayout as? PinterestLayout {
-        //            layout.delegate = self
-        //        }
-
         dataSource = UICollectionViewDiffableDataSource<Int, TagSearch>(collectionView: collectionView) {
             [weak self] collectionView, indexPath, tagSearch -> UICollectionViewCell? in
 
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchImageCollectionViewCell else { return UICollectionViewCell() }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchContentCollectionViewCell else { return UICollectionViewCell() }
 
             cell.imageView.image = UIImage()
             self?.loadImage(cell: cell, indexPath: indexPath)
@@ -206,7 +202,7 @@ extension FlickRSearchViewController {
         }
     }
 
-    func loadImage(cell: TagSearchImageCollectionViewCell, indexPath: IndexPath) {
+    func loadImage(cell: TagSearchContentCollectionViewCell, indexPath: IndexPath) {
         if let data = cache.value(for: indexPath.item), let image = UIImage(data: data) {
             cell.imageView.image = image
         }
@@ -270,21 +266,4 @@ extension FlickRSearchViewController {
     }
 }
 
-
-
-//extension FlickRSearchViewController: PinterestLayoutDelegate  {
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let itemSize = (collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right + 10)) / 2
-//
-//        return CGSize(width: itemSize, height: itemSize)
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-////        guard let cell = collectionView.cellForItem(at: indexPath) as? TagSearchImageCollectionViewCell else { return CGFloat(40)}
-//
-//
-////        print(cell.imageView.image?.size.height)
-//        return sizes[indexPath.item]
-//    }
-//}
 

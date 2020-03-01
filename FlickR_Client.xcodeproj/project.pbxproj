@@ -25,7 +25,7 @@
 		12835EE423EDDEBA00CB6813 /* FlickR_API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EE323EDDEBA00CB6813 /* FlickR_API.swift */; };
 		12835EE623EDFAD500CB6813 /* PhotoDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EE523EDFAD500CB6813 /* PhotoDetail.swift */; };
 		12835EE923EDFFE600CB6813 /* FlickRSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EE823EDFFE600CB6813 /* FlickRSearchViewController.swift */; };
-		12835EEB23EE2E9000CB6813 /* TagSearchImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EEA23EE2E9000CB6813 /* TagSearchImageCollectionViewCell.swift */; };
+		12835EEB23EE2E9000CB6813 /* TagSearchContentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EEA23EE2E9000CB6813 /* TagSearchContentCollectionViewCell.swift */; };
 		12835EEE23EE3FF700CB6813 /* ImageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EED23EE3FF700CB6813 /* ImageDetailViewController.swift */; };
 		12ADB25023F37B8100FF9C67 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ADB24F23F37B8100FF9C67 /* CommentTableViewCell.swift */; };
 		12ADB25423F37E0C00FF9C67 /* CommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ADB25323F37E0C00FF9C67 /* CommentViewController.swift */; };
@@ -56,7 +56,7 @@
 		12835EE323EDDEBA00CB6813 /* FlickR_API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickR_API.swift; sourceTree = "<group>"; };
 		12835EE523EDFAD500CB6813 /* PhotoDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetail.swift; sourceTree = "<group>"; };
 		12835EE823EDFFE600CB6813 /* FlickRSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickRSearchViewController.swift; sourceTree = "<group>"; };
-		12835EEA23EE2E9000CB6813 /* TagSearchImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSearchImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		12835EEA23EE2E9000CB6813 /* TagSearchContentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSearchContentCollectionViewCell.swift; sourceTree = "<group>"; };
 		12835EED23EE3FF700CB6813 /* ImageDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailViewController.swift; sourceTree = "<group>"; };
 		12ADB24F23F37B8100FF9C67 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
 		12ADB25323F37E0C00FF9C67 /* CommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewController.swift; sourceTree = "<group>"; };
@@ -188,7 +188,7 @@
 		12835EEC23EE2EA300CB6813 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				12835EEA23EE2E9000CB6813 /* TagSearchImageCollectionViewCell.swift */,
+				12835EEA23EE2E9000CB6813 /* TagSearchContentCollectionViewCell.swift */,
 				127D2F9723F0FAA100DA9572 /* SubTitleTableViewCell.swift */,
 				12ADB24F23F37B8100FF9C67 /* CommentTableViewCell.swift */,
 				124BDA6A24036E9C00BC1E9B /* PinterestLayout.swift */,
@@ -334,7 +334,7 @@
 				123E2D2323FF166B00CC2FD6 /* PopAnimator.swift in Sources */,
 				127D2F9623EFBBFB00DA9572 /* UIColor+BackgroundColor.swift in Sources */,
 				12ADB25023F37B8100FF9C67 /* CommentTableViewCell.swift in Sources */,
-				12835EEB23EE2E9000CB6813 /* TagSearchImageCollectionViewCell.swift in Sources */,
+				12835EEB23EE2E9000CB6813 /* TagSearchContentCollectionViewCell.swift in Sources */,
 				12F02378240AB8E00064DFBC /* Favorite.swift in Sources */,
 				12835ECE23EDD84000CB6813 /* SceneDelegate.swift in Sources */,
 				123E2D2123FF07B000CC2FD6 /* ImageZoomViewController.swift in Sources */,
