@@ -21,8 +21,8 @@
 		12835ED323EDD84000CB6813 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12835ED123EDD84000CB6813 /* Main.storyboard */; };
 		12835ED523EDD84300CB6813 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12835ED423EDD84300CB6813 /* Assets.xcassets */; };
 		12835ED823EDD84300CB6813 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12835ED623EDD84300CB6813 /* LaunchScreen.storyboard */; };
-		12835EE123EDDA2100CB6813 /* TagSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EE023EDDA2100CB6813 /* TagSearch.swift */; };
-		12835EE423EDDEBA00CB6813 /* FlickR_API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EE323EDDEBA00CB6813 /* FlickR_API.swift */; };
+		12835EE123EDDA2100CB6813 /* searchContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EE023EDDA2100CB6813 /* searchContent.swift */; };
+		12835EE423EDDEBA00CB6813 /* FlickRAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EE323EDDEBA00CB6813 /* FlickRAPI.swift */; };
 		12835EE623EDFAD500CB6813 /* PhotoDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EE523EDFAD500CB6813 /* PhotoDetail.swift */; };
 		12835EE923EDFFE600CB6813 /* FlickRSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EE823EDFFE600CB6813 /* FlickRSearchViewController.swift */; };
 		12835EEB23EE2E9000CB6813 /* TagSearchContentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EEA23EE2E9000CB6813 /* TagSearchContentCollectionViewCell.swift */; };
@@ -52,8 +52,8 @@
 		12835ED423EDD84300CB6813 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		12835ED723EDD84300CB6813 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		12835ED923EDD84300CB6813 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		12835EE023EDDA2100CB6813 /* TagSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSearch.swift; sourceTree = "<group>"; };
-		12835EE323EDDEBA00CB6813 /* FlickR_API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickR_API.swift; sourceTree = "<group>"; };
+		12835EE023EDDA2100CB6813 /* searchContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = searchContent.swift; sourceTree = "<group>"; };
+		12835EE323EDDEBA00CB6813 /* FlickRAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickRAPI.swift; sourceTree = "<group>"; };
 		12835EE523EDFAD500CB6813 /* PhotoDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetail.swift; sourceTree = "<group>"; };
 		12835EE823EDFFE600CB6813 /* FlickRSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickRSearchViewController.swift; sourceTree = "<group>"; };
 		12835EEA23EE2E9000CB6813 /* TagSearchContentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSearchContentCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -167,7 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				123E2D2223FF166B00CC2FD6 /* PopAnimator.swift */,
-				12835EE023EDDA2100CB6813 /* TagSearch.swift */,
+				12835EE023EDDA2100CB6813 /* searchContent.swift */,
 				12835EE523EDFAD500CB6813 /* PhotoDetail.swift */,
 				127D2F9B23F11AE400DA9572 /* PhotoComment.swift */,
 				12F02377240AB8E00064DFBC /* Favorite.swift */,
@@ -180,7 +180,7 @@
 		12835EE723EDFE9800CB6813 /* Model Controller */ = {
 			isa = PBXGroup;
 			children = (
-				12835EE323EDDEBA00CB6813 /* FlickR_API.swift */,
+				12835EE323EDDEBA00CB6813 /* FlickRAPI.swift */,
 			);
 			path = "Model Controller";
 			sourceTree = "<group>";
@@ -320,13 +320,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				127D2F9223EF3C8A00DA9572 /* ConcurrentOperation.swift in Sources */,
-				12835EE123EDDA2100CB6813 /* TagSearch.swift in Sources */,
+				12835EE123EDDA2100CB6813 /* searchContent.swift in Sources */,
 				12F0237A240AC4E80064DFBC /* LogInViewController.swift in Sources */,
 				12F02375240A10E20064DFBC /* UIViewController+OAuthWebViewControllerDelegate.swift in Sources */,
 				127D2F9C23F11AE400DA9572 /* PhotoComment.swift in Sources */,
 				127D2F9823F0FAA100DA9572 /* SubTitleTableViewCell.swift in Sources */,
 				127D2F8D23EF374000DA9572 /* Cache.swift in Sources */,
-				12835EE423EDDEBA00CB6813 /* FlickR_API.swift in Sources */,
+				12835EE423EDDEBA00CB6813 /* FlickRAPI.swift in Sources */,
 				127D2F8F23EF3C1C00DA9572 /* FetchPhotoOperation.swift in Sources */,
 				12835EE623EDFAD500CB6813 /* PhotoDetail.swift in Sources */,
 				12ADB25423F37E0C00FF9C67 /* CommentViewController.swift in Sources */,

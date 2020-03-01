@@ -9,10 +9,8 @@
 import UIKit
 
 class TagSearchContentCollectionViewCell: UICollectionViewCell {
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupViews()
-    }
+
+    var tagSearch: searchContent? { didSet { setupViews() } }
 
     var userImageView: UIImageView = {
         let imageView = UIImageView()
@@ -25,33 +23,38 @@ class TagSearchContentCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
 
-    var userNameLabel: UILabel = {
+    var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = UIColor().flickr_logoColor()
         label.textColor = .black
         label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.text = "title"
         return label
     }()
 
     var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 20
+        imageView.backgroundColor = UIColor().flickr_logoColor()
+        imageView.contentMode =  .scaleToFill
+        imageView.layer.borderWidth = 2
+        imageView.layer.borderColor = UIColor.white.cgColor
         return imageView
-    } ()
+    }()
 
     func setupViews() {
-        userNameLabel.text = "UserName"
-        layer.borderColor = UIColor.white.cgColor
+        guard let tagSearch = tagSearch else { return }
+
+        titleLabel.text = tagSearch.title
+        layer.borderColor = UIColor.black.cgColor
         layer.borderWidth = 3
         layer.cornerRadius = 7
         contentView.layer.cornerRadius = 7
         contentView.clipsToBounds = true
 
 
-        let topStackView = UIStackView(arrangedSubviews: [userImageView, userNameLabel])
+        let topStackView = UIStackView(arrangedSubviews: [userImageView, titleLabel])
         topStackView.translatesAutoresizingMaskIntoConstraints = false
         topStackView.alignment = .leading
         topStackView.spacing = 16
@@ -63,16 +66,11 @@ class TagSearchContentCollectionViewCell: UICollectionViewCell {
 
         NSLayoutConstraint.activate([
 
-            topStackView.leftAnchor.constraint(equalTo: leftAnchor, constant: 16),
+            topStackView.leftAnchor.constraint(equalTo: leftAnchor, constant: 5),
             topStackView.bottomAnchor.constraint(equalTo: imageView.topAnchor, constant: -5),
-//            userImageView.leftAnchor.constraint(equalTo: leftAnchor),
-//            userImageView.rightAnchor.constraint(equalTo: userNameLabel.leftAnchor),
-//
-//            userNameLabel.bottomAnchor.constraint(equalTo: imageView.topAnchor),
-//            userNameLabel.leftAnchor.constraint(equalTo: userImageView.rightAnchor, constant: 8),
 
             imageView.topAnchor.constraint(equalTo: topAnchor, constant: 40),
-            imageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -80),
+            imageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -40),
             imageView.leftAnchor.constraint(equalTo: leftAnchor),
             imageView.rightAnchor.constraint(equalTo: rightAnchor),
         ])

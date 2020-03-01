@@ -10,8 +10,8 @@ import UIKit
 import OAuthSwift
 
 final class ImageDetailViewController: UIViewController {
-    var api: FlickR_API!
-    var tagSearch: TagSearch?
+    var api: FlickRAPI!
+    var tagSearch: searchContent?
     let activityIndicator = UIActivityIndicatorView()
     var photoDetail: PhotoDetail?
     let tableView = UITableView()

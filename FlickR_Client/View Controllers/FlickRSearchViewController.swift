@@ -11,13 +11,12 @@ import UIKit
 import OAuthSwift
 
 final class FlickRSearchViewController: UIViewController {
-//    var sizes: [CGFloat] = []
-    typealias collectionDataSource = UICollectionViewDiffableDataSource<Int, TagSearch>
+    typealias collectionDataSource = UICollectionViewDiffableDataSource<Int, searchContent>
     @IBOutlet weak var collectionView: UICollectionView!
     var dataSource: collectionDataSource! = nil
 
     let activityIndicator = UIActivityIndicatorView()
-    let api = FlickR_API()
+    let api = FlickRAPI()
     var cache = Cache<Int, Data>()
     private let photoFetchQueue = OperationQueue()
     var fetchPhotoOperations: [Int: FetchPhotoOperation] = [:]
@@ -87,7 +86,7 @@ extension FlickRSearchViewController: UISearchBarDelegate {
     }
 }
 
-// MARK: UICollectionViewDelegate
+// MARK: UICollectionViewDelegate\\\\
 extension FlickRSearchViewController: UICollectionViewDelegate {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         searchBar.resignFirstResponder()
@@ -118,11 +117,11 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = UIColor().flickr_logoColor()
 
-        dataSource = UICollectionViewDiffableDataSource<Int, TagSearch>(collectionView: collectionView) {
+        dataSource = UICollectionViewDiffableDataSource<Int, searchContent>(collectionView: collectionView) {
             [weak self] collectionView, indexPath, tagSearch -> UICollectionViewCell? in
 
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchContentCollectionViewCell else { return UICollectionViewCell() }
-
+            cell.tagSearch = tagSearch
             cell.imageView.image = UIImage()
             self?.loadImage(cell: cell, indexPath: indexPath)
 
@@ -136,7 +135,7 @@ extension FlickRSearchViewController {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.75))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.62))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
 
         let spacing = CGFloat(8)
@@ -151,8 +150,8 @@ extension FlickRSearchViewController {
         return  layout
     }
 
-    func configureDataSource(with results: [TagSearch]) {
-        var snapShot = NSDiffableDataSourceSnapshot<Int, TagSearch>()
+    func configureDataSource(with results: [searchContent]) {
+        var snapShot = NSDiffableDataSourceSnapshot<Int, searchContent>()
         snapShot.appendSections([0])
         snapShot.appendItems(dataSource.snapshot().itemIdentifiers)
         snapShot.appendItems(results)

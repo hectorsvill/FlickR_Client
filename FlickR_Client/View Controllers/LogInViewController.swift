@@ -11,7 +11,7 @@ import OAuthSwift
 
 class LogInViewController: UIViewController {
     let activityIndicator = UIActivityIndicatorView()
-    var api: FlickR_API?
+    var api: FlickRAPI?
 
     var logoImageView: UIImageView = {
         let imageView = UIImageView()

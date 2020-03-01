@@ -13,7 +13,7 @@ protocol AddCommentDelegate {
 }
 
 final class CommentViewController: UIViewController {
-    var api: FlickR_API!
+    var api: FlickRAPI!
     var photoID: String?
     var deleagate: AddCommentDelegate?
     
