@@ -12,22 +12,27 @@ import OAuthSwift
 class FlickRAPI {
     var myKey = UserDefaults().string(forKey: "myKey_flickr") ?? "44f367e28c0954b2a073d37c1ada9dbe"
     var mySecret =  UserDefaults().string(forKey: "mySecret_flickr") ?? "f07ff5f4115ae5d2"
-    let count = 5
+    let count = 2
     var oauthSwift: OAuthSwift?
     var userName = ""  { didSet  {fetchFavoriteList { _ in }}}
     var favorites: [Favorite] = []
 }
 
 extension FlickRAPI {
+
+    func isInFavorites(searchContent: SearchContent) -> Bool {
+        return favorites.filter { $0.id == searchContent.id && $0.farm == searchContent.farm }.isEmpty
+    }
+
     func textHelper(_ text: String) -> String{
         return text.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: " ", with: "+")
     }
 
-    func createPhotoUrlString(with tagSearch: searchContent, size: String = "m") -> String {
+    func createPhotoUrlString(with tagSearch: SearchContent, size: String = "m") -> String {
          return "https://farm\(tagSearch.farm).staticflickr.com/\(tagSearch.server)/\(tagSearch.id)_\(tagSearch.secret)_\(size).jpg"
      }
 
-     func createPhotoDetailUrlString(with tagSearch: searchContent) -> String {
+     func createPhotoDetailUrlString(with tagSearch: SearchContent) -> String {
          return "https://www.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=\(myKey)&photo_id=\(tagSearch.id)&secret=\(tagSearch.secret)&format=json&nojsoncallback=1"
      }
 
@@ -49,7 +54,7 @@ extension FlickRAPI {
 }
 
 extension FlickRAPI {
-    func fetchTagSearch(with tag: String, page: Int = 1, completion: @escaping ([searchContent]?, Error?) -> ()) {
+    func fetchTagSearch(with tag: String, page: Int = 1, completion: @escaping ([SearchContent]?, Error?) -> ()) {
         let urlString = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=\(myKey)&tags=\(tag)&per_page=\(count)&format=json&nojsoncallback=1&page=\(page)"
         let url = URL(string: urlString)
 
@@ -63,7 +68,7 @@ extension FlickRAPI {
                 let resultDict = try JSONSerialization.jsonObject(with: data, options: []) as! [String: AnyObject]
                 let photos = resultDict["photos"] as! NSDictionary
                 let photosList = photos["photo"] as! [NSDictionary]
-                let tagSearch = photosList.map { return searchContent(data: $0) }
+                let tagSearch = photosList.map { return SearchContent(data: $0) }
                 
                 completion(tagSearch, nil)
             } catch {
@@ -73,7 +78,7 @@ extension FlickRAPI {
         }.resume()
     }
 
-    func fetchImage(with tagSearch: searchContent, size: String,completion: @escaping (Data?, Error?) -> ()) {
+    func fetchImage(with tagSearch: SearchContent, size: String,completion: @escaping (Data?, Error?) -> ()) {
         let urlString = createPhotoUrlString(with: tagSearch, size: size)
         let url = URL(string: urlString)!
         let request = URLRequest(url: url)
@@ -89,7 +94,7 @@ extension FlickRAPI {
         }.resume()
     }
 
-    func fetchImageDetail(with tagSearch: searchContent, completion: @escaping (PhotoDetail? , Error?) -> ()) {
+    func fetchImageDetail(with tagSearch: SearchContent, completion: @escaping (PhotoDetail? , Error?) -> ()) {
         let urlString = createPhotoDetailUrlString(with: tagSearch)
         let url = URL(string: urlString)!
 
@@ -142,7 +147,7 @@ extension FlickRAPI {
         }.resume()
     }
 
-    func fetchFavoriteList(completion: @escaping (Result<[searchContent], Error>) -> ()) {
+    func fetchFavoriteList(completion: @escaping (Result<[SearchContent], Error>) -> ()) {
         guard  let oauthSwift = oauthSwift else {
             completion(.failure(NSError()))
             return

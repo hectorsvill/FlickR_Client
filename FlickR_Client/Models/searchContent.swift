@@ -8,8 +8,8 @@
 
 import Foundation
 
-struct searchContent: Hashable {
-    static func == (lhs: searchContent, rhs: searchContent) -> Bool {
+struct SearchContent: Hashable {
+    static func == (lhs: SearchContent, rhs: SearchContent) -> Bool {
         lhs.id == rhs.id
     }
 

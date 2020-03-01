@@ -11,7 +11,7 @@ import UIKit
 import OAuthSwift
 
 final class FlickRSearchViewController: UIViewController {
-    typealias collectionDataSource = UICollectionViewDiffableDataSource<Int, searchContent>
+    typealias collectionDataSource = UICollectionViewDiffableDataSource<Int, SearchContent>
     @IBOutlet weak var collectionView: UICollectionView!
     var dataSource: collectionDataSource! = nil
 
@@ -95,7 +95,7 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
          let tagSearch = dataSource.snapshot().itemIdentifiers[indexPath.item]
          let photoDetailView = ImageDetailViewController()
-         photoDetailView.tagSearch = tagSearch
+         photoDetailView.searchContent = tagSearch
          photoDetailView.api = api
          navigationController?.pushViewController(photoDetailView, animated: true)
      }
@@ -117,11 +117,16 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = UIColor().flickr_logoColor()
 
-        dataSource = UICollectionViewDiffableDataSource<Int, searchContent>(collectionView: collectionView) {
-            [weak self] collectionView, indexPath, tagSearch -> UICollectionViewCell? in
+        dataSource = UICollectionViewDiffableDataSource<Int, SearchContent>(collectionView: collectionView) {
+            [weak self] collectionView, indexPath, searchContent -> UICollectionViewCell? in
 
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchContentCollectionViewCell else { return UICollectionViewCell() }
-            cell.tagSearch = tagSearch
+            cell.searchContent = searchContent
+
+            let likeImageName = self!.api.isInFavorites(searchContent: searchContent) ? "hand.thumbsup" : "hand.thumbsup.fill"
+            let image = UIImage(systemName: likeImageName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
+            cell.likeButton.setImage(image, for: .normal)
+
             cell.imageView.image = UIImage()
             self?.loadImage(cell: cell, indexPath: indexPath)
 
@@ -144,14 +149,14 @@ extension FlickRSearchViewController {
 
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = spacing
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
 
         let layout = UICollectionViewCompositionalLayout(section: section)
         return  layout
     }
 
-    func configureDataSource(with results: [searchContent]) {
-        var snapShot = NSDiffableDataSourceSnapshot<Int, searchContent>()
+    func configureDataSource(with results: [SearchContent]) {
+        var snapShot = NSDiffableDataSourceSnapshot<Int, SearchContent>()
         snapShot.appendSections([0])
         snapShot.appendItems(dataSource.snapshot().itemIdentifiers)
         snapShot.appendItems(results)

@@ -21,7 +21,7 @@
 		12835ED323EDD84000CB6813 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12835ED123EDD84000CB6813 /* Main.storyboard */; };
 		12835ED523EDD84300CB6813 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12835ED423EDD84300CB6813 /* Assets.xcassets */; };
 		12835ED823EDD84300CB6813 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12835ED623EDD84300CB6813 /* LaunchScreen.storyboard */; };
-		12835EE123EDDA2100CB6813 /* searchContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EE023EDDA2100CB6813 /* searchContent.swift */; };
+		12835EE123EDDA2100CB6813 /* SearchContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EE023EDDA2100CB6813 /* SearchContent.swift */; };
 		12835EE423EDDEBA00CB6813 /* FlickRAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EE323EDDEBA00CB6813 /* FlickRAPI.swift */; };
 		12835EE623EDFAD500CB6813 /* PhotoDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EE523EDFAD500CB6813 /* PhotoDetail.swift */; };
 		12835EE923EDFFE600CB6813 /* FlickRSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12835EE823EDFFE600CB6813 /* FlickRSearchViewController.swift */; };
@@ -52,7 +52,7 @@
 		12835ED423EDD84300CB6813 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		12835ED723EDD84300CB6813 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		12835ED923EDD84300CB6813 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		12835EE023EDDA2100CB6813 /* searchContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = searchContent.swift; sourceTree = "<group>"; };
+		12835EE023EDDA2100CB6813 /* SearchContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchContent.swift; sourceTree = "<group>"; };
 		12835EE323EDDEBA00CB6813 /* FlickRAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickRAPI.swift; sourceTree = "<group>"; };
 		12835EE523EDFAD500CB6813 /* PhotoDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetail.swift; sourceTree = "<group>"; };
 		12835EE823EDFFE600CB6813 /* FlickRSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickRSearchViewController.swift; sourceTree = "<group>"; };
@@ -153,8 +153,8 @@
 		12835EDF23EDD94D00CB6813 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				12835EE823EDFFE600CB6813 /* FlickRSearchViewController.swift */,
 				12F02379240AC4E80064DFBC /* LogInViewController.swift */,
+				12835EE823EDFFE600CB6813 /* FlickRSearchViewController.swift */,
 				12835EED23EE3FF700CB6813 /* ImageDetailViewController.swift */,
 				123E2D2023FF07B000CC2FD6 /* ImageZoomViewController.swift */,
 				12ADB25323F37E0C00FF9C67 /* CommentViewController.swift */,
@@ -167,7 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				123E2D2223FF166B00CC2FD6 /* PopAnimator.swift */,
-				12835EE023EDDA2100CB6813 /* searchContent.swift */,
+				12835EE023EDDA2100CB6813 /* SearchContent.swift */,
 				12835EE523EDFAD500CB6813 /* PhotoDetail.swift */,
 				127D2F9B23F11AE400DA9572 /* PhotoComment.swift */,
 				12F02377240AB8E00064DFBC /* Favorite.swift */,
@@ -320,7 +320,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				127D2F9223EF3C8A00DA9572 /* ConcurrentOperation.swift in Sources */,
-				12835EE123EDDA2100CB6813 /* searchContent.swift in Sources */,
+				12835EE123EDDA2100CB6813 /* SearchContent.swift in Sources */,
 				12F0237A240AC4E80064DFBC /* LogInViewController.swift in Sources */,
 				12F02375240A10E20064DFBC /* UIViewController+OAuthWebViewControllerDelegate.swift in Sources */,
 				127D2F9C23F11AE400DA9572 /* PhotoComment.swift in Sources */,

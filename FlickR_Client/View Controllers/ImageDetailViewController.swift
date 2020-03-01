@@ -11,7 +11,7 @@ import OAuthSwift
 
 final class ImageDetailViewController: UIViewController {
     var api: FlickRAPI!
-    var tagSearch: searchContent?
+    var searchContent: SearchContent?
     let activityIndicator = UIActivityIndicatorView()
     var photoDetail: PhotoDetail?
     let tableView = UITableView()
@@ -23,10 +23,17 @@ final class ImageDetailViewController: UIViewController {
     let transition = PopAnimator()
 
     var photoImageView: UIImageView = {
-        let image = UIImageView()
-        image.translatesAutoresizingMaskIntoConstraints = false
-        image.contentMode = .scaleAspectFit
-        return image
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        tapGestureRecognizer.numberOfTapsRequired = 1
+
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(tapGestureRecognizer)
+
+        return imageView
     }()
 
     var segmentedControl: UISegmentedControl = {
@@ -44,7 +51,8 @@ final class ImageDetailViewController: UIViewController {
     }
 
     private func configureNavigationButtons() {
-        let imageName = api.favorites.filter { $0.id == tagSearch!.id }.isEmpty ? "hand.thumbsup" : "hand.thumbsup.fill"
+        guard let searchContent = searchContent else { return }
+        let imageName = api.isInFavorites(searchContent: searchContent) ? "hand.thumbsup" : "hand.thumbsup.fill"
         let thumbsupImage = UIImage(systemName: imageName)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: thumbsupImage, style: .plain, target: self, action: #selector(likeButtonPressed))
     }
@@ -91,13 +99,8 @@ extension ImageDetailViewController {
     func setupViews() {
         view.backgroundColor = UIColor().flickr_logoColor()
         tableView.translatesAutoresizingMaskIntoConstraints = false
+
         view.addSubview(photoImageView)
-
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
-        tapGestureRecognizer.numberOfTapsRequired = 1
-        photoImageView.isUserInteractionEnabled = true
-        photoImageView.addGestureRecognizer(tapGestureRecognizer)
-
         view.addSubview(tableView)
         view.addSubview(segmentedControl)
 
@@ -117,7 +120,7 @@ extension ImageDetailViewController {
     }
 
     @objc func likeButtonPressed() {
-        guard let _ = api.oauthSwift, let tagSearch = tagSearch else {
+        guard let _ = api.oauthSwift, let tagSearch = searchContent else {
             self.doOAuthFlickr()
             return
         }
@@ -153,7 +156,7 @@ extension ImageDetailViewController {
     }
 
     private func fetchImage() {
-        guard let tagSearch = tagSearch else { return }
+        guard let tagSearch = searchContent else { return }
 
         api.fetchImage(with: tagSearch, size: "z") { data, error in
             if let error = error {
@@ -171,7 +174,7 @@ extension ImageDetailViewController {
     }
 
     private func fetchPhotoDetail() {
-        guard let tagSearch = tagSearch else { return }
+        guard let tagSearch = searchContent else { return }
         api.fetchImageDetail(with: tagSearch, completion: { photoDetail, error in
             if let error = error {
                 NSLog("\(error)")
@@ -188,7 +191,7 @@ extension ImageDetailViewController {
     }
 
     private func fetchPhotoComments() {
-        let urlString = api.createFetchCommentsUrlString(id: tagSearch!.id)
+        let urlString = api.createFetchCommentsUrlString(id: searchContent!.id)
         api.fetchPhotoComments(id: urlString) { photoComments, error in
             if let error = error {
                 NSLog("\(error)")
@@ -282,7 +285,7 @@ extension ImageDetailViewController: UITableViewDataSource {
 
         let commentViewController = CommentViewController()
         commentViewController.api = api
-        commentViewController.photoID = tagSearch!.id
+        commentViewController.photoID = searchContent!.id
         commentViewController.deleagate = self
         present(commentViewController, animated: true)
     }
