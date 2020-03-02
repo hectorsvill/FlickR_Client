@@ -124,6 +124,9 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
             cell.delegate = self
             cell.isFavorite = self.api.isInFavorites(searchContent: searchContent)
             cell.imageView.image = UIImage()
+            let imageName = cell.isFavorite ?  "hand.thumbsup" : "hand.thumbsup.fill"
+            let image = UIImage(systemName: imageName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
+            cell.likeButton.setImage(image, for: .normal)
             self.loadImage(cell: cell, indexPath: indexPath)
 
             return cell

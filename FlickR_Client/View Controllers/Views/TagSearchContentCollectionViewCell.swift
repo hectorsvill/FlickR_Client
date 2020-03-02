@@ -69,7 +69,6 @@ class TagSearchContentCollectionViewCell: UICollectionViewCell {
         doubletap.numberOfTapsRequired = 2
         imageView.addGestureRecognizer(doubletap)
         infoButton.addTarget(self, action: #selector(infoButtonPressed), for: .touchUpInside)
-        setLikeImage()
         likeButton.addTarget(self, action: #selector(likeImage), for: .touchUpInside)
 
         [imageView, infoButton,likeButton]
@@ -95,9 +94,8 @@ class TagSearchContentCollectionViewCell: UICollectionViewCell {
     }
 
     @objc func likeImage() {
-        guard let searchContent = searchContent, !isFavorite else { return }
+        guard let searchContent = searchContent else { return }
         isFavorite.toggle()
-        setLikeImage()
         delegate?.likeButtonPressed(searchContent)
     }
 
@@ -105,11 +103,4 @@ class TagSearchContentCollectionViewCell: UICollectionViewCell {
         guard let searchContent = searchContent else { return }
         delegate?.infoButtonPressed(searchContent)
     }
-
-    private func setLikeImage() {
-        let imageName = isFavorite ?  "hand.thumbsup" : "hand.thumbsup.fill"
-        let image = UIImage(systemName: imageName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
-        likeButton.setImage(image, for: .normal)
-    }
-
 }
