@@ -9,6 +9,7 @@
 import UIKit
 import OAuthSwift
 
+
 final class ImageDetailViewController: UIViewController {
     var api: FlickRAPI!
     var searchContent: SearchContent?
@@ -21,20 +22,6 @@ final class ImageDetailViewController: UIViewController {
     var centerY: CGFloat!
 
     let transition = PopAnimator()
-
-    var photoImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
-        tapGestureRecognizer.numberOfTapsRequired = 1
-
-        imageView.isUserInteractionEnabled = true
-        imageView.addGestureRecognizer(tapGestureRecognizer)
-
-        return imageView
-    }()
 
     var segmentedControl: UISegmentedControl = {
         let control = UISegmentedControl(items: ["META", "Comments"])
@@ -69,30 +56,30 @@ final class ImageDetailViewController: UIViewController {
         fetchPhotoDetail()
         setupTagTableView()
 
-        centerY = photoImageView.center.y
+//        centerY = photoImageView.center.y
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        centerY = photoImageView.center.y
+//        centerY = photoImageView.center.y
         setupViews()
     }
 
-    @objc func imageTapped() {
-        UIView.animate(withDuration: 0.3, delay: 0,  options: [.curveEaseOut], animations: {
-            self.photoImageView.center.y =  self.view.center.y
-            self.tableView.isHidden = true
-            self.segmentedControl.isHidden = true
-        }) { _ in
-            let viewController = ImageZoomViewController()
-            viewController.image = self.photoImageView.image
-            viewController.modalPresentationStyle = .fullScreen
-            self.navigationController?.pushViewController(viewController, animated: false)
-            self.photoImageView.center.y += self.centerY
-            self.tableView.isHidden = false
-            self.segmentedControl.isHidden = false
-        }
-    }
+//    @objc func imageTapped() {
+//        UIView.animate(withDuration: 0.3, delay: 0,  options: [.curveEaseOut], animations: {
+//            self.photoImageView.center.y =  self.view.center.y
+//            self.tableView.isHidden = true
+//            self.segmentedControl.isHidden = true
+//        }) { _ in
+//            let viewController = ImageZoomViewController()
+//            viewController.image = self.photoImageView.image
+//            viewController.modalPresentationStyle = .fullScreen
+//            self.navigationController?.pushViewController(viewController, animated: false)
+//            self.photoImageView.center.y += self.centerY
+//            self.tableView.isHidden = false
+//            self.segmentedControl.isHidden = false
+//        }
+//    }
 }
 
 extension ImageDetailViewController {
@@ -100,16 +87,16 @@ extension ImageDetailViewController {
         view.backgroundColor = UIColor().flickr_logoColor()
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
-        view.addSubview(photoImageView)
+//        view.addSubview(photoImageView)
         view.addSubview(tableView)
         view.addSubview(segmentedControl)
 
         NSLayoutConstraint.activate([
-            photoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            photoImageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-            photoImageView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-            photoImageView.heightAnchor.constraint(equalToConstant: 325),
-            segmentedControl.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant: 8),
+//            photoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+//            photoImageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+//            photoImageView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+//            photoImageView.heightAnchor.constraint(equalToConstant: 325),
+            segmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
             segmentedControl.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8),
             segmentedControl.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
             tableView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 8),
@@ -167,7 +154,6 @@ extension ImageDetailViewController {
             let image = UIImage(data: data)!
 
             DispatchQueue.main.async {
-                self.photoImageView.image = image
                 self.activityIndicator.stopAnimating()
             }
         }

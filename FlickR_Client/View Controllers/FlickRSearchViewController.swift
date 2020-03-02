@@ -63,10 +63,12 @@ final class FlickRSearchViewController: UIViewController {
         navigationController?.navigationBar.tintColor = UIColor().flickr_logoColor()
         searchBar.delegate = self
         searchBar.backgroundColor = UIColor().flickr_logoColor()
+
+        // MARK: DELETE
         let search = "Baker Skateboards"
         searchBar.text = search
         searchTag(with: search)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log In", style: .done, target: self, action: #selector(doOAuthFlickr))
+
     }
 
     @IBAction func trashButtonPressed(_ sender: Any) {
@@ -88,17 +90,14 @@ extension FlickRSearchViewController: UISearchBarDelegate {
 
 // MARK: UICollectionViewDelegate\\\\
 extension FlickRSearchViewController: UICollectionViewDelegate {
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        navigateToDetailView(with: indexPath.item)
+    }
+
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         searchBar.resignFirstResponder()
     }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-         let tagSearch = dataSource.snapshot().itemIdentifiers[indexPath.item]
-         let photoDetailView = ImageDetailViewController()
-         photoDetailView.searchContent = tagSearch
-         photoDetailView.api = api
-         navigationController?.pushViewController(photoDetailView, animated: true)
-     }
 
      func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
          if indexPath.item == dataSource.snapshot().itemIdentifiers.count - 1 {
@@ -118,20 +117,47 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         collectionView.backgroundColor = UIColor().flickr_logoColor()
 
         dataSource = UICollectionViewDiffableDataSource<Int, SearchContent>(collectionView: collectionView) {
-            [weak self] collectionView, indexPath, searchContent -> UICollectionViewCell? in
+            collectionView, indexPath, searchContent -> UICollectionViewCell? in
 
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchContentCollectionViewCell else { return UICollectionViewCell() }
             cell.searchContent = searchContent
 
-            let likeImageName = self!.api.isInFavorites(searchContent: searchContent) ? "hand.thumbsup" : "hand.thumbsup.fill"
+            cell.delegate = self
+
+            let likeImageName = self.api.isInFavorites(searchContent: searchContent) ? "hand.thumbsup" : "hand.thumbsup.fill"
             let image = UIImage(systemName: likeImageName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
             cell.likeButton.setImage(image, for: .normal)
 
+            cell.likeButton.addTarget(self, action: #selector(self.favortieImage), for: .touchUpInside)
+
+            let tap = UITapGestureRecognizer(target: self, action: #selector(self.favortieImage))
+            tap.numberOfTapsRequired = 2
+            cell.imageView.addGestureRecognizer(tap)
+
             cell.imageView.image = UIImage()
-            self?.loadImage(cell: cell, indexPath: indexPath)
+            self.loadImage(cell: cell, indexPath: indexPath)
 
             return cell
         }
+    }
+
+    @objc func favortieImage() {
+        print("like Image")
+    }
+
+
+    func navigateToDetailView(_ searchContent: SearchContent) {
+        let photoDetailView = ImageDetailViewController()
+        photoDetailView.searchContent = searchContent
+        photoDetailView.api = api
+        navigationController?.pushViewController(photoDetailView, animated: true)
+    }
+}
+
+extension FlickRSearchViewController: TagSearchContentCollectionDelegate {
+    func infoButtonPressed(_ searchContent: SearchContent) {
+        print("content:", searchContent.title)
+        navigateToDetailView(searchContent)
     }
 }
 
@@ -163,8 +189,6 @@ extension FlickRSearchViewController {
 
         dataSource.apply(snapShot, animatingDifferences: false)
     }
-
-
 }
 
 // MARK: Networking
@@ -266,6 +290,7 @@ extension FlickRSearchViewController {
     @objc func logOutButtonPressed() {
         api.oauthSwift = nil
         api.userName = ""
+        trashButtonPressed(UIButton())
         navigateToLogIn()
     }
 }
