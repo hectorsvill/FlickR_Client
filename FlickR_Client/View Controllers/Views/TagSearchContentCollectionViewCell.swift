@@ -10,13 +10,14 @@ import UIKit
 
 protocol TagSearchContentCollectionDelegate {
     func infoButtonPressed(_ searchContent: SearchContent)
+    func likeButtonPressed(_ searchContent: SearchContent)
 }
 
 class TagSearchContentCollectionViewCell: UICollectionViewCell {
     var delegate: TagSearchContentCollectionDelegate?
     var searchContent: SearchContent? { didSet { setupViews() } }
     var api: FlickRAPI!
-
+    var isFavorite = false
 
     var titleLabel: UILabel = {
         let label = UILabel()
@@ -43,7 +44,6 @@ class TagSearchContentCollectionViewCell: UICollectionViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .systemGray
         button.backgroundColor = UIColor().flickr_logoColor()
-
         let listImageName =  "list.dash"
         let image = UIImage(systemName: listImageName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
         button.setImage(image, for: .normal)
@@ -65,9 +65,15 @@ class TagSearchContentCollectionViewCell: UICollectionViewCell {
         imageView.frame = frame
         imageView.image = #imageLiteral(resourceName: "flickR_logo")
 
+        let doubletap = UITapGestureRecognizer(target: self, action: #selector(likeImage))
+        doubletap.numberOfTapsRequired = 2
+        imageView.addGestureRecognizer(doubletap)
         infoButton.addTarget(self, action: #selector(infoButtonPressed), for: .touchUpInside)
+        setLikeImage()
+        likeButton.addTarget(self, action: #selector(likeImage), for: .touchUpInside)
 
-        [imageView, infoButton,likeButton].forEach { contentView.addSubview($0) }
+        [imageView, infoButton,likeButton]
+            .forEach { contentView.addSubview($0) }
 
         activateConstraints()
     }
@@ -88,10 +94,22 @@ class TagSearchContentCollectionViewCell: UICollectionViewCell {
         ])
     }
 
+    @objc func likeImage() {
+        guard let searchContent = searchContent, !isFavorite else { return }
+        isFavorite.toggle()
+        setLikeImage()
+        delegate?.likeButtonPressed(searchContent)
+    }
+
     @objc func infoButtonPressed() {
         guard let searchContent = searchContent else { return }
         delegate?.infoButtonPressed(searchContent)
+    }
 
+    private func setLikeImage() {
+        let imageName = isFavorite ?  "hand.thumbsup" : "hand.thumbsup.fill"
+        let image = UIImage(systemName: imageName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
+        likeButton.setImage(image, for: .normal)
     }
 
 }

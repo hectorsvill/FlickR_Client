@@ -51,7 +51,7 @@ final class ImageDetailViewController: UIViewController {
         activityIndicator.color = .systemBlue
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
-        fetchImage()
+//        fetchImage()
         setupViews()
         fetchPhotoDetail()
         setupTagTableView()
@@ -142,22 +142,22 @@ extension ImageDetailViewController {
         tableView.reloadData()
     }
 
-    private func fetchImage() {
-        guard let tagSearch = searchContent else { return }
-
-        api.fetchImage(with: tagSearch, size: "z") { data, error in
-            if let error = error {
-                NSLog("\(error)")
-            }
-
-            guard let data = data else { return }
-            let image = UIImage(data: data)!
-
-            DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating()
-            }
-        }
-    }
+//    private func fetchImage() {
+//        guard let tagSearch = searchContent else { return }
+//
+//        api.fetchImage(with: tagSearch, size: "z") { data, error in
+//            if let error = error {
+//                NSLog("\(error)")
+//            }
+//
+//            guard let data = data else { return }
+//            let image = UIImage(data: data)!
+//
+//            DispatchQueue.main.async {
+//                self.activityIndicator.stopAnimating()
+//            }
+//        }
+//    }
 
     private func fetchPhotoDetail() {
         guard let tagSearch = searchContent else { return }

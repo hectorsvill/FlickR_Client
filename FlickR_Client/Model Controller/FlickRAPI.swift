@@ -12,14 +12,13 @@ import OAuthSwift
 class FlickRAPI {
     var myKey = UserDefaults().string(forKey: "myKey_flickr") ?? "44f367e28c0954b2a073d37c1ada9dbe"
     var mySecret =  UserDefaults().string(forKey: "mySecret_flickr") ?? "f07ff5f4115ae5d2"
-    let count = 2
+    let count = 3
     var oauthSwift: OAuthSwift?
     var userName = ""  { didSet  {fetchFavoriteList { _ in }}}
     var favorites: [Favorite] = []
 }
 
 extension FlickRAPI {
-
     func isInFavorites(searchContent: SearchContent) -> Bool {
         return favorites.filter { $0.id == searchContent.id && $0.farm == searchContent.farm }.isEmpty
     }

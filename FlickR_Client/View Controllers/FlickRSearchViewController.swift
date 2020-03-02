@@ -39,7 +39,7 @@ final class FlickRSearchViewController: UIViewController {
         if let _ = api.oauthSwift {
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log Out", style: .done, target: self, action: #selector(self.logOutButtonPressed))
         } else {
-//            navigateToLogIn()
+            navigateToLogIn()
         }
     }
 
@@ -65,9 +65,9 @@ final class FlickRSearchViewController: UIViewController {
         searchBar.backgroundColor = UIColor().flickr_logoColor()
 
         // MARK: DELETE
-        let search = "Baker Skateboards"
-        searchBar.text = search
-        searchTag(with: search)
+//        let search = "Baker Skateboards"
+//        searchBar.text = search
+//        searchTag(with: search)
 
     }
 
@@ -121,19 +121,8 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
 
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? TagSearchContentCollectionViewCell else { return UICollectionViewCell() }
             cell.searchContent = searchContent
-
             cell.delegate = self
-
-            let likeImageName = self.api.isInFavorites(searchContent: searchContent) ? "hand.thumbsup" : "hand.thumbsup.fill"
-            let image = UIImage(systemName: likeImageName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
-            cell.likeButton.setImage(image, for: .normal)
-
-            cell.likeButton.addTarget(self, action: #selector(self.favortieImage), for: .touchUpInside)
-
-            let tap = UITapGestureRecognizer(target: self, action: #selector(self.favortieImage))
-            tap.numberOfTapsRequired = 2
-            cell.imageView.addGestureRecognizer(tap)
-
+            cell.isFavorite = self.api.isInFavorites(searchContent: searchContent)
             cell.imageView.image = UIImage()
             self.loadImage(cell: cell, indexPath: indexPath)
 
@@ -141,22 +130,51 @@ extension FlickRSearchViewController: UICollectionViewDelegate {
         }
     }
 
-    @objc func favortieImage() {
-        print("like Image")
-    }
-
-
     func navigateToDetailView(_ searchContent: SearchContent) {
         let photoDetailView = ImageDetailViewController()
         photoDetailView.searchContent = searchContent
         photoDetailView.api = api
         navigationController?.pushViewController(photoDetailView, animated: true)
     }
+
+    @objc func navigateToImageZoomView() {
+        let viewController = ImageZoomViewController()
+//        viewController.image = self.photoImageView.image
+        viewController.modalPresentationStyle = .fullScreen
+        navigationController?.pushViewController(viewController, animated: false)
+    }
 }
 
 extension FlickRSearchViewController: TagSearchContentCollectionDelegate {
+    func likeButtonPressed(_ searchContent: SearchContent) {
+
+//        let alertController = UIAlertController(title: alertTitle, message: "", preferredStyle: .actionSheet)
+//        alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
+//        self.present(alertController, animated: true)
+
+        api.oauthSwift?.client.request(api.serviceFavoiritesAddURL, method: .POST, parameters: ["photo_id":"\(searchContent.id)", "format": "json"], headers: [:], body: nil, checkTokenExpiration: true, completionHandler: { result in
+            switch result {
+            case .success(let response):
+                let dataString = response.dataString(encoding: .utf8)!
+                var alertTitle = "ERROR: please try again"
+
+                if dataString.contains("ok") {
+                    alertTitle = "adding image to favorites"
+                    let favorite = Favorite(date_faved: "", farm: searchContent.farm, id: searchContent.id, isfamily: searchContent.isfamily, isfriend: searchContent.isfriend, ispublic: searchContent.ispublic, owner: searchContent.owner, secret: searchContent.secret, server: searchContent.server, title: searchContent.title)
+                    self.api.favorites.append(favorite)
+                } else if dataString.contains("Photo is already in favorites") {
+                    alertTitle = "Photo is already in favorites"
+                }
+                NSLog("\(alertTitle)")
+            case .failure(let error):
+                print(error)
+            }
+        })
+
+
+    }
+
     func infoButtonPressed(_ searchContent: SearchContent) {
-        print("content:", searchContent.title)
         navigateToDetailView(searchContent)
     }
 }
@@ -236,7 +254,7 @@ extension FlickRSearchViewController {
         }
         
         let tagSearch = dataSource.snapshot().itemIdentifiers[indexPath.item]
-        let urlString = api.createPhotoUrlString(with: tagSearch)
+        let urlString = api.createPhotoUrlString(with: tagSearch, size: "z")
 
         let fetchPhotoOperation = FetchPhotoOperation(urlString: urlString)
 
