@@ -53,10 +53,8 @@ class LogInViewController: UIViewController {
         [logoImageView, flickrLogInButton, activityIndicator].forEach { view.addSubview($0) }
 
         let inset: CGFloat = 32
+        
         NSLayoutConstraint.activate([
-
-//            activityIndicator.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
-
             logoImageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
             logoImageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             logoImageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
@@ -65,10 +63,7 @@ class LogInViewController: UIViewController {
             flickrLogInButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: inset),
             flickrLogInButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -inset),
             flickrLogInButton.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: 150)
-
         ])
-
-
     }
 
     @objc func loginButtonPressed() {
@@ -97,5 +92,4 @@ class LogInViewController: UIViewController {
            }
         self.activityIndicator.stopAnimating()
        }
-
 }
