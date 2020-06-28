@@ -36,6 +36,18 @@ class LogInViewController: UIViewController {
         return button
     }()
 
+    var noLogInButton: UIButton = {
+        var button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        let attributedString = NSMutableAttributedString(string: "Login later", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.foregroundColor: UIColor.systemGray3, NSAttributedString.Key.underlineStyle: 1])
+        button.setAttributedTitle(NSAttributedString(attributedString: attributedString), for: .normal)
+        
+        button.addTarget(self, action: #selector(noLoginButtonPressed), for: .touchUpInside)
+        
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -49,23 +61,32 @@ class LogInViewController: UIViewController {
         activityIndicator.hidesWhenStopped = true
         activityIndicator.style = .large
         activityIndicator.color = .black
+        
+        
+        let stackView = UIStackView(arrangedSubviews: [logoImageView, flickrLogInButton, noLogInButton])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
 
-        [logoImageView, flickrLogInButton, activityIndicator].forEach { view.addSubview($0) }
+        [stackView, activityIndicator].forEach { view.addSubview($0) }
 
         let inset: CGFloat = 32
         
         NSLayoutConstraint.activate([
-            logoImageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
-            logoImageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            logoImageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-            logoImageView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-
-            flickrLogInButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: inset),
-            flickrLogInButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -inset),
-            flickrLogInButton.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: 150)
+            stackView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            stackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+//
+//            flickrLogInButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: inset),
+//            flickrLogInButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -inset),
+//            flickrLogInButton.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: 150)
         ])
     }
 
+    @objc func noLoginButtonPressed() {
+        dismiss(animated: true, completion: nil)
+    }
+    
     @objc func loginButtonPressed() {
         guard let api = api else { return }
         activityIndicator.startAnimating()

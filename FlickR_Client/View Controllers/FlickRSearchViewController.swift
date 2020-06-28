@@ -51,7 +51,7 @@ final class FlickRSearchViewController: UIViewController {
     }
 
     private func setupView() {
-        photoFetchQueue.name = "com.hectorstevenvillasano.andIQuote.FlickR-Client"
+        photoFetchQueue.name = "com.hectorstevenvillasano.FlickRClient"
         activityIndicator.center = view.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.style = .medium
