@@ -64,6 +64,7 @@
 		12F02377240AB8E00064DFBC /* Favorite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favorite.swift; sourceTree = "<group>"; };
 		12F02379240AC4E80064DFBC /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		1441D2E3AA546F9437655D3C /* Pods-FlickR_Client.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickR_Client.release.xcconfig"; path = "Target Support Files/Pods-FlickR_Client/Pods-FlickR_Client.release.xcconfig"; sourceTree = "<group>"; };
+		3B5A273224A92C7F0031809B /* FlickR_Client.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlickR_Client.entitlements; sourceTree = "<group>"; };
 		7B76D9119FABC83A41541172 /* Pods-FlickR_Client.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickR_Client.debug.xcconfig"; path = "Target Support Files/Pods-FlickR_Client/Pods-FlickR_Client.debug.xcconfig"; sourceTree = "<group>"; };
 		85A2F182D78E09062F70199A /* Pods_FlickR_Client.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlickR_Client.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -138,6 +139,7 @@
 		12835ECA23EDD84000CB6813 /* FlickR_Client */ = {
 			isa = PBXGroup;
 			children = (
+				3B5A273224A92C7F0031809B /* FlickR_Client.entitlements */,
 				12835ED923EDD84300CB6813 /* Info.plist */,
 				12835ECB23EDD84000CB6813 /* AppDelegate.swift */,
 				12835ECD23EDD84000CB6813 /* SceneDelegate.swift */,
@@ -485,6 +487,7 @@
 			baseConfigurationReference = 7B76D9119FABC83A41541172 /* Pods-FlickR_Client.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FlickR_Client/FlickR_Client.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 97AS6JS382;
 				INFOPLIST_FILE = FlickR_Client/Info.plist;
@@ -492,8 +495,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.hectorstevenvillasano.andIQuote.FlickR-Client";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hectorstevenvillasano.FlickRClient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -504,6 +508,7 @@
 			baseConfigurationReference = 1441D2E3AA546F9437655D3C /* Pods-FlickR_Client.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FlickR_Client/FlickR_Client.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 97AS6JS382;
 				INFOPLIST_FILE = FlickR_Client/Info.plist;
@@ -511,8 +516,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.hectorstevenvillasano.andIQuote.FlickR-Client";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hectorstevenvillasano.FlickRClient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
