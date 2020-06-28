@@ -16,6 +16,7 @@ class FlickRAPI {
     var oauthSwift: OAuthSwift?
     var userName = ""  { didSet  {fetchFavoriteList { _ in }}}
     var favorites: [Favorite] = []
+    var noLoginOptIn = false
 }
 
 extension FlickRAPI {

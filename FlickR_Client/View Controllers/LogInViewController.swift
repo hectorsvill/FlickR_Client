@@ -68,22 +68,18 @@ class LogInViewController: UIViewController {
         stackView.axis = .vertical
 
         [stackView, activityIndicator].forEach { view.addSubview($0) }
-
-        let inset: CGFloat = 32
         
         NSLayoutConstraint.activate([
             stackView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
             stackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
             stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-//
-//            flickrLogInButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: inset),
-//            flickrLogInButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -inset),
-//            flickrLogInButton.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: 150)
+
         ])
     }
 
     @objc func noLoginButtonPressed() {
+        api!.noLoginOptIn = true
         dismiss(animated: true, completion: nil)
     }
     

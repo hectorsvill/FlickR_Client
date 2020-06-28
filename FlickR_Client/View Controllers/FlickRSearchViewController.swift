@@ -36,11 +36,12 @@ final class FlickRSearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if let _ = api.oauthSwift {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Log Out", style: .done, target: self, action: #selector(self.logOutButtonPressed))
-        } else {
+        if !api.noLoginOptIn {
             navigateToLogIn()
         }
+        
+        let leftBarButtonTitle = api.noLoginOptIn ? "Login" : "Log out"
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: leftBarButtonTitle, style: .done, target: self, action: #selector(self.logOutButtonPressed))
     }
 
     private func navigateToLogIn() {
@@ -65,9 +66,9 @@ final class FlickRSearchViewController: UIViewController {
         searchBar.backgroundColor = UIColor().flickr_logoColor()
 
         // MARK: DELETE
-//        let search = "Baker Skateboards"
-//        searchBar.text = search
-//        searchTag(with: search)
+        let search = "Baker Skateboards"
+        searchBar.text = search
+        searchTag(with: search)
 
     }
 
