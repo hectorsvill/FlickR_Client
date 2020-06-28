@@ -40,7 +40,9 @@ class LogInViewController: UIViewController {
         var button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         
-        let attributedString = NSMutableAttributedString(string: "Login later", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.foregroundColor: UIColor.systemGray3, NSAttributedString.Key.underlineStyle: 1])
+        let attributes: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.foregroundColor: UIColor.systemGray3, NSAttributedString.Key.underlineStyle: 1]
+        
+        let attributedString = NSMutableAttributedString(string: "Login later", attributes: attributes)
         button.setAttributedTitle(NSAttributedString(attributedString: attributedString), for: .normal)
         
         button.addTarget(self, action: #selector(noLoginButtonPressed), for: .touchUpInside)
