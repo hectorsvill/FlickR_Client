@@ -88,28 +88,34 @@ class LogInViewController: UIViewController {
     
     @objc func loginButtonPressed() {
         guard let api = api else { return }
-        activityIndicator.startAnimating()
-
-           let oauthswift = OAuth1Swift(
-               consumerKey: api.myKey,
-               consumerSecret: api.mySecret,
-               requestTokenUrl: "https://www.flickr.com/services/oauth/request_token",
-               authorizeUrl:    "https://www.flickr.com/services/oauth/authorize",
-               accessTokenUrl:  "https://www.flickr.com/services/oauth/access_token"
-           )
-
-           api.oauthSwift = oauthswift
-           oauthswift.authorizeURLHandler = SafariURLHandler(viewController: self, oauthSwift: api.oauthSwift!)
-
-           let _ = oauthswift.authorize(withCallbackURL: URL(string: "oauth-swift://oauth-callback/flickr")!) { result in
-               switch result {
-               case .success(let (_, _, parameters)):
-                   api.userName = parameters["username"] as! String
-                   self.dismiss(animated: true)
-               case .failure(let error):
-                   print(error.description)
-               }
-           }
-        self.activityIndicator.stopAnimating()
-       }
+        
+        DispatchQueue.main.async {
+            self.activityIndicator.startAnimating()
+            
+            let oauthswift = OAuth1Swift(
+                consumerKey: api.myKey,
+                consumerSecret: api.mySecret,
+                requestTokenUrl: "https://www.flickr.com/services/oauth/request_token",
+                authorizeUrl:    "https://www.flickr.com/services/oauth/authorize",
+                accessTokenUrl:  "https://www.flickr.com/services/oauth/access_token"
+            )
+            
+            api.oauthSwift = oauthswift
+            oauthswift.authorizeURLHandler = SafariURLHandler(viewController: self, oauthSwift: api.oauthSwift!)
+            
+            let _ = oauthswift.authorize(withCallbackURL: URL(string: "oauth-swift://oauth-callback/flickr")!) { result in
+                switch result {
+                case .success(let (_, _, parameters)):
+                    api.userName = parameters["username"] as! String
+                    self.dismiss(animated: true)
+                case .failure(let error):
+                    print(error.description)
+                }
+            }
+            self.activityIndicator.stopAnimating()
+            
+            
+        }
+        
+    }
 }
