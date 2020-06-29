@@ -91,11 +91,6 @@ extension FlickRSearchViewController: UISearchBarDelegate {
 
 // MARK: UICollectionViewDelegate\\\\
 extension FlickRSearchViewController: UICollectionViewDelegate {
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        navigateToDetailView(with: indexPath.item)
-    }
-
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         searchBar.resignFirstResponder()
     }
