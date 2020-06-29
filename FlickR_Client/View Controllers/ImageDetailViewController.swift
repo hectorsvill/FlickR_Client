@@ -39,9 +39,13 @@ final class ImageDetailViewController: UIViewController {
 
     private func configureNavigationButtons() {
         guard let searchContent = searchContent else { return }
-        let imageName = api.isInFavorites(searchContent: searchContent) ? "hand.thumbsup" : "hand.thumbsup.fill"
-        let thumbsupImage = UIImage(systemName: imageName)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: thumbsupImage, style: .plain, target: self, action: #selector(likeButtonPressed))
+        
+        if (!api.noLoginOptIn) {
+            let imageName = api.isInFavorites(searchContent: searchContent) ? "hand.thumbsup" : "hand.thumbsup.fill"
+            let thumbsupImage = UIImage(systemName: imageName)
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: thumbsupImage, style: .plain, target: self, action: #selector(likeButtonPressed))
+        }
+        
     }
 
     private func setupViewDidLoad() {
