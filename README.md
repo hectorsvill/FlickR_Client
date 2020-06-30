@@ -15,6 +15,8 @@ Flickr client will allow you to:
 #
   
 ![img](https://github.com/hectorsvill/hectorsvill.github.io/blob/master/images/flickr%20Client%20github%20Image.png)
+#
+![img](https://github.com/hectorsvill/hectorsvill.github.io/blob/master/images/flickr%20client%20app%20store%20ipad%20image.png)
 
 
 # 
