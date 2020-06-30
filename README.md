@@ -11,6 +11,10 @@ Flickr client will allow you to:
 
 - Utilizing [OAuthSwift](https://github.com/OAuthSwift/OAuthSwift) to interface with flickr
 - Search View Controller will load an endless amount of images as you scroll down.
+- Programmatic UI
+- Fetching images with concurrent Operations
+- Image Caching with Generic Cache that is thread-safe
+- Custome Collection View Layout
 
 #
   
