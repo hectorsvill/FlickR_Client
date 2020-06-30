@@ -1,5 +1,8 @@
-# flickR Client
-
+# flickR Client  
+![img](https://github.com/hectorsvill/hectorsvill.github.io/blob/master/images/flickr%20Client%20github%20Image.png)
+#
+![img](https://github.com/hectorsvill/hectorsvill.github.io/blob/master/images/flickr%20client%20app%20store%20ipad%20image.png)
+#
 Flickr client will allow you to:
 - Log in to your flickr account
 - Like images 
@@ -14,14 +17,9 @@ Flickr client will allow you to:
 - Programmatic UI
 - Fetching images with concurrent Operations
 - Image Caching with Generic Cache that is thread-safe
-- Custome Collection View Layout
+- Custom Collection View Layout
 
 #
-  
-![img](https://github.com/hectorsvill/hectorsvill.github.io/blob/master/images/flickr%20Client%20github%20Image.png)
-#
-![img](https://github.com/hectorsvill/hectorsvill.github.io/blob/master/images/flickr%20client%20app%20store%20ipad%20image.png)
-
 
 # 
 - Must install pod before using
