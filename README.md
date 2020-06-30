@@ -1,16 +1,16 @@
-# FlickR_Client
+# flickR Client
 
 Flickr client will allow you to:
-
 - Log in to your flickr account
 - Like images 
 - Search images
 - View image data
-- View image comments 
+- View image comments
+
 #
 
 - Utilizing [OAuthSwift](https://github.com/OAuthSwift/OAuthSwift) to interface with flickr
-- Search View Controller will load an endless amoungt of images as you scroll down.
+- Search View Controller will load an endless amount of images as you scroll down.
 
 #
   
